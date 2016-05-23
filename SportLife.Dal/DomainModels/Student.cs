@@ -11,8 +11,8 @@ namespace SportLife.Dal.DomainModels
     {
         public Student()
         {
-
         }
+
         public int StudentID { get; set; }
         public string StudentName { get; set; }
         public DateTime? DateOfBirth { get; set; }
