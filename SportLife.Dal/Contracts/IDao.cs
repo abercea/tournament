@@ -13,5 +13,7 @@ namespace SportLife.Dal.Contracts
         IEnumerable<T> GetAll();
 
         void SaveContext();
+
+
     }
 }
