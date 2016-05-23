@@ -8,13 +8,19 @@ using System.Threading.Tasks;
 
 namespace SportLife.Bll.Bus
 {
-    public class UserBus :IUserBus
+    public class UserBus : IUserBus
     {
         private IUserDao _iUserDao;
 
         public UserBus(IUserDao iUserDao)
         {
             _iUserDao = iUserDao;
+        }
+
+        public void addFirst()
+        {
+            var all = _iUserDao.GetAll().ToList();
+            _iUserDao.addFirst();
         }
     }
 }

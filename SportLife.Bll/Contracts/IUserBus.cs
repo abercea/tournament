@@ -8,5 +8,6 @@ namespace SportLife.Bll.Contracts
 {
     public interface IUserBus
     {
+        void addFirst();
     }
 }

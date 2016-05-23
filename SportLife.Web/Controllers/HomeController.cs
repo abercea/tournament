@@ -11,13 +11,21 @@ namespace SportLife.Controllers
     {
         private IUserBus _iUserBus;
 
-        public HomeController(IUserBus iUserBus) {
+        public HomeController(IUserBus iUserBus)
+        {
             _iUserBus = iUserBus;
         }
 
         public ActionResult Index()
         {
             return View();
+        }
+
+        public String generateDb()
+        {
+            _iUserBus.addFirst();
+
+            return "OK";
         }
     }
 }
