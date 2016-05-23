@@ -20,6 +20,7 @@ namespace SportLife.Dal.DomainModels
         public decimal Height { get; set; }
         public float Weight { get; set; }
 
+        
         public int? StdId { get; set; }
 
         [ForeignKey("StdId")]
