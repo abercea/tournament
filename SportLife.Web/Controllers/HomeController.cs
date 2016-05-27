@@ -11,11 +11,36 @@ namespace SportLife.Controllers
     {
         private IUserBus _iUserBus;
 
-        public HomeController(IUserBus iUserBus) {
+        public HomeController(IUserBus iUserBus)
+        {
             _iUserBus = iUserBus;
         }
 
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult TempleteIntegration()
+        {
+            return View();
+        }
+        public ActionResult TempleteIntegration2()
+        {
+            return View();
+        }
+
+        public ActionResult Draws()
+        {
+            return View();
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        public ActionResult Chat()
         {
             return View();
         }

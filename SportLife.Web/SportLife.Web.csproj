@@ -11,7 +11,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MVC5GenericArchitecture</RootNamespace>
+    <RootNamespace>SportLife.Web</RootNamespace>
     <AssemblyName>MVC5Bootstrap-3-1-1-Less</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
@@ -62,6 +62,9 @@
     </Reference>
     <Reference Include="JavaScriptEngineSwitcher.Msie">
       <HintPath>..\packages\JavaScriptEngineSwitcher.Msie.1.1.2\lib\net40\JavaScriptEngineSwitcher.Msie.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -219,15 +222,176 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ChatHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
+    <Compile Include="Startup.cs">
+      <SubType>
+      </SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LocalDB.mdf" />
     <Content Include="App_Data\LocalDB_log.ldf">
       <DependentUpon>LocalDB.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\css\animate.min.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\css\main.css" />
+    <Content Include="Content\css\prettyPhoto.css" />
+    <Content Include="Content\css\responsive.css" />
+    <Content Include="Content\fonts1\News Cycle SIL OFL Font License 1.1.txt" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\images\accordion1.png" />
+    <Content Include="Content\images\ads\ad1.png" />
+    <Content Include="Content\images\ads\ad2.png" />
+    <Content Include="Content\images\ads\ad3.png" />
+    <Content Include="Content\images\ads\ad4.png" />
+    <Content Include="Content\images\blog\avatar.jpg" />
+    <Content Include="Content\images\blog\avatar1.png" />
+    <Content Include="Content\images\blog\avatar2.png" />
+    <Content Include="Content\images\blog\avatar3.png" />
+    <Content Include="Content\images\blog\blog1.jpg" />
+    <Content Include="Content\images\blog\blog2.jpg" />
+    <Content Include="Content\images\blog\boy.png" />
+    <Content Include="Content\images\blog\boy2.png" />
+    <Content Include="Content\images\blog\boy3.png" />
+    <Content Include="Content\images\blog\comments_bg.png" />
+    <Content Include="Content\images\blog\gallery1.png" />
+    <Content Include="Content\images\blog\gallery2.png" />
+    <Content Include="Content\images\blog\gallery3.png" />
+    <Content Include="Content\images\blog\gallery4.png" />
+    <Content Include="Content\images\blog\gallery5.png" />
+    <Content Include="Content\images\blog\gallery6.png" />
+    <Content Include="Content\images\blog\girl.png" />
+    <Content Include="Content\images\blog\thumb1.jpg" />
+    <Content Include="Content\images\blog\thumb2.jpg" />
+    <Content Include="Content\images\blog\thumb3.jpg" />
+    <Content Include="Content\images\client1.png" />
+    <Content Include="Content\images\client2.png" />
+    <Content Include="Content\images\client3.png" />
+    <Content Include="Content\images\contact.png" />
+    <Content Include="Content\images\gallery\gallery1.jpg" />
+    <Content Include="Content\images\gallery\gallery2.jpg" />
+    <Content Include="Content\images\gallery\gallery3.jpg" />
+    <Content Include="Content\images\gallery\gallery4.jpg" />
+    <Content Include="Content\images\gallery\gallery5.jpg" />
+    <Content Include="Content\images\gallery\gallery6.jpg" />
+    <Content Include="Content\images\home_1.jpg" />
+    <Content Include="Content\images\home_2.jpg" />
+    <Content Include="Content\images\ico\apple-touch-icon-114-precomposed.png" />
+    <Content Include="Content\images\ico\apple-touch-icon-144-precomposed.png" />
+    <Content Include="Content\images\ico\apple-touch-icon-57-precomposed.png" />
+    <Content Include="Content\images\ico\apple-touch-icon-72-precomposed.png" />
+    <Content Include="Content\images\ico\favicon.ico" />
+    <Content Include="Content\images\image_bg.png" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\man1.jpg" />
+    <Content Include="Content\images\man2.jpg" />
+    <Content Include="Content\images\man3.jpg" />
+    <Content Include="Content\images\man4.jpg" />
+    <Content Include="Content\images\map.jpg" />
+    <Content Include="Content\images\partners\partner1.png" />
+    <Content Include="Content\images\partners\partner2.png" />
+    <Content Include="Content\images\partners\partner3.png" />
+    <Content Include="Content\images\partners\partner4.png" />
+    <Content Include="Content\images\partners\partner5.png" />
+    <Content Include="Content\images\partners\partner_bg.png" />
+    <Content Include="Content\images\portfolio\full\item1.png" />
+    <Content Include="Content\images\portfolio\full\item10.png" />
+    <Content Include="Content\images\portfolio\full\item11.png" />
+    <Content Include="Content\images\portfolio\full\item12.png" />
+    <Content Include="Content\images\portfolio\full\item2.png" />
+    <Content Include="Content\images\portfolio\full\item3.png" />
+    <Content Include="Content\images\portfolio\full\item4.png" />
+    <Content Include="Content\images\portfolio\full\item5.png" />
+    <Content Include="Content\images\portfolio\full\item6.png" />
+    <Content Include="Content\images\portfolio\full\item7.png" />
+    <Content Include="Content\images\portfolio\full\item8.png" />
+    <Content Include="Content\images\portfolio\full\item9.png" />
+    <Content Include="Content\images\portfolio\recent\item1.png" />
+    <Content Include="Content\images\portfolio\recent\item10.png" />
+    <Content Include="Content\images\portfolio\recent\item11.png" />
+    <Content Include="Content\images\portfolio\recent\item12.png" />
+    <Content Include="Content\images\portfolio\recent\item2.png" />
+    <Content Include="Content\images\portfolio\recent\item3.png" />
+    <Content Include="Content\images\portfolio\recent\item4.png" />
+    <Content Include="Content\images\portfolio\recent\item5.png" />
+    <Content Include="Content\images\portfolio\recent\item6.png" />
+    <Content Include="Content\images\portfolio\recent\item7.png" />
+    <Content Include="Content\images\portfolio\recent\item8.png" />
+    <Content Include="Content\images\portfolio\recent\item9.png" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\contentPattern.png" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\dark_rounded\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\dark_square\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\dark_square\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\dark_square\contentPattern.png" />
+    <Content Include="Content\images\prettyPhoto\dark_square\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\dark_square\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\dark_square\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\default\default_thumb.png" />
+    <Content Include="Content\images\prettyPhoto\default\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\default\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\default\sprite_next.png" />
+    <Content Include="Content\images\prettyPhoto\default\sprite_prev.png" />
+    <Content Include="Content\images\prettyPhoto\default\sprite_x.png" />
+    <Content Include="Content\images\prettyPhoto\default\sprite_y.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\contentPatternBottom.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\contentPatternLeft.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\contentPatternRight.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\contentPatternTop.png" />
+    <Content Include="Content\images\prettyPhoto\facebook\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\facebook\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\facebook\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\light_rounded\sprite.png" />
+    <Content Include="Content\images\prettyPhoto\light_square\btnNext.png" />
+    <Content Include="Content\images\prettyPhoto\light_square\btnPrevious.png" />
+    <Content Include="Content\images\prettyPhoto\light_square\default_thumbnail.gif" />
+    <Content Include="Content\images\prettyPhoto\light_square\loader.gif" />
+    <Content Include="Content\images\prettyPhoto\light_square\sprite.png" />
+    <Content Include="Content\images\ribon_one.png" />
+    <Content Include="Content\images\ribon_two.png" />
+    <Content Include="Content\images\search_icon.png" />
+    <Content Include="Content\images\services\bg_services.jpg" />
+    <Content Include="Content\images\services\bg_services.png" />
+    <Content Include="Content\images\services\services1.png" />
+    <Content Include="Content\images\services\services2.png" />
+    <Content Include="Content\images\services\services3.png" />
+    <Content Include="Content\images\services\services4.png" />
+    <Content Include="Content\images\services\services5.png" />
+    <Content Include="Content\images\services\services6.png" />
+    <Content Include="Content\images\services\slider-bg.png" />
+    <Content Include="Content\images\service\client1.png" />
+    <Content Include="Content\images\service\client2.png" />
+    <Content Include="Content\images\service\client3.png" />
+    <Content Include="Content\images\service\image_bg.png" />
+    <Content Include="Content\images\service\logo.png" />
+    <Content Include="Content\images\slider\bg1.jpg" />
+    <Content Include="Content\images\slider\bg2.jpg" />
+    <Content Include="Content\images\slider\bg3.jpg" />
+    <Content Include="Content\images\slider\img1.png" />
+    <Content Include="Content\images\slider\img2.png" />
+    <Content Include="Content\images\slider\img3.png" />
+    <Content Include="Content\images\slider\img4.png" />
+    <Content Include="Content\images\slider\sdsdsdsd_burned.png" />
+    <Content Include="Content\images\slider_one.jpg" />
+    <Content Include="Content\images\tab1.png" />
+    <Content Include="Content\images\tab2.png" />
+    <Content Include="Content\images\team-member.jpg" />
+    <Content Include="Content\images\testimonials1.png" />
+    <Content Include="Content\images\transparent.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -281,17 +445,39 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Content\Site.less" />
+    <Content Include="Content\css\site_t1.less" />
+    <Content Include="Content\fonts1\NewsCycle-Regular.eot" />
+    <Content Include="Content\fonts1\NewsCycle-Regular.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\images\404.xcf" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="index.html" />
+    <Content Include="js\bootstrap.min.js" />
+    <Content Include="js\html5shiv.js" />
+    <Content Include="js\jquery.isotope.min.js" />
+    <Content Include="js\jquery.js" />
+    <Content Include="js\jquery.prettyPhoto.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\respond.min.js" />
+    <Content Include="js\wow.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.0.2.js" />
+    <Content Include="Scripts\jquery.signalR-2.0.2.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\image_slide.js" />
+    <Content Include="Scripts\js\jquery.min.js" />
+    <Content Include="Scripts\js\modernizr-1.5.min.js" />
     <Content Include="Scripts\modernizr-2.7.1.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -313,6 +499,13 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_LayoutApp1.cshtml" />
+    <Content Include="Views\Home\TempleteIntegration.cshtml" />
+    <Content Include="Views\Shared\_LayoutResponsive.cshtml" />
+    <Content Include="Views\Home\TempleteIntegration2.cshtml" />
+    <Content Include="Views\Home\Draws.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\Chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SportLife.Bll\SportLife.Bll.csproj">
@@ -332,6 +525,7 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -351,6 +545,8 @@
           <DevelopmentServerPort>53130</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:53130/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:53130/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

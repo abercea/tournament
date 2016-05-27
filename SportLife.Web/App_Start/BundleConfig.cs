@@ -24,6 +24,12 @@ namespace SportLife
             cssBundle.Orderer = nullOrderer;
             bundles.Add(cssBundle);
 
+            var cssBundle1 = new CustomStyleBundle("~/bundles/css1");
+            cssBundle1.Include("~/Content/css/site_t1.less", "~/Content/bootstrap/bootstrap.less");
+            cssBundle1.Transforms.Add(cssTransformer);
+            cssBundle1.Orderer = nullOrderer;
+            bundles.Add(cssBundle1);
+
             var jqueryBundle = new CustomScriptBundle("~/bundles/jquery");
             jqueryBundle.Include("~/Scripts/jquery-{version}.js");
             jqueryBundle.Transforms.Add(jsTransformer);
@@ -48,12 +54,10 @@ namespace SportLife
 
 
             var bootstrapBundle = new CustomScriptBundle("~/bundles/bootstrap");
-            bootstrapBundle.Include("~/Scripts/bootstrap.js", "~/Scripts/respond.js");
+            bootstrapBundle.Include("~/Scripts/bootstrap.js", "~/Scripts/respond.js", "~/Scripts/js/image_slide.js");
             bootstrapBundle.Transforms.Add(jsTransformer);
             bootstrapBundle.Orderer = nullOrderer;
             bundles.Add(bootstrapBundle);
-
-
         }
     }
 }

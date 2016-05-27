@@ -1,0 +1,1365 @@
+﻿@{
+    ViewBag.Title = "Draws";
+    Layout = "~/Views/Shared/_LayoutResponsive.cshtml";
+}
+
+<style>
+        /*//utils*/
+        .cleaner {
+            line-height: 0;
+            height: 0;
+            font-size: 0;
+            clear: both;
+        }
+
+        .no {
+            border-left: none;
+        }
+
+        .team-center {
+            font-weight: bold;
+        }
+
+        .space {
+            min-height: 15px;
+            height: 15px;
+        }
+
+
+        .os-iphone .glib-stats-filter ul.open li:hover,
+        .os-ipad .glib-stats-filter ul.open li:hover {
+            background-color: transparent;
+        }
+
+        .glib-stats-filter ul.open li:hover,
+        .glib-stats-filter ul.open li.selected,
+        .os-iphone .glib-stats-filter ul.open li:active,
+        .os-ipad .glib-stats-filter ul.open li:active {
+            background-color: #505050;
+        }
+
+        .glib-stats-filter ul.open li,
+        .glib-stats-filter ul li.selected {
+            display: block;
+        }
+
+        .glib-stats-filter ul:not(.open) li.selected {
+            overflow: hidden;
+            padding-right: 15px;
+            text-overflow: ellipsis;
+        }
+
+        tr.filtered-out {
+            display: none;
+        }
+
+        html {
+            #overflow:auto;
+        }
+
+        .playoff, #playoff-header {
+            width: 100%;
+            position: relative;
+            clear: both;
+        }
+
+        #playoff-header {
+            overflow: hidden;
+            text-align: center;
+            padding: 4px 0 6px;
+            margin: 0;
+            color: #fff;
+        }
+
+            #playoff-header ul, #playoff-header ul li {
+                list-style: none;
+                display: block;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                float: left;
+            }
+
+        .playoff {
+            font-size: 0;
+        }
+
+            .playoff .viewport {
+                overflow: hidden;
+                width: 100%;
+                height: 520px;
+                position: relative;
+            }
+
+                .playoff .viewport::-webkit-scrollbar {
+                    display: none;
+                }
+
+        #playoff-links {
+            display: none;
+            line-height: 12px !important;
+        }
+
+        .playoff.default-scroll .viewport {
+            overflow: auto;
+        }
+
+        .playoff .overview {
+            display: inline;
+            list-style: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            padding: 0 0 5px 3px;
+            margin: 0;
+        }
+
+        .playoff .thumb .end,
+        .playoff .thumb .hend,
+        .playoff .scrollbar,
+        .playoff .hcrollbar {
+            position: absolute;
+            right: 0;
+            width: 10px;
+            z-index: 10000;
+            padding: 0 !important;
+        }
+
+        .playoff .track, .playoff .htrack {
+            background-color: #ccc;
+            height: 100%;
+            overflow: hidden;
+            width: 10px;
+            position: relative;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .playoff .thumb, .playoff .hthumb {
+            height: 20px;
+            width: 10px;
+            cursor: pointer;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            padding: 0 !important;
+            border-radius: 8px;
+            opacity: 0.5;
+        }
+
+        .playoff .hcrollbar {
+            display: block;
+            width: auto;
+            left: 0;
+            top: auto;
+            right: 10px;
+            height: 10px;
+            bottom: -10px;
+        }
+
+        .playoff .thumb .end, .playoff .thumb .hend {
+            overflow: hidden;
+            height: 5px;
+            width: 10px;
+        }
+
+        .playoff .thumb {
+            margin-top: 0;
+        }
+
+        .playoff .hthumb {
+            height: 10px;
+            left: 0;
+            margin-top: 0;
+        }
+
+        .playoff .htrack {
+            width: 100%;
+        }
+
+        .playoff .thumb:hover, .playoff .hthumb:hover {
+            opacity: 1;
+        }
+
+        .tooltip {
+            z-index: 1000000 !important;
+        }
+
+        .playoff fieldset {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .round {
+            display: block;
+            float: left;
+            position: relative;
+            padding-top: 2px;
+        }
+
+        .unpacked .matches ul li {
+            display: table;
+            #display:block;
+            width: 100%;
+            font-size: 11px;
+        }
+
+        .unpacked .matches ul li, .unpacked .matches tr td {
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .unpacked .matches table {
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+        .unpacked .matches ul li.first, .unpacked .matches tr.first td {
+            border-top: none;
+        }
+
+        .unpacked .matches li span.row {
+            display: table-row;
+            #display:block;
+        }
+
+            .unpacked .matches li span.row span {
+                display: table-cell;
+                #display:block;
+            }
+
+        .matches .matches .date {
+            padding: 0 5px;
+        }
+
+        .matches .matches .name {
+            text-align: left;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            padding-left: 5px;
+        }
+
+        .matches .name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .matches .matches li.info {
+            text-align: left;
+            display: block;
+            padding: 0 5px;
+            width: auto;
+        }
+
+
+        .matches .matches .presult {
+            text-align: center;
+            border-right: 0 none;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+            .matches .matches .presult.final {
+                width: 65px;
+            }
+
+                .matches .matches .presult.final.golf {
+                    width: 30px;
+                }
+
+        .playoff-box-result {
+            margin: 0;
+            left: -1px;
+            top: 100%;
+            color: #656565;
+            position: absolute;
+            z-index: 100;
+            overflow: visible;
+        }
+
+        .playoff-box-result-inner {
+            border-width: 1px;
+            border-style: solid;
+            border-top-width: 0;
+        }
+
+        .first-round {
+            padding-top: 0;
+        }
+
+        .match {
+            background: #fff;
+            position: relative;
+            z-index: 1;
+            font-size: 11px;
+            border: 1px solid #d5d5d5;
+            overflow: hidden;
+        }
+
+        .match {
+            width: 163px;
+            height: 40px;
+            padding-top: 1px;
+            padding-right: 5px;
+            padding-bottom: 1px;
+            padding-left: 5px;
+        }
+
+        /*.participant .flag { #display:block; #float:left; #padding-right:3px; #margin-top:1px; }*/
+
+        .participant {
+            height: 18px;
+            line-height: 18px;
+            margin-bottom: 0px;
+        }
+
+        .unpacked {
+            overflow: visible;
+        }
+
+
+        .has-events {
+            cursor: pointer;
+        }
+
+        .participant {
+            display: block;
+            position: relative;
+            vertical-align: middle;
+            overflow: hidden;
+        }
+
+            .participant .name {
+                display: block;
+                position: relative;
+            }
+
+                .participant .name .overlay {
+                    position: absolute;
+                    top: 0;
+                }
+
+            .participant .name-container {
+                display: block;
+                overflow: hidden;
+            }
+
+                .participant .name-container .name-line {
+                    display: block;
+                    width: 1000px;
+                }
+
+        .playoff .enlarged-match {
+            width: 250px;
+        }
+
+        .enlarged-match .participant, .enlarged-match .participant .name .name-container {
+            overflow: visible;
+        }
+
+        .match .away {
+            margin-bottom: 0;
+        }
+
+        #sportstats .winner {
+            font-weight: bold;
+        }
+
+        .participant .name .codebook {
+            color: #b0b0b0;
+            font-weight: normal;
+            font-size: 10px;
+            line-height: 10px;
+        }
+
+            .participant .name .codebook.t {
+                cursor: help;
+            }
+
+        .participant .score {
+            position: absolute;
+            padding: 0 2px 0 4px;
+            right: 0;
+            top: 0;
+            font-weight: bold;
+        }
+
+            .participant .score .s {
+                padding-left: 7px;
+                float: right;
+                text-align: right;
+            }
+
+        .score-final {
+            position: absolute;
+            right: 0;
+            width: 65px;
+            height: 36px;
+            display: table;
+            text-align: center;
+            word-wrap: normal;
+            padding: 0 5px 0 5px;
+        }
+
+            .score-final.golf {
+                width: 30px;
+            }
+
+            .score-final .s {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+        .cleaner {
+            clear: both;
+            display: block;
+            font-size: 0 !important;
+            height: 0 !important;
+            padding: 0 !important;
+        }
+
+        .matches .matches {
+            display: none;
+            visibility: hidden;
+            z-index: -111;
+        }
+
+        .unpacked .matches {
+            display: block;
+            visibility: visible;
+        }
+
+        .playoff .unpacked .matches table {
+            border-collapse: collapse;
+        }
+
+        .playoff .unpacked .matches tr td {
+            padding: 0;
+            margin: 0;
+            width: auto;
+            border-left: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+            .playoff .unpacked .matches tr td span, .playoff .unpacked .matches tr td span a {
+                padding: 0;
+                margin: 0;
+                border: none;
+            }
+
+            .playoff .unpacked .matches tr td span {
+                padding: 0 4px;
+            }
+
+        .spacer {
+            border-right: none;
+            display: block;
+            line-height: 1px;
+        }
+
+        .separator {
+            display: block;
+            width: 100%;
+            clear: both;
+        }
+
+        .relation {
+            width: 100%;
+            position: relative;
+            right: 0;
+            top: 0;
+            height: 100%;
+            font-size: 0;
+            display: block;
+        }
+
+            .relation .h, .relation .vt, .relation .vb {
+                display: block;
+                line-height: 0;
+                font-size: 0;
+                background: #ccc;
+                position: absolute;
+            }
+
+            .relation .h, .relation .vt, .relation .vb, .relation .m, .relation .t, .relation .b {
+                z-index: 0;
+            }
+
+            .relation .vt, .relation .vb {
+                height: 50%;
+            }
+
+            .relation .m {
+                top: 50%;
+                right: 0 !important;
+                margin-bottom: 50%;
+                _background: none;
+                _border-bottom: 1px solid #ccc;
+                margin-top: -1px;
+            }
+
+            .relation .t {
+                _background: none;
+                _border-top: 1px solid #ccc;
+            }
+
+            .relation .b {
+                _background: none;
+                _border-bottom: 1px solid #ccc;
+            }
+
+        .nb {
+            border: none;
+            background: none;
+        }
+
+        .default-scroll .overview {
+            position: relative;
+            display: block;
+        }
+
+        .default-scroll .viewport {
+            height: auto;
+            overflow: auto;
+        }
+
+        .relation .at, .relation .ab {
+            top: auto;
+            bottom: auto;
+            margin: 0;
+        }
+
+
+
+        .participant {
+            height: 18px;
+            line-height: 18px;
+            margin-bottom: 0px;
+        }
+
+
+        .playoff .enlarged-match {
+            width: 225px;
+        }
+
+        .playoff-box-result, .result-header {
+            width: 175px;
+        }
+
+            .playoff-box-result ul {
+                width: 173px;
+            }
+
+        .playoff .enlarged-match .playoff-box-result ul {
+            width: 235px;
+        }
+
+        .playoff .spacer {
+            height: 40px;
+        }
+
+        .playoff .oct {
+            height: 320px;
+        }
+
+        .playoff .quad {
+            height: 160px;
+        }
+
+        .playoff .double {
+            height: 80px;
+        }
+
+        .playoff .half {
+            height: 20px;
+        }
+
+        .playoff .con {
+            height: 10px;
+        }
+
+        .playoff .mid {
+            height: 5px;
+        }
+
+        .relation .t, .relation .vt {
+            top: 20px;
+        }
+
+        .relation .b, .relation .vb {
+            bottom: 20px;
+        }
+
+        .relation .vt, .relation .vb {
+            width: 1px;
+            _height: 36px;
+        }
+
+        .relation .h, .relation .vt, .relation .vb {
+            right: 5px;
+        }
+
+        .relation .h {
+            width: 5px;
+        }
+
+        .spacer {
+            width: 179px;
+            _width: 178px;
+        }
+
+        #playoff-header ul li, .round {
+            width: 185px;
+        }
+
+            #playoff-header ul li.last-round, .last-round {
+                width: 175px;
+            }
+
+        .relation .b, .relation .m, .relation .t {
+            height: 1px;
+        }
+
+        .relation .t {
+            _border-top-width: 1px;
+        }
+
+        .relation .b, .relation .b {
+            _border-bottom-width: 1px;
+        }
+
+        .relation .at, .relation .ab {
+            width: 11px;
+        }
+
+        .relation .at {
+            top: 20px;
+        }
+
+        .relation .ab {
+            bottom: 20px;
+        }
+
+
+        /*
+    Â * Common
+     */
+
+        .hidden {
+            display: none;
+        }
+
+        .cleaner {
+            line-height: 0;
+            height: 0;
+            font-size: 0;
+            clear: both;
+        }
+
+        .closer {
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+
+        a.match-detail-link {
+            text-decoration: none;
+            color: #00407D;
+            cursor: pointer;
+        }
+
+        a:hover.match-detail-link {
+            text-decoration: underline;
+            color: #00407D;
+            cursor: pointer;
+        }
+
+        .soccer .stats-table-label,
+        .soccer .only-stage .scroll-box {
+            background-position: 0px -54px;
+        }
+
+        /*
+     * Tables
+     */
+
+
+        .pr {
+            position: relative;
+        }
+
+        #playoff-header {
+            background: url(/res/image/_new/bg-label-hi-bb.gif) repeat-x top;
+            padding: 0;
+            height: 22px;
+            line-height: 22px;
+        }
+
+        .playoff .viewport .overview {
+            padding: 4px 0 4px 4px;
+        }
+
+        #playoff-header ul, #playoff-header li {
+            vertical-align: middle;
+            height: 22px;
+            line-height: 22px;
+        }
+
+        .result-header {
+            text-align: center;
+            color: #eee;
+        }
+
+
+        .scroll-box {
+            position: relative;
+            margin: 0px 0 0;
+            padding: 3px 10px;
+            height: 13px;
+        }
+
+        .only-stage .scroll-box {
+            margin-top: 10px;
+        }
+
+        .scroll-box a {
+            color: white;
+            cursor: pointer;
+        }
+
+
+
+        span.team-logo {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        span.team-logo-nologo {
+            background: url(/res/_fs/image/empty-logo-team-small.png) no-repeat 0 0 !important;
+        }
+
+        .playoff span.team-logo {
+            margin-bottom: 1px;
+            margin-top: -1px;
+        }
+
+
+        .playoff .match.participant-way-highlight {
+            background-color: #FCF1B7;
+        }
+
+
+
+
+        a.form-ou {
+            background: url(/res/image/standings/form.ou.png) 0 0 no-repeat;
+        }
+
+        a.form-over {
+            background-position: 0 -50px;
+        }
+
+        a.form-w {
+            background-position: 0 -150px;
+        }
+
+        a:hover.form-w {
+            background-position: 0 -300px;
+        }
+
+        a.form-d {
+            background-position: 0 -200px;
+        }
+
+        a:hover.form-d {
+            background-position: 0 -350px;
+        }
+
+        a.form-l {
+            background-position: 0 -250px;
+        }
+
+        a:hover.form-l {
+            background-position: 0 -400px;
+        }
+
+        a.form-wo {
+            background-position: 0 -450px;
+        }
+
+        a:hover.form-wo {
+            background-position: 0 -550px;
+        }
+
+        a.form-lo {
+            background-position: 0 -500px;
+        }
+
+        a:hover.form-lo {
+            background-position: 0 -600px;
+        }
+
+        a.form-s {
+            background-position: 0 -650px;
+        }
+
+        a:hover.form-s {
+            background-position: 0 -700px;
+        }
+
+        .has-events .matches ul, .has-events .matches ul li {
+            margin: 0;
+            padding: 0;
+        }
+
+            .has-events .matches ul li * {
+                padding: 3px 0;
+            }
+
+        .unpacked, .unpacked .participant .name .codebook {
+            color: #fff;
+        }
+
+        .scroll-box {
+            background-color: #00407D;
+        }
+
+        .has-events:hover {
+            background-color: #e6f4f8;
+        }
+
+        .playoff .has-events .matches a, .playoff .has-events .matches a:hover {
+            color: #00407D;
+        }
+
+        .playoff .matches .matches ul {
+            border-color: #00407D;
+        }
+
+        .playoff .matches .unpacked, .playoff .matches .unpacked:hover {
+            border-color: #00407D;
+            background: #00407D;
+        }
+
+        .soccer .scroll-box,
+        .soccer .stats-table-label {
+            background-color: #016700;
+        }
+
+        .soccer .has-events:hover {
+            background-color: #eaf7e7;
+        }
+
+        .soccer .playoff .has-events .matches a, .soccer .playoff .has-events .matches a:hover {
+            color: #016700;
+        }
+
+        .soccer .playoff .matches .matches ul {
+            border-color: #016700;
+        }
+
+        .soccer .playoff .unpacked, .soccer .playoff .unpacked:hover {
+            border-color: #016700;
+            background: #016700;
+        }
+
+        .tennis .scroll-box,
+        .tennis .stats-table-label {
+            background-color: #bf9a17;
+        }
+
+        .tennis .has-events:hover {
+            background-color: #F7F8DC;
+        }
+
+        .tennis .playoff .has-events .matches a, .tennis .playoff .has-events .matches a:hover {
+            color: #BF9A17;
+        }
+
+        .tennis .playoff .matches .matches ul {
+            border-color: #BF9A17;
+        }
+
+        .tennis .playoff .unpacked, .tennis .playoff .unpacked:hover {
+            border-color: #BF9A17;
+            background-color: #BF9A17;
+        }
+
+
+
+        body.other .scroll-box {
+            background-color: #376200;
+        }
+
+        body.other .playoff .has-events .matches a, .other .playoff .has-events .matches a:hover {
+            color: #376200;
+        }
+
+        body.other .playoff .matches .matches ul {
+            border-color: #376200;
+        }
+
+        body.other .playoff .matches .unpacked,
+        body.other .playoff .matches .unpacked:hover {
+            border-color: #376200;
+            background: #376200;
+        }
+
+        .playoff-box-result .even {
+            background-color: #f0f0f0 !important;
+        }
+
+        .playoff .matches .matches .date {
+            width: 34px;
+        }
+
+        .playoff .matches .matches .name {
+            max-width: 100%;
+        }
+
+        .playoff .matches .matches .presult {
+            width: 29px;
+        }
+
+            .playoff .matches .matches .presult.final {
+                width: 65px;
+            }
+
+                .playoff .matches .matches .presult.final.golf {
+                    width: 30px;
+                }
+
+        .playoff .match .participant .score, .playoff .match .participant .score .s {
+            font-weight: normal;
+        }
+
+        .playoff .match .participant {
+            color: #656565;
+        }
+
+        .playoff .unpacked .participant {
+            color: #fff;
+        }
+
+
+        .playoff-scroll-button {
+            display: block;
+            position: fixed;
+            left: 5px;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            z-index: 1100;
+            background-image: url(/res/image/standings/scroll.png);
+            opacity: .5;
+            margin-top: 30px;
+            display: none;
+        }
+
+            .playoff-scroll-button.hidden {
+                display: none !important;
+            }
+
+            .playoff-scroll-button:hover {
+                opacity: 1;
+                cursor: pointer;
+            }
+
+        .playoff-scroll-button-left {
+            background-position: left top;
+        }
+
+        .playoff-scroll-button-right {
+            left: auto;
+            right: 5px;
+            background-position: left bottom;
+        }
+</style>
+<div class="" style="margin-left: 50px;">
+    <div id="playoff-env" class="playoff scroll">
+        <div class="viewport-wrap">
+
+            <div class="viewport" style="height: 1518px;">
+                <div class="overview" style=" top: 0px;">
+
+
+                    <div class="round">
+                        <span class="spacer half nb"></span>
+                        <div class="matches">
+                            <div class="relation  first">
+                                <div id="match-1-1" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-fyuEi6wt">
+                                    <span class="participant home winner glib-participant-tvfrMZ0n"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24066" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -460px no-repeat"></span>ASA Târgu Mureș</span><span class="score"><span class="s">4</span></span></span><span class="participant away glib-participant-z1rxWms7"><span class="name" style="width: 179px;"><span class="team-logo team-logo-32288" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -700px no-repeat"></span>Bucovina Pojorâta</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">22/09</span><span class="name"><a id="g_0_fyuEi6wt" class="match-detail-link match-g_0_fyuEi6wt glib-partnames-bucovina-pojorata;asa-targu-mures" title="Click pentru detalii despre meci!">POJ-ASA</a></span><span class="presult">1:4</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                                <div id="match-1-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-MsRjz585">
+                                    <span class="participant home glib-participant-bsd9fGaK"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24060" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -380px no-repeat"></span>CS 'U' Craiova</span><span class="score"><span class="s">1</span></span></span><span class="participant away winner glib-participant-Egqukiap"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24061" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -400px no-repeat"></span>SC Bacău</span><span class="score"><span class="s">2</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">23/09</span><span class="name"><a id="g_0_MsRjz585" class="match-detail-link match-g_0_MsRjz585 glib-partnames-sc-bacau;cs-u-craiova" title="Click pentru detalii despre meci!">BAC-UNI</a></span><span class="presult">2:1&nbsp;PEN.</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                            <div class="relation">
+                                <div id="match-1-1" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-46GeZONB">
+                                    <span class="participant home winner glib-participant-dhnNlCE9"><span class="name" style="width: 179px;"><span class="team-logo team-logo-3134" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -220px no-repeat"></span>Petrolul Ploiești</span><span class="score"><span class="s">6</span></span></span><span class="participant away glib-participant-llF5k2K7"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24063" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -420px no-repeat"></span>Unirea Tărlungeni</span><span class="score"><span class="s">0</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">23/09</span><span class="name"><a id="g_0_46GeZONB" class="match-detail-link match-g_0_46GeZONB glib-partnames-unirea-tarlungeni;petrolul-ploiesti" title="Click pentru detalii despre meci!">TAR-PET</a></span><span class="presult">0:6</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                                <div id="match-1-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-bTyVmOx5">
+                                    <span class="participant home glib-participant-jk06IBT2"><span class="name" style="width: 179px;"><span class="team-logo team-logo-35294" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -820px no-repeat"></span>Râmnicu Vâlcea</span><span class="score"><span class="s">0</span></span></span><span class="participant away winner glib-participant-IcVHO2i3"><span class="name" style="width: 179px;"><span class="team-logo team-logo-37211" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -840px no-repeat"></span>Poli Timișoara</span><span class="score"><span class="s">2</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">22/09</span><span class="name"><a id="g_0_bTyVmOx5" class="match-detail-link match-g_0_bTyVmOx5 glib-partnames-ramnicu-valcea;poli-timi-oara" title="Click pentru detalii despre meci!">VAL-POL</a></span><span class="presult">0:2</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                            <div class="relation">
+                                <div id="match-1-1" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-thsQl4Nb">
+                                    <span class="participant home winner glib-participant-t84qisiU"><span class="name" style="width: 179px;"><span class="team-logo team-logo-3051" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -180px no-repeat"></span>CSMS Iași</span><span class="score"><span class="s">2</span></span></span><span class="participant away glib-participant-AcG1jr51"><span class="name" style="width: 179px;"><span class="team-logo team-logo-26103" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -600px no-repeat"></span>ACS Berceni</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">22/09</span><span class="name"><a id="g_0_thsQl4Nb" class="match-detail-link match-g_0_thsQl4Nb glib-partnames-acs-berceni;csms-iasi" title="Click pentru detalii despre meci!">BER-CSM</a></span><span class="presult">1:2&nbsp;PEN.</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                                <div id="match-1-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-Wtzwn27H">
+                                    <span class="participant home glib-participant-hEGuQRaM"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24067" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -480px no-repeat"></span>ASA Târgu Mureș II</span><span class="score"><span class="s">0</span></span></span><span class="participant away winner glib-participant-prfxAf0i"><span class="name" style="width: 179px;"><span class="team-logo team-logo-3133" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -200px no-repeat"></span>Concordia Chiajna</span><span class="score"><span class="s">4</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">24/09</span><span class="name"><a id="g_0_Wtzwn27H" class="match-detail-link match-g_0_Wtzwn27H glib-partnames-asa-targu-mures;concordia-chiajna" title="Click pentru detalii despre meci!">TAR-CON</a></span><span class="presult">0:4</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                            <div class="relation">
+                                <div id="match-1-1" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-2FNf4qNo">
+                                    <span class="participant home winner glib-participant-U9bH5xln"><span class="name" style="width: 179px;"><span class="team-logo team-logo-45479" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -860px no-repeat"></span>FC Viitorul 2</span><span class="score"><span class="s">2</span></span></span><span class="participant away glib-participant-Q7PNEIgJ"><span class="name" style="width: 179px;"><span class="team-logo team-logo-62709" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -920px no-repeat"></span>Academica Clinceni</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">22/09</span><span class="name"><a id="g_0_2FNf4qNo" class="match-detail-link match-g_0_2FNf4qNo glib-partnames-fc-viitorul;academica-clinceni" title="Click pentru detalii despre meci!">CON-FCC</a></span><span class="presult">2:1</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                                <div id="match-1-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-jNE3X2hO">
+                                    <span class="participant home glib-participant-QuoWfZ6A"><span class="name" style="width: 179px;"><span class="team-logo team-logo-33963" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -760px no-repeat"></span>Balotești</span><span class="score"><span class="s">0</span></span></span><span class="participant away winner glib-participant-4KfIhq7B"><span class="name" style="width: 179px;"><span class="team-logo team-logo-340" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -20px no-repeat"></span>CFR Cluj</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">22/09</span><span class="name"><a id="g_0_jNE3X2hO" class="match-detail-link match-g_0_jNE3X2hO glib-partnames-balotesti;cfr-cluj" title="Click pentru detalii despre meci!">BAL-CFR</a></span><span class="presult">0:1&nbsp;ET</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                            <div class="relation">
+                                <div id="match-1-1" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-xKzZnrhB">
+                                    <span class="participant home winner glib-participant-rBgMi3MH"><span class="name" style="width: 179px;"><span class="team-logo team-logo-337" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 0px no-repeat"></span>Dinamo București</span><span class="score"><span class="s">3</span></span></span><span class="participant away glib-participant-xx0uwB4n"><span class="name" style="width: 179px;"><span class="team-logo team-logo-3791" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -260px no-repeat"></span>Braila</span><span class="score"><span class="s">2</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">24/09</span><span class="name"><a id="g_0_xKzZnrhB" class="match-detail-link match-g_0_xKzZnrhB glib-partnames-braila;dinamo-bucure-ti" title="Click pentru detalii despre meci!">BRA-DIN</a></span><span class="presult">2:3</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                                <div id="match-1-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-URhtoMMN">
+                                    <span class="participant home glib-participant-QDiPqBNj"><span class="name" style="width: 179px;"><span class="team-logo team-logo-29754" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -640px no-repeat"></span>UTA Bătrâna Doamnă</span><span class="score"><span class="s">1</span></span></span><span class="participant away winner glib-participant-xvpyvF04"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2852" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -120px no-repeat"></span>Pandurii Tg. Jiu</span><span class="score"><span class="s">2</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">22/09</span><span class="name"><a id="g_0_URhtoMMN" class="match-detail-link match-g_0_URhtoMMN glib-partnames-uta-batrana-doamna;pandurii-tg-jiu" title="Click pentru detalii despre meci!">UTA-PAN</a></span><span class="presult">1:2&nbsp;PEN.</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                            <div class="relation">
+                                <div id="match-1-1" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-CjroptxU">
+                                    <span class="participant home winner glib-participant-pdH6LufC"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2262" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -60px no-repeat"></span>FC Braşov</span><span class="score"><span class="s">2</span></span></span><span class="participant away glib-participant-4frVUGHF"><span class="name" style="width: 179px;"><span class="team-logo team-logo-17562" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -340px no-repeat"></span>Rapid Suceava</span><span class="score"><span class="s">0</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">23/09</span><span class="name"><a id="g_0_CjroptxU" class="match-detail-link match-g_0_CjroptxU glib-partnames-rapid-suceava;fc-brasov" title="Click pentru detalii despre meci!">RAP-BRA</a></span><span class="presult">0:2</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                                <div id="match-1-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-UDD7WM7U">
+                                    <span class="participant home glib-participant-d0YHcdpo"><span class="name" style="width: 179px;"><span class="team-logo team-logo-nologo" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 1000px no-repeat"></span>U. Branceni</span><span class="score"><span class="s">0</span></span></span><span class="participant away winner glib-participant-EihjKDVb"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2853" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -140px no-repeat"></span>Astra Giurgiu</span><span class="score"><span class="s">5</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">23/09</span><span class="name"><a id="g_0_UDD7WM7U" class="match-detail-link match-g_0_UDD7WM7U glib-partnames-u-branceni;astra-giurgiu" title="Click pentru detalii despre meci!">UNI-AST</a></span><span class="presult">0:5</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                            <div class="relation">
+                                <div id="match-1-1" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-CjroptxU">
+                                    <span class="participant home winner glib-participant-pdH6LufC"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2262" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -60px no-repeat"></span>FC Braşov</span><span class="score"><span class="s">2</span></span></span><span class="participant away glib-participant-4frVUGHF"><span class="name" style="width: 179px;"><span class="team-logo team-logo-17562" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -340px no-repeat"></span>Rapid Suceava</span><span class="score"><span class="s">0</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">23/09</span><span class="name"><a id="g_0_CjroptxU" class="match-detail-link match-g_0_CjroptxU glib-partnames-rapid-suceava;fc-brasov" title="Click pentru detalii despre meci!">RAP-BRA</a></span><span class="presult">0:2</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                                <div id="match-1-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-UDD7WM7U">
+                                    <span class="participant home glib-participant-d0YHcdpo"><span class="name" style="width: 179px;"><span class="team-logo team-logo-nologo" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 1000px no-repeat"></span>U. Branceni</span><span class="score"><span class="s">0</span></span></span><span class="participant away winner glib-participant-EihjKDVb"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2853" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -140px no-repeat"></span>Astra Giurgiu</span><span class="score"><span class="s">5</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">23/09</span><span class="name"><a id="g_0_UDD7WM7U" class="match-detail-link match-g_0_UDD7WM7U glib-partnames-u-branceni;astra-giurgiu" title="Click pentru detalii despre meci!">UNI-AST</a></span><span class="presult">0:5</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                            <div class="relation">
+                                <div id="match-1-1" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-CjroptxU">
+                                    <span class="participant home winner glib-participant-pdH6LufC"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2262" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -60px no-repeat"></span>FC Braşov</span><span class="score"><span class="s">2</span></span></span><span class="participant away glib-participant-4frVUGHF"><span class="name" style="width: 179px;"><span class="team-logo team-logo-17562" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -340px no-repeat"></span>Rapid Suceava</span><span class="score"><span class="s">0</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">23/09</span><span class="name"><a id="g_0_CjroptxU" class="match-detail-link match-g_0_CjroptxU glib-partnames-rapid-suceava;fc-brasov" title="Click pentru detalii despre meci!">RAP-BRA</a></span><span class="presult">0:2</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                                <div id="match-1-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-UDD7WM7U">
+                                    <span class="participant home glib-participant-d0YHcdpo"><span class="name" style="width: 179px;"><span class="team-logo team-logo-nologo" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 1000px no-repeat"></span>U. Branceni</span><span class="score"><span class="s">0</span></span></span><span class="participant away winner glib-participant-EihjKDVb"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2853" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -140px no-repeat"></span>Astra Giurgiu</span><span class="score"><span class="s">5</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">23/09</span><span class="name"><a id="g_0_UDD7WM7U" class="match-detail-link match-g_0_UDD7WM7U glib-partnames-u-branceni;astra-giurgiu" title="Click pentru detalii despre meci!">UNI-AST</a></span><span class="presult">0:5</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span>
+                                <span class="h b"> </span>
+                                <span class="vt">  </span>
+                                <span class="vb"></span>
+                                <span class="h m"></span>
+                            </div>
+                            <span class="spacer full nb"></span><span class="spacer con nb"></span><span class="spacer mid nb"></span>
+                        </div>
+                        <span class="cleaner"></span>
+                    </div>
+                  
+
+
+                    <div class="round">
+                        <span class="spacer full nb"></span><span class="spacer half nb"></span><span class="spacer mid nb"></span>
+                        <div class="matches">
+                            <div class="relation  first">
+                                <div id="match-2-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-IwnJVZqp">
+                                    <span class="participant home winner glib-participant-tvfrMZ0n"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24066" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -460px no-repeat"></span>ASA Târgu Mureș</span><span class="score"><span class="s">1</span></span></span><span class="participant away glib-participant-Egqukiap"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24061" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -400px no-repeat"></span>SC Bacău</span><span class="score"><span class="s">0</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">28/10</span><span class="name"><a id="g_0_IwnJVZqp" class="match-detail-link match-g_0_IwnJVZqp glib-partnames-sc-bacau;asa-targu-mures" title="Click pentru detalii despre meci!">BAC-ASA</a></span><span class="presult">0:1</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer double"></span><span class="spacer full"></span><span class="spacer half"></span><span class="spacer con"></span>
+                                <div id="match-2-3" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-zFtOUgaj">
+                                    <span class="participant home glib-participant-dhnNlCE9"><span class="name" style="width: 179px;"><span class="team-logo team-logo-3134" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -220px no-repeat"></span>Petrolul Ploiești</span><span class="score"><span class="s">1</span></span></span><span class="participant away winner glib-participant-IcVHO2i3"><span class="name" style="width: 179px;"><span class="team-logo team-logo-37211" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -840px no-repeat"></span>Poli Timișoara</span><span class="score"><span class="s">2</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">27/10</span><span class="name"><a id="g_0_zFtOUgaj" class="match-detail-link match-g_0_zFtOUgaj glib-partnames-poli-timi-oara;petrolul-ploiesti" title="Click pentru detalii despre meci!">POL-PET</a></span><span class="presult">2:1</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer double nb"></span><span class="spacer full nb"></span><span class="spacer half nb"></span><span class="spacer con nb"></span>
+                            <div class="relation">
+                                <div id="match-2-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-84dqxx7G">
+                                    <span class="participant home winner glib-participant-t84qisiU"><span class="name" style="width: 179px;"><span class="team-logo team-logo-3051" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -180px no-repeat"></span>CSMS Iași</span><span class="score"><span class="s">2</span></span></span><span class="participant away glib-participant-prfxAf0i"><span class="name" style="width: 179px;"><span class="team-logo team-logo-3133" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -200px no-repeat"></span>Concordia Chiajna</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">27/10</span><span class="name"><a id="g_0_84dqxx7G" class="match-detail-link match-g_0_84dqxx7G glib-partnames-concordia-chiajna;csms-iasi" title="Click pentru detalii despre meci!">CON-CSM</a></span><span class="presult">1:2</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer double"></span><span class="spacer full"></span><span class="spacer half"></span><span class="spacer con"></span>
+                                <div id="match-2-3" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-Qu7vwIiA">
+                                    <span class="participant home glib-participant-U9bH5xln"><span class="name" style="width: 179px;"><span class="team-logo team-logo-45479" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -860px no-repeat"></span>FC Viitorul 2</span><span class="score"><span class="s">0</span></span></span><span class="participant away winner glib-participant-4KfIhq7B"><span class="name" style="width: 179px;"><span class="team-logo team-logo-340" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -20px no-repeat"></span>CFR Cluj</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">28/10</span><span class="name"><a id="g_0_Qu7vwIiA" class="match-detail-link match-g_0_Qu7vwIiA glib-partnames-fc-viitorul;cfr-cluj" title="Click pentru detalii despre meci!">CON-CFR</a></span><span class="presult">0:1</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer double nb"></span><span class="spacer full nb"></span><span class="spacer half nb"></span><span class="spacer con nb"></span>
+                            <div class="relation">
+                                <div id="match-2-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-S8T9hcic">
+                                    <span class="participant home winner glib-participant-rBgMi3MH"><span class="name" style="width: 179px;"><span class="team-logo team-logo-337" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 0px no-repeat"></span>Dinamo București</span><span class="score"><span class="s">3</span></span></span><span class="participant away glib-participant-xvpyvF04"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2852" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -120px no-repeat"></span>Pandurii Tg. Jiu</span><span class="score"><span class="s">2</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">28/10</span><span class="name"><a id="g_0_S8T9hcic" class="match-detail-link match-g_0_S8T9hcic glib-partnames-pandurii-tg-jiu;dinamo-bucure-ti" title="Click pentru detalii despre meci!">PAN-DIN</a></span><span class="presult">2:3</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer double"></span><span class="spacer full"></span><span class="spacer half"></span><span class="spacer con"></span>
+                                <div id="match-2-3" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-GUaizGyT">
+                                    <span class="participant home glib-participant-pdH6LufC"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2262" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -60px no-repeat"></span>FC Braşov</span><span class="score"><span class="s">3</span></span></span><span class="participant away winner glib-participant-EihjKDVb"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2853" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -140px no-repeat"></span>Astra Giurgiu</span><span class="score"><span class="s">4</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">27/10</span><span class="name"><a id="g_0_GUaizGyT" class="match-detail-link match-g_0_GUaizGyT glib-partnames-fc-brasov;astra-giurgiu" title="Click pentru detalii despre meci!">BRA-AST</a></span><span class="presult">3:4&nbsp;ET</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer double nb"></span><span class="spacer full nb"></span><span class="spacer half nb"></span><span class="spacer con nb"></span>
+                            <div class="relation">
+                                <div id="match-2-2" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-M70mydMM">
+                                    <span class="participant home winner glib-participant-billykZb"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2348" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -100px no-repeat"></span>FC Viitorul</span><span class="score"><span class="s">1</span></span></span><span class="participant away glib-participant-GjY1JjUS"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24637" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -540px no-repeat"></span>FC Botoșani</span><span class="score"><span class="s">0</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">29/10</span><span class="name"><a id="g_0_M70mydMM" class="match-detail-link match-g_0_M70mydMM glib-partnames-fc-viitorul;fc-botosani" title="Click pentru detalii despre meci!">CON-BOT</a></span><span class="presult">1:0</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer double"></span><span class="spacer full"></span><span class="spacer half"></span><span class="spacer con"></span>
+                                <div id="match-2-3" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-E5uSTDEd">
+                                    <span class="participant home glib-participant-2mUEUbCm"><span class="name" style="width: 179px;"><span class="team-logo team-logo-66313" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -940px no-repeat"></span>Baia Mare</span><span class="score"><span class="s">1</span></span></span><span class="participant away winner glib-participant-Gv2kjDpN"><span class="name" style="width: 179px;"><span class="team-logo team-logo-46104" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -880px no-repeat"></span>Steaua București</span><span class="score"><span class="s">2</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">29/10</span><span class="name"><a id="g_0_E5uSTDEd" class="match-detail-link match-g_0_E5uSTDEd glib-partnames-baia-mare;steaua-bucure-ti" title="Click pentru detalii despre meci!">BAI-STE</a></span><span class="presult">1:2&nbsp;PEN.</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                        </div>
+                        <span class="cleaner"></span>
+                    </div>
+
+                    <div class="round">
+                        <span class="spacer quad nb"></span>
+                        <div class="matches">
+                            <div class="relation  first">
+                                <div id="match-3-3" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-xUe6HDs9">
+                                    <span class="participant home winner glib-participant-tvfrMZ0n"><span class="name" style="width: 179px;"><span class="team-logo team-logo-24066" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -460px no-repeat"></span>ASA Târgu Mureș</span><span class="score"><span class="s">2</span></span></span><span class="participant away glib-participant-IcVHO2i3"><span class="name" style="width: 179px;"><span class="team-logo team-logo-37211" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -840px no-repeat"></span>Poli Timișoara</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">15/12</span><span class="name"><a id="g_0_xUe6HDs9" class="match-detail-link match-g_0_xUe6HDs9 glib-partnames-poli-timi-oara;asa-targu-mures" title="Click pentru detalii despre meci!">POL-ASA</a></span><span class="presult">1:2&nbsp;PEN.</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer oct"></span><span class="spacer half"></span>
+                                <div id="match-3-4" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-OpfEFiCL">
+                                    <span class="participant home glib-participant-t84qisiU"><span class="name" style="width: 179px;"><span class="team-logo team-logo-3051" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -180px no-repeat"></span>CSMS Iași</span><span class="score"><span class="s">1</span></span></span><span class="participant away winner glib-participant-4KfIhq7B"><span class="name" style="width: 179px;"><span class="team-logo team-logo-340" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -20px no-repeat"></span>CFR Cluj</span><span class="score"><span class="s">2</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">16/12</span><span class="name"><a id="g_0_OpfEFiCL" class="match-detail-link match-g_0_OpfEFiCL glib-partnames-csms-iasi;cfr-cluj" title="Click pentru detalii despre meci!">CSM-CFR</a></span><span class="presult">1:2</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                            <span class="spacer oct nb"></span><span class="spacer half nb"></span>
+                            <div class="relation">
+                                <div id="match-3-3" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-pfeAGXdF">
+                                    <span class="participant home winner glib-participant-rBgMi3MH"><span class="name" style="width: 179px;"><span class="team-logo team-logo-337" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 0px no-repeat"></span>Dinamo București</span><span class="score"><span class="s">2</span></span></span><span class="participant away glib-participant-EihjKDVb"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2853" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -140px no-repeat"></span>Astra Giurgiu</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">15/12</span><span class="name"><a id="g_0_pfeAGXdF" class="match-detail-link match-g_0_pfeAGXdF glib-partnames-dinamo-bucure-ti;astra-giurgiu" title="Click pentru detalii despre meci!">DIN-AST</a></span><span class="presult">2:1</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer oct"></span><span class="spacer half"></span>
+                                <div id="match-3-4" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-bwc2IgS2">
+                                    <span class="participant home glib-participant-billykZb"><span class="name" style="width: 179px;"><span class="team-logo team-logo-2348" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -100px no-repeat"></span>FC Viitorul</span><span class="score"><span class="s">0</span></span></span><span class="participant away winner glib-participant-Gv2kjDpN"><span class="name" style="width: 179px;"><span class="team-logo team-logo-46104" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -880px no-repeat"></span>Steaua București</span><span class="score"><span class="s">1</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">17/12</span><span class="name"><a id="g_0_bwc2IgS2" class="match-detail-link match-g_0_bwc2IgS2 glib-partnames-fc-viitorul;steaua-bucure-ti" title="Click pentru detalii despre meci!">CON-STE</a></span><span class="presult">0:1</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                        </div>
+                        <span class="cleaner"></span>
+                    </div>
+                    <div class="round">
+                        <span class="spacer oct nb"></span><span class="spacer half nb"></span><span class="spacer con nb"></span>
+                        <div class="matches">
+                            <div class="relation  first">
+                                <div id="match-4-4" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-0n54GkAe">
+                                    <span class="participant home glib-participant-tvfrMZ0n"><span class="name" style="width: 166px;"><span class="team-logo team-logo-24066" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -460px no-repeat"></span>ASA Târgu Mureș</span><span class="score"><span class="s">0</span><span class="s">0</span></span></span><span class="participant away winner glib-participant-4KfIhq7B"><span class="name" style="width: 166px;"><span class="team-logo team-logo-340" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -20px no-repeat"></span>CFR Cluj</span><span class="score"><span class="s">2</span><span class="s">0</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">02/03</span><span class="name"><a id="g_0_0n54GkAe" class="match-detail-link match-g_0_0n54GkAe glib-partnames-asa-targu-mures;cfr-cluj" title="Click pentru detalii despre meci!">ASA-CFR</a></span><span class="presult">0:0</span></span><span class="cleaner"></span></li>
+                                            <li class="even"><span class="row"><span class="date">21/04</span><span class="name"><a id="g_0_6qhjvg22" class="match-detail-link match-g_0_6qhjvg22 glib-partnames-cfr-cluj;asa-targu-mures" title="Click pentru detalii despre meci!">CFR-ASA</a></span><span class="presult">2:0</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="spacer oct"></span><span class="spacer oct"></span><span class="spacer double"></span>
+                                <div id="match-4-5" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-vw48F9P1">
+                                    <span class="participant home winner glib-participant-rBgMi3MH"><span class="name" style="width: 166px;"><span class="team-logo team-logo-337" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 0px no-repeat"></span>Dinamo București</span><span class="score"><span class="s">2</span><span class="s">0</span></span></span><span class="participant away glib-participant-Gv2kjDpN"><span class="name" style="width: 166px;"><span class="team-logo team-logo-46104" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -880px no-repeat"></span>Steaua București</span><span class="score"><span class="s">2</span><span class="s">0</span></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">03/03</span><span class="name"><a id="g_0_vw48F9P1" class="match-detail-link match-g_0_vw48F9P1 glib-partnames-dinamo-bucure-ti;steaua-bucure-ti" title="Click pentru detalii despre meci!">DIN-STE</a></span><span class="presult">0:0</span></span><span class="cleaner"></span></li>
+                                            <li class="even"><span class="row"><span class="date">20/04</span><span class="name"><a id="g_0_pzifwDH8" class="match-detail-link match-g_0_pzifwDH8 glib-partnames-steaua-bucure-ti;dinamo-bucure-ti" title="Click pentru detalii despre meci!">STE-DIN</a></span><span class="presult">2:2</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span class="h t"></span><span class="h b"></span><span class="vt"></span><span class="vb"></span><span class="h m"></span>
+                            </div>
+                        </div>
+                        <span class="cleaner"></span>
+                    </div>
+                    <div class="round last-round">
+                        <span class="spacer oct nb"></span><span class="spacer oct nb"></span><span class="spacer double nb"></span><span class="spacer con nb"></span>
+                        <div class="matches">
+                            <div class="relation  first">
+                                <div id="match-5-5" title="Click pentru a vedea o listă cu meciuri" class="match has-events match-WMRp6whg">
+                                    <span class="participant home glib-participant-4KfIhq7B"><span class="name" style="width: 197px;"><span class="team-logo team-logo-340" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 -20px no-repeat"></span>CFR Cluj</span><span class="score"></span></span><span class="participant away glib-participant-rBgMi3MH"><span class="name" style="width: 197px;"><span class="team-logo team-logo-337" style="background: transparent url(/res/image/data/m-j7C0f76b-ERzi2BVd.png?new) 0 0px no-repeat"></span>Dinamo București</span><span class="score"></span></span>
+                                    <div class="playoff-box-result matches">
+                                        <ul class="playoff-box-result-inner">
+                                            <li class="odd  first"><span class="row"><span class="date">17/05</span><span class="name"><a id="g_0_WMRp6whg" class="match-detail-link match-g_0_WMRp6whg glib-partnames-dinamo-bucure-ti;cfr-cluj" title="Click pentru detalii despre meci!">DIN-CFR</a></span><span class="presult">-</span></span><span class="cleaner"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="cleaner"></span>
+                    </div>
+
+                    <span class="cleaner"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
