@@ -1,4 +1,4 @@
-﻿using SportLife.Bll.Contracts;
+using SportLife.Bll.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +43,13 @@ namespace SportLife.Controllers
         public ActionResult Chat()
         {
             return View();
+        }
+
+        public String generateDb()
+        {
+            _iUserBus.addFirst();
+
+            return "OK";
         }
     }
 }

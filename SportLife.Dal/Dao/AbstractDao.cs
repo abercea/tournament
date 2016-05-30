@@ -1,5 +1,6 @@
 ﻿using SportLife.Dal.Contracts;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 
@@ -7,13 +8,13 @@ namespace SportLife.Dal.Dao
 {
     public class AbstractDao<T> : IDao<T> where T :class
     {
-        protected IObjectContext _objectContext;
-        protected ObjectSet<T> _objectSet;
+        protected IDbContext _objectContext;
+        protected DbSet<T> _objectSet;
 
-        public AbstractDao(IObjectContext objectContext)
+        public AbstractDao(IDbContext objectContext)
         {
             _objectContext = objectContext;
-            _objectSet = objectContext.CreateObjectSet<T>();
+            _objectSet = objectContext.Get<T>();
         }
 
         /// <summary>
@@ -22,7 +23,7 @@ namespace SportLife.Dal.Dao
         /// <param name="entity"></param>
         public void Delete(T entity)
         {
-            _objectSet.DeleteObject(entity);
+            _objectSet.Remove(entity);
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace SportLife.Dal.Dao
         /// <param name="entity"></param>
         public void Add(T entity)
         {
-            _objectSet.AddObject(entity);
+            _objectSet.Add(entity);
         }
 
         /// <summary>
