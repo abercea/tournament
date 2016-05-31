@@ -1,4 +1,5 @@
 ﻿using SportLife.Dal.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
@@ -52,6 +53,13 @@ namespace SportLife.Dal.Dao
         public void SaveContext()
         {
             _objectContext.SaveChanges();
+        }
+
+        public IQueryable<T> FindBy(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        {
+            IQueryable<T> query = _objectSet.Where(predicate);
+
+            return query;
         }
     }
 }

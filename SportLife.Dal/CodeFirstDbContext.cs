@@ -14,9 +14,9 @@ namespace SportLife.Dal
         public CodeFirstDbContext()
             : base("name=SchoolDBConnectionString")
         {
-             Database.SetInitializer<CodeFirstDbContext>(new CreateDatabaseIfNotExists<CodeFirstDbContext>());
+            // Database.SetInitializer<CodeFirstDbContext>(new CreateDatabaseIfNotExists<CodeFirstDbContext>());
 
-           // Database.SetInitializer<CodeFirstDbContext>(new DropCreateDatabaseIfModelChanges<CodeFirstDbContext>());
+            Database.SetInitializer<CodeFirstDbContext>(new DropCreateDatabaseIfModelChanges<CodeFirstDbContext>());
             //Database.SetInitializer<CodeFirstDbContext>(new DropCreateDatabaseAlways<CodeFirstDbContext>());
             //Database.SetInitializer<CodeFirstDbContext>(new SchoolDBInitializer());
 
@@ -26,6 +26,7 @@ namespace SportLife.Dal
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Standard> Standards { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public DbSet<T> Get<T>() where T : class
         {

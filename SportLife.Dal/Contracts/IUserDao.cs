@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace SportLife.Dal.Contracts
 {
-    public interface IUserDao : IDao<Student>
+    public interface IUserDao : IDao<User>
     {
         void addFirst();
+        int SaveEditUser(User user);
     }
 }

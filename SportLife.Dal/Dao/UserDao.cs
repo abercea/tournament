@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SportLife.Dal.Dao
 {
-    public class UserDao : AbstractDao<Student>, IUserDao
+    public class UserDao : AbstractDao<User>, IUserDao
     {
         public UserDao(IDbContext objectContext)
             : base(objectContext)
@@ -18,15 +18,8 @@ namespace SportLife.Dal.Dao
         public void addFirst()
         {
 
-            this.Add(new Student() { StudentName = "New Student AbstractDao", DateOfBirth = DateTime.Now });
+            this.Add(new User() { Lastname = "New Student AbstractDao",  AccountCreationDate = DateTime.Now });
             SaveContext();
-            //using (var ctx = new CodeFirstDbContext())
-            //{
-            //    Student stud = new Student() { StudentName = "New Student", DateOfBirth = DateTime.Now };
-
-            //    ctx.Students.Add(stud);
-            //    ctx.SaveChanges();
-            //}
         }
 
     }
