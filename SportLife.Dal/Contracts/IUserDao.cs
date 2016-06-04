@@ -10,6 +10,5 @@ namespace SportLife.Dal.Contracts
     public interface IUserDao : IDao<User>
     {
         void addFirst();
-        int SaveEditUser(User user);
     }
 }

@@ -1,4 +1,7 @@
 using SportLife.Bll.Contracts;
+using SportLife.Dal.DomainModels;
+using SportLife.Models.Models;
+using SportLife.Web.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +10,7 @@ using System.Web.Mvc;
 
 namespace SportLife.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private IUserBus _iUserBus;
 
@@ -37,7 +40,39 @@ namespace SportLife.Controllers
 
         public ActionResult Register()
         {
-            return View();
+
+            return View(new UserViewModel());
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Post(UserViewModel user)
+        {
+            CustomResponseModel<UserViewModel> response = _iUserBus.ValidateUser(user);
+            string modal = string.Empty;
+
+            if (response.WithError)
+            {
+                ViewBag.Content = response.ViewMessage;
+                modal = RenderPartialViewToString("~/Views/SharedPopups/GenericPopup.cshtml");
+
+                return JsonSerialization(new { response = response, html = modal });
+            }
+
+            try
+            {
+                response = _iUserBus.RegisterUser(user);
+
+                ViewBag.Content = response.ViewMessage;
+                modal = RenderPartialViewToString("~/Views/SharedPopups/GenericPopup.cshtml");
+
+                return JsonSerialization(new { response = response, html = modal });
+            }
+            catch (Exception ex)
+            {
+                var ms = ex.Message;
+            }
+
+            return JsonSerialization(new { response = response });
         }
 
         public ActionResult Chat()
