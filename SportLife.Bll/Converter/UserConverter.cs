@@ -32,5 +32,28 @@ namespace SportLife.Bll.Converter
 
             return user;
         }
+
+        internal static UserViewModel FromUserDbModelToViewModel(User dbUser)
+        {
+            if (dbUser != null)
+            {
+                var model = new UserViewModel
+                {
+                    Lastname = dbUser.Lastname,
+                    Firstname = dbUser.Firstname,
+                    Email = dbUser.Email,
+                    Role = (AccessRolesEnum)dbUser.Role,
+                    UserId = dbUser.UserId,
+                    SportId = dbUser.SportId,
+                    Username = dbUser.Username
+                };
+
+                model.Role = dbUser.AccountActive ? model.Role : AccessRolesEnum.AccountNotActivated;
+
+                return model;
+            }
+
+            return null;
+        }
     }
 }

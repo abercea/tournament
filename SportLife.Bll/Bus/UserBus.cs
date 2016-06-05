@@ -3,6 +3,7 @@ using SportLife.Bll.Converter;
 using SportLife.Dal.Contracts;
 using SportLife.Dal.DomainModels;
 using SportLife.Models.Models;
+using SportLife.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -69,7 +70,7 @@ namespace SportLife.Bll.Bus
         }
 
 
-        public CustomResponseModel<UserViewModel> RegisterUser(UserViewModel user)
+        public CustomResponseModel<UserViewModel> RegisterUser(UserViewModel user, string validationUrl)
         {
             var response = new CustomResponseModel<UserViewModel>
             {
@@ -82,6 +83,8 @@ namespace SportLife.Bll.Bus
             {
                 User userDb = UserConverter.FromUserViewModelToDbModel(user);
                 userDb.AccountCreationDate = DateTime.Now;
+                userDb.Role = (int)AccessRolesEnum.Admin; //admin
+                userDb.AccountActive = false;
                 _iUserDao.Add(userDb);
                 _iUserDao.SaveContext();
                 response.Model.UserId = userDb.UserId;
@@ -90,7 +93,52 @@ namespace SportLife.Bll.Bus
                 response.DebugMessage = "Login";
             }
 
+            try
+            {
+                MailService mailService = new MailService();
+                mailService.SendMail(user.Email, validationUrl + "?accessToken=" + EncryptionHelper.Encrypt(user.Email));
+            }
+            catch (Exception ex)
+            {
+
+            }
+
             return response;
+        }
+
+
+        public AccessRolesEnum CheckCredentials(UserViewModel user)
+        {
+            if (user != null && !string.IsNullOrEmpty(user.Password))
+            {
+                string passwordEncrypt = EncryptionHelper.Encrypt(user.Password);
+                var dbUser = _iUserDao.FindBy(u => u.Email == user.Email && u.Password == passwordEncrypt).FirstOrDefault();
+                if (dbUser != null)
+                {
+                    user = UserConverter.FromUserDbModelToViewModel(dbUser);
+
+                    return user.Role;
+                }
+            }
+
+            return AccessRolesEnum.NoAcces;
+        }
+
+
+        public bool ActivataAccount(string accessToken)
+        {
+            string email = EncryptionHelper.Decrypt(accessToken);
+            var userDb = _iUserDao.FindBy(u => u.Email == email && !u.AccountActive).FirstOrDefault();
+
+            if (userDb == null)
+            {
+                return false;
+            }
+
+            userDb.AccountActive = true;
+            _iUserDao.SaveContext();
+
+            return true;
         }
     }
 }

@@ -13,6 +13,10 @@ namespace SportLife.Bll.Contracts
         void addFirst();
 
         CustomResponseModel<UserViewModel> ValidateUser(UserViewModel user);
-        CustomResponseModel<UserViewModel> RegisterUser(UserViewModel user);
+        CustomResponseModel<UserViewModel> RegisterUser(UserViewModel user, string validationUrl);
+
+        AccessRolesEnum CheckCredentials(UserViewModel user);
+
+        bool ActivataAccount(string accessToken);
     }
 }

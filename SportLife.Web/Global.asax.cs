@@ -11,6 +11,8 @@ namespace SportLife
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        private string lastErrorMessage = String.Empty;
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -20,6 +22,18 @@ namespace SportLife
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             UnityConfig.RegisterComponents();
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            HttpContext.Current.Items["LastErrorMessage"] = lastErrorMessage;
+            lastErrorMessage = String.Empty;
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError();
+            lastErrorMessage = exception.Message;
         }
     }
 }

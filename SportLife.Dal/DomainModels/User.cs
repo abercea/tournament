@@ -15,6 +15,9 @@ namespace SportLife.Dal.DomainModels
         public string Email { get; set; }
         public string Password { get; set; }
         public string Description { get; set; }
+        public bool AccountActive { get; set; }
+        public int Role { get; set; }
+        public string Username { get; set; }
 
         public DateTime AccountCreationDate { get; set; }
 

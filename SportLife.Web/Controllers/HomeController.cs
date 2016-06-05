@@ -21,7 +21,7 @@ namespace SportLife.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View("TempleteIntegration2");
         }
 
         public ActionResult TempleteIntegration()
@@ -38,9 +38,9 @@ namespace SportLife.Controllers
             return View();
         }
 
-        public ActionResult Register()
+        public ActionResult Register(int mode = 2) // mode=1 ===>>>login
         {
-
+            ViewBag.Mode = mode;
             return View(new UserViewModel());
         }
 
@@ -60,7 +60,12 @@ namespace SportLife.Controllers
 
             try
             {
-                response = _iUserBus.RegisterUser(user);
+                var relativeUrl = Url.Action("ActivateAccount");  //..or one of the other .Action() overloads
+                var currentUrl = Request.Url;
+
+                var absoluteUrl = new Uri(currentUrl, relativeUrl);
+
+                response = _iUserBus.RegisterUser(user, absoluteUrl.ToString());
 
                 ViewBag.Content = response.ViewMessage;
                 modal = RenderPartialViewToString("~/Views/SharedPopups/GenericPopup.cshtml");
@@ -73,6 +78,46 @@ namespace SportLife.Controllers
             }
 
             return JsonSerialization(new { response = response });
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Login(UserViewModel user, string redirect = "index")
+        {
+            AccessRolesEnum access = _iUserBus.CheckCredentials(user);
+            if ((int)access > 0 && access != AccessRolesEnum.AccountNotActivated)
+            {
+                PutInSessionUser(user);
+
+                return JsonSerialization(new { success = true, redirect = redirect });
+            }
+
+            return JsonSerialization(new { success = false, message = access == AccessRolesEnum.AccountNotActivated ? "Please check your email and activate your account" : "Credentials are not valid" });
+        }
+
+        public ActionResult ActivateAccount(string accessToken)
+        {
+            bool acctivated = _iUserBus.ActivataAccount(accessToken);
+
+            ViewBag.Message = acctivated ? "Account active !" : "Something went wrong . Please contact the administrator";
+
+            return RedirectToAction("Index");
+        }
+
+        private void PutInSessionUser(UserViewModel user)
+        {
+            Session.Add("user", user);
+        }
+
+        public ActionResult Logout(string redirect = "index")
+        {
+            Session.RemoveAll();
+
+            return JsonSerialization(new { redirect = redirect });
+        }
+
+        private void RemoveSessionData()
+        {
+            throw new NotImplementedException();
         }
 
         public ActionResult Chat()

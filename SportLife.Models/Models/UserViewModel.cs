@@ -11,6 +11,7 @@ namespace SportLife.Models.Models
         public int UserId { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string PasswordConfirm { get; set; }
@@ -18,6 +19,7 @@ namespace SportLife.Models.Models
         public bool AcceptTerms { get; set; }
         public DateTime AccountCreationDate { get; set; }
 
+        public AccessRolesEnum Role { get; set; }
 
         public int? SportId { get; set; }
     }

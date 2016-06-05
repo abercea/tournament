@@ -1,0 +1,82 @@
+﻿@model SportLife.Models.Models.EventViewModel
+@using SportLife.Models.Models.Enums
+
+<link href="~/Content/css/form-basic.css" rel="stylesheet">
+@{
+    var eventTypeList = new List<SelectListItem>();
+    var cc = ((EventTypeEnum[])Enum.GetValues(typeof(EventTypeEnum)));
+    cc.ToList().ForEach(x => eventTypeList.Add(new SelectListItem { Value = ((int)x).ToString(), Text = x.GetStringValue() }));
+}
+<div class="main-content">
+    <!-- You only need this form and the form-basic.css -->
+    <form class="form-basic" method="post" action="#">
+        <div class="form-title-row">
+            <h1>Form Example</h1>
+        </div>
+        @Html.HiddenFor(m => m.CreatorId)
+        <div class="form-row">
+            <label>
+                <span>Event name</span>
+                @*<input type="text" name="name">*@
+                @Html.TextBoxFor(m => m.EventName)
+            </label>
+        </div>
+
+        <div class="form-row">
+            <label>
+                <span>Event type</span>
+                @Html.DropDownListFor(model => model.Type, new SelectList(eventTypeList, "Value", "Text", (int)Model.Type), new { @id = "eventTypeList" })
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span>Event description</span>
+                @*<input type="email" name="email">*@
+                @Html.TextAreaFor(m => m.EventDescription)
+
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span>Event place</span>
+                @*<input type="text" name="name">*@
+                @Html.TextBoxFor(m => m.EventPlace)
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span>Participants limit</span>
+                @*<input type="text" name="name">*@
+                @Html.TextBoxFor(m => m.MaxNumberOfParticipants)
+            </label>
+        </div>
+        <div class="form-row">
+            <label>
+                <span>Is opened</span>
+                @Html.CheckBoxFor(m => m.IsOpened)
+            </label>
+        </div>
+        <div class="form-row">
+            <label><span>Event is visible</span></label>
+
+
+            <div class="form-radio-buttons">
+                <div>
+                    <label>
+                        @Html.RadioButtonFor(m => m.IsVisible, true)
+                        <span>Yes</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        @Html.RadioButtonFor(m => m.IsVisible, false)
+                        <span>No</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <button type="submit">Submit Form</button>
+        </div>
+    </form>
+</div>

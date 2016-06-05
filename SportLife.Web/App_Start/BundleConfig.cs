@@ -54,7 +54,7 @@ namespace SportLife
 
 
             var bootstrapBundle = new CustomScriptBundle("~/bundles/bootstrap");
-            bootstrapBundle.Include("~/Scripts/bootstrap.js", "~/Scripts/respond.js", "~/Scripts/js/image_slide.js");
+            bootstrapBundle.Include("~/Scripts/bootstrap.js", "~/Scripts/respond.js");
             bootstrapBundle.Transforms.Add(jsTransformer);
             bootstrapBundle.Orderer = nullOrderer;
             bundles.Add(bootstrapBundle);

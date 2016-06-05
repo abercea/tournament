@@ -84,7 +84,7 @@
         transition: background 0.3s ease-in-out;
     }
 
-    input#registerButton.disabled {
+    input#registerButton.disabled, input#loginButton.disabled {
         background: #ADE5A9;
     }
 
@@ -209,7 +209,7 @@
             <input id='agree' name='acceptTerms' type='checkbox'>
             <label for='agree'></label>Accept rules and conditions
         </div>
-        <div id="validationAllert">
+        <div class="alert-container" id="validationAllert">
 
         </div>
         <input class='animated' type='submit' id="registerButton" value='Register'>
@@ -217,10 +217,9 @@
 
     }
 </div>
-
 <div class='container login' id="login" style="display:none">
     <h2>Register</h2>
-    @using (Ajax.BeginForm("Post", "Home", null, new AjaxOptions { OnBegin = "validateLoginform", OnSuccess = "loginUser_ParseResult", OnFailure = "errorAlert", OnComplete = "enableSaveButton" }, new { id = "loginUser" }))
+    @using (Ajax.BeginForm("Login", "Home", null, new AjaxOptions { OnBegin = "validateLoginform", OnSuccess = "loginUser_ParseResult", OnFailure = "errorAlert", OnComplete = "enableLoginButton" }, new { id = "loginUser" }))
     {
 
         // @Html.Hidden("Id", Model.UserId);
@@ -228,7 +227,7 @@
 
         <input id='pw' name='password' placeholder='Password' autocomplete='new-password' type='password'>
 
-        <div id="loginAllert">
+        <div class="alert-container" id="loginAllert">
 
         </div>
         <input class='animated' type='submit' id="loginButton" value='Login'>
@@ -238,10 +237,13 @@
 </div>
 
 <script>
+
+
+
     $(document).ready(function () {
-        //debugger
-        //$('input').val('');
-        //  showWarning("hello !", "validationAllert")
+        if ('@ViewBag.Mode' == 1) {
+            showLogin();
+        }
     });
 
     function showWarning(warning, containerId) {
@@ -301,7 +303,8 @@
     }
 
     function errorAlert() {
-        showWarning("Something went wrong... Please try again", "validationAllert");
+        var id = $('.alert-container:visible').attr('id');
+        showWarning("Something went wrong... Please try again", id);
 
     }
 
@@ -332,6 +335,35 @@
         if (activate) {
             $('#loginUser input[name=email]').val(model.Email);
             $('#loginUser input[name=password]').val(model.Password);
+        }
+    }
+
+    function validateLoginform() {
+        var error = true;
+        disableButton('loginButton');
+
+        $('#loginUser input').each(function () {
+            var val = this.value;
+            if (val == '') {
+                showWarning("All fields are mandatory", "loginAllert");
+                error = false;
+            }
+        });
+
+        if (!error) enableLoginButton();
+
+        return error;
+    }
+
+    function enableLoginButton() {
+        enableButton("loginButton");
+    }
+
+    function loginUser_ParseResult(response) {
+        if (response.success) {
+            window.location = response.redirect;
+        } else {
+            showWarning(response.message, "loginAllert");
         }
     }
 </script>
