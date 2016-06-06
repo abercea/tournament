@@ -24,13 +24,29 @@ namespace SportLife.Dal
             //   Database.SetInitializer<CodeFirstDbContext>(null);
         }
 
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Standard> Standards { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Sport> Sports { get; set; }
         public DbSet<User> Users { get; set; }
 
         public DbSet<T> Get<T>() where T : class
         {
             return this.Set<T>();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>().
+              HasMany(c => c.RegisteredPlayers).
+              WithMany(p => p.RegisteredEvents).
+              Map(
+               m =>
+               {
+                   m.MapLeftKey("EventId");
+                   m.MapRightKey("UserId");
+                   m.ToTable("PlayersToEvent");
+               });
+
+            modelBuilder.Entity<Event>().HasRequired(x => x.Creator).WithMany().WillCascadeOnDelete(false);
         }
     }
 }

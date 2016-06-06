@@ -9,6 +9,11 @@ namespace SportLife.Dal.DomainModels
 {
     public class User
     {
+        public User()
+        {
+            RegisteredEvents = new HashSet<Event>();
+        }
+
         public int UserId { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
@@ -26,5 +31,7 @@ namespace SportLife.Dal.DomainModels
 
         [ForeignKey("SportId")]
         public virtual Sport Sport { get; set; }
+
+        public virtual ICollection<Event> RegisteredEvents { get; set; }
     }
 }

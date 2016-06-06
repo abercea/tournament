@@ -112,9 +112,8 @@
     <Compile Include="Dao\AbstractDao.cs" />
     <Compile Include="Dao\UserDao.cs" />
     <Compile Include="DomainModels\ChatMessage.cs" />
+    <Compile Include="DomainModels\Event.cs" />
     <Compile Include="DomainModels\Sport.cs" />
-    <Compile Include="DomainModels\Standard.cs" />
-    <Compile Include="DomainModels\Student.cs" />
     <Compile Include="DomainModels\User.cs" />
     <Compile Include="SportLifeDataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

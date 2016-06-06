@@ -25,6 +25,8 @@ namespace SportLife
             container.RegisterType<IDbContext, CodeFirstDbContext>(new HierarchicalLifetimeManager());
             container.RegisterType<IUserBus, UserBus>();
             container.RegisterType<IUserDao, UserDao>();
+            container.RegisterType<IEventBus, EventBus>();
+            
             
             DependencyResolver.SetResolver(new Unity.Mvc5.UnityDependencyResolver(container));
         }
