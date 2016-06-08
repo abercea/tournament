@@ -233,7 +233,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\animate.css" />
     <Content Include="Content\css\animate.min.css" />
+    <Content Include="Content\css\bootstrap-datepicker.min.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\clndr.css" />
     <Content Include="Content\css\font-awesome.css" />
@@ -442,6 +444,7 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="js\bootstrap-datepicker.min.js" />
     <Content Include="js\jquery-1.11.1.min.js" />
     <Content Include="js\moment-2.2.1.js" />
     <Content Include="js\site.js" />
@@ -580,6 +583,7 @@
     <Content Include="web\fonts\FontAwesome.otf" />
     <Content Include="web\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="web\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Views\Admin\Event2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SportLife.Bll\SportLife.Bll.csproj">

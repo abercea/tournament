@@ -193,13 +193,15 @@
 </style>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Sofia' rel='stylesheet' type='text/css'>
+@{  string red = Url.Action("Index", Model.RedirectController).ToString();
+}
 
 <div class='container login' id="register">
     <h2>Register</h2>
     @using (Ajax.BeginForm("Post", "Home", null, new AjaxOptions { OnBegin = "validateRegisterform", OnSuccess = "addUser_ParseResult", OnFailure = "errorAlert", OnComplete = "enableSaveButton" }, new { id = "addUser" }))
     {
 
-        // @Html.Hidden("Id", Model.UserId);
+        @Html.Hidden("redirect", red)
         <input name='username' placeholder='Username' type='text'>
         <input id='pw' name='password' placeholder='Password' autocomplete='new-password' type='password'>
         <input id='pw' name='passwordConfirm' placeholder='Confirm password' autocomplete='new-password' type='password'>

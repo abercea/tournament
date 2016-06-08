@@ -38,10 +38,12 @@ namespace SportLife.Controllers
             return View();
         }
 
-        public ActionResult Register(int mode = 2) // mode=1 ===>>>login
+        public ActionResult Register(int mode = 2, string redirect = "Home") // mode=1 ===>>>login
         {
             ViewBag.Mode = mode;
-            return View(new UserViewModel());
+
+
+            return View(new UserViewModel { RedirectController = redirect });
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

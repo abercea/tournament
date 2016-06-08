@@ -48,5 +48,16 @@ namespace SportLife.Web.Controllers
         {
             return View();
         }
+        public ActionResult Event2(int eventId = 0)
+        {
+            EventViewModel model = new EventViewModel();
+
+            if (eventId > 0)
+            {
+
+            }
+
+            return View(model);
+        }
     }
 }

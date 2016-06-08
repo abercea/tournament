@@ -19,6 +19,8 @@ namespace SportLife.Models.Models
         public bool AcceptTerms { get; set; }
         public DateTime AccountCreationDate { get; set; }
 
+        public string RedirectController { get; set; }
+
         public AccessRolesEnum Role { get; set; }
 
         public int? SportId { get; set; }

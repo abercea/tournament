@@ -7,6 +7,8 @@
     <title>@ViewBag.Title -SportLife</title>
     @Styles.Render("~/bundles/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
 
     <style>
         .widget-shadow {
@@ -28,6 +30,11 @@
         .tab-pane {
             min-height: 500px;
         }
+
+
+        /*********************************/
+
+
     </style>
 </head>
 <body id="page-wrapper">
@@ -39,13 +46,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink((string)ViewBag.AppName?? "SportLife Cluj", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Home", "Table", "Admin")</li>
+                    <li>@Html.ActionLink("Add event", "Event2", "Admin")</li>
+                  @*  <li>@Html.ActionLink("Contact", "Contact", "Admin")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -59,10 +66,11 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/js/underscore-min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     <script src="~/js/moment-2.2.1.js" type="text/javascript"></script>
     <script src="~/js/clndr.js" type="text/javascript"></script>
     <script src="~/js/site.js" type="text/javascript"></script>
