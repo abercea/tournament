@@ -363,7 +363,11 @@
 
     function loginUser_ParseResult(response) {
         if (response.success) {
-            window.location = response.redirect;
+            if (window.location.search.split("ReturnUrl=").length == 2) {
+                window.location = decodeURIComponent(window.location.search.split("ReturnUrl=")[1])
+            } else {
+                window.location = response.redirect;
+            }
         } else {
             showWarning(response.message, "loginAllert");
         }

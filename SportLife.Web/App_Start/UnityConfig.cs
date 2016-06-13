@@ -26,6 +26,8 @@ namespace SportLife
             container.RegisterType<IUserBus, UserBus>();
             container.RegisterType<IUserDao, UserDao>();
             container.RegisterType<IEventBus, EventBus>();
+            container.RegisterType<IEventDao, EventDao>();
+            
             
             
             DependencyResolver.SetResolver(new Unity.Mvc5.UnityDependencyResolver(container));

@@ -1,15 +1,33 @@
-﻿using System;
+﻿using SportLife.Models.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using Microsoft.AspNet.Identity;
+using SportLife.Dal.Dao;
+using SportLife.Bll.Contracts;
+
 
 namespace SportLife.Web.Controllers
 {
     public class BaseController : Controller
     {
+        public UserViewModel _user { get; set; }
+
+        public IUserBus _iUserBus;
+
+        public BaseController(IUserBus iUserBus)
+        {
+            _iUserBus = iUserBus;
+        }
+
+        public BaseController()
+        {
+        }
+
         private ContentResult SerializeObject(object obj)
         {
             string content = new JavaScriptSerializer().Serialize(obj);
@@ -54,6 +72,29 @@ namespace SportLife.Web.Controllers
                 viewResult.View.Render(viewContext, sw);
 
                 return sw.GetStringBuilder().ToString();
+            }
+        }
+
+        public string RenderAlertPopup(string message = "", string title = "")
+        {
+            ViewBag.Content = message;
+            ViewBag.Title = title;
+            var modal = RenderPartialViewToString("~/Views/SharedPopups/GenericPopup.cshtml");
+
+            return modal;
+        }
+
+        public void InitSessin()
+        {
+            _user = Session["user"] as UserViewModel;
+            if (_user == null)
+            {
+                var name = User.Identity.GetUserName();
+                if (name != null)
+                {
+                    _user = _iUserBus.GetByEmail(name);
+                    Session.Add("user", _user);
+                }
             }
         }
     }

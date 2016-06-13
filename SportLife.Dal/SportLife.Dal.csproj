@@ -110,6 +110,8 @@
     <Compile Include="Contracts\IObjectContext.cs" />
     <Compile Include="Contracts\IUserDao.cs" />
     <Compile Include="Dao\AbstractDao.cs" />
+    <Compile Include="Dao\EventDao.cs" />
+    <Compile Include="Contracts\IEventDao.cs" />
     <Compile Include="Dao\UserDao.cs" />
     <Compile Include="DomainModels\ChatMessage.cs" />
     <Compile Include="DomainModels\Event.cs" />

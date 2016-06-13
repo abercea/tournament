@@ -30,6 +30,7 @@ namespace SportLife.Bll.Converter
                    IsOpened = eventDb.IsOpened,
                    IsVisible = eventDb.IsVisible,
                    MaxNumberOfParticipants = eventDb.MaxNumberOfParticipants,
+                   EventId = eventDb.EventId,
                    Type = EventConverter.FromDbTypeRoEnum(eventDb.Type)
                };
             }
@@ -37,15 +38,16 @@ namespace SportLife.Bll.Converter
             return model;
         }
 
-        public static Event FromDbModelToViewModel(EventViewModel model)
+        public static Event FromViewModelToDbModel(EventViewModel model)
         {
             Event eventModel = null;
             if (model != null)
             {
                 eventModel = new Event
                 {
+                    EventId = model.EventId,
                     CreatorId = model.CreatorId,
-                    EventDate = model.EventDate,
+                    EventDate = model.EventDate.HasValue ? model.EventDate.Value : DateTime.Now,
                     EventDescription = model.EventDescription,
                     EventFee = model.EventFee,
                     EventName = model.EventName,

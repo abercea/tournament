@@ -107,7 +107,7 @@ namespace SportLife.Bll.Bus
         }
 
 
-        public AccessRolesEnum CheckCredentials(UserViewModel user)
+        public UserViewModel CheckCredentials(UserViewModel user)
         {
             if (user != null && !string.IsNullOrEmpty(user.Password))
             {
@@ -115,13 +115,13 @@ namespace SportLife.Bll.Bus
                 var dbUser = _iUserDao.FindBy(u => u.Email == user.Email && u.Password == passwordEncrypt).FirstOrDefault();
                 if (dbUser != null)
                 {
-                    user = UserConverter.FromUserDbModelToViewModel(dbUser);
+                    var userModel = UserConverter.FromUserDbModelToViewModel(dbUser);
 
-                    return user.Role;
+                    return userModel;
                 }
             }
 
-            return AccessRolesEnum.NoAcces;
+            return new UserViewModel { Role = AccessRolesEnum.NoAcces };
         }
 
 
@@ -139,6 +139,14 @@ namespace SportLife.Bll.Bus
             _iUserDao.SaveContext();
 
             return true;
+        }
+
+
+        public UserViewModel GetByEmail(string userEmail)
+        {
+            var userdB = _iUserDao.FindBy(u => u.Email == userEmail).FirstOrDefault();
+
+            return UserConverter.FromUserDbModelToViewModel(userdB);
         }
     }
 }

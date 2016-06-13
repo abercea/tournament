@@ -7,16 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using SportLife.Models.Models.Enums;
 
 namespace SportLife.Controllers
 {
     public class HomeController : BaseController
     {
-        private IUserBus _iUserBus;
+      //  private IUserBus _iUserBus;
 
-        public HomeController(IUserBus iUserBus)
+        public HomeController(IUserBus iUserBus) :base(iUserBus)
         {
-            _iUserBus = iUserBus;
+            
         }
 
         public ActionResult Index()
@@ -85,15 +87,15 @@ namespace SportLife.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Login(UserViewModel user, string redirect = "index")
         {
-            AccessRolesEnum access = _iUserBus.CheckCredentials(user);
-            if ((int)access > 0 && access != AccessRolesEnum.AccountNotActivated)
+            UserViewModel accessUser = _iUserBus.CheckCredentials(user);
+            if (accessUser != null && accessUser.Role != AccessRolesEnum.AccountNotActivated)
             {
-                PutInSessionUser(user);
+                PutInSessionUser(accessUser, Response);
 
                 return JsonSerialization(new { success = true, redirect = redirect });
             }
 
-            return JsonSerialization(new { success = false, message = access == AccessRolesEnum.AccountNotActivated ? "Please check your email and activate your account" : "Credentials are not valid" });
+            return JsonSerialization(new { success = false, message = (accessUser != null && accessUser.Role == AccessRolesEnum.AccountNotActivated) ? "Please check your email and activate your account" : "Credentials are not valid" });
         }
 
         public ActionResult ActivateAccount(string accessToken)
@@ -105,8 +107,24 @@ namespace SportLife.Controllers
             return RedirectToAction("Index");
         }
 
-        private void PutInSessionUser(UserViewModel user)
+        public ActionResult LogOff()
         {
+            FormsAuthentication.SignOut();
+            RemoveSessionData();
+
+            return RedirectToAction("Index");
+        }
+
+        private void PutInSessionUser(UserViewModel user, HttpResponseBase response)
+        {
+            var authTicket = new FormsAuthenticationTicket(1, user.Email, DateTime.Now, DateTime.Now.AddMinutes(30), true, user.Role.GetStringValue());
+            string cookieContents = FormsAuthentication.Encrypt(authTicket);
+            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, cookieContents)
+            {
+                Expires = authTicket.Expiration,
+                Path = FormsAuthentication.FormsCookiePath
+            };
+            response.Cookies.Add(cookie);
             Session.Add("user", user);
         }
 
@@ -119,7 +137,7 @@ namespace SportLife.Controllers
 
         private void RemoveSessionData()
         {
-            throw new NotImplementedException();
+            Session.RemoveAll();
         }
 
         public ActionResult Chat()

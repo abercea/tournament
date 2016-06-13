@@ -9,6 +9,6 @@ namespace SportLife.Bll.Contracts
 {
     public interface IEventBus
     {
-        bool AdEdit(EventViewModel ev);
+        bool AdEdit(EventViewModel ev, UserViewModel user);
     }
 }
