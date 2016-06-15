@@ -340,7 +340,7 @@
         {
             <div class="@classAlert" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Warning!</strong>@( ViewBag.Message?? "An error has occurred, please contact the admin")
+                <strong>Warning!</strong>@( ViewBag.Message ?? "An error has occurred, please contact the admin")
             </div>
         }
         <form class="form-horizontal" method="post" action="Event">
@@ -440,9 +440,13 @@
                 </div>
             </div>
 
-            <div class="form-row">
-                <button class="submit-button" type="submit">Submit Form</button>
-            </div>
+            
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-4">
+
+                        <button class="submit-button" type="submit">Submit Form</button>
+                    </div>
+                </div>
         </form>
     </div>
 </div>

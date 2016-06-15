@@ -32,7 +32,7 @@ namespace SportLife.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Event(EventViewModel ev)
         {
-            InitSessin();
+            InitSession();
 
             if (!ModelState.IsValid)
             {
@@ -56,7 +56,9 @@ namespace SportLife.Web.Controllers
 
         public ActionResult Table()
         {
-            return View();
+            var model = _iEventBus.GetAllEvents();
+            InitSession();
+            return View(model);
         }
 
         [OutputCache(NoStore = true, Duration = 0)]
@@ -72,6 +74,20 @@ namespace SportLife.Web.Controllers
             }
 
             return View(model);
+        }
+
+        public string DeleteEvent(int evId)
+        {
+            try
+            {
+                string name = _iEventBus.Delete(evId);
+
+                return "The event was deleted " + name + " !!!";
+            }
+            catch (Exception ex)
+            {
+                return "Event can't be deleted !! Please contact the administrator";
+            }
         }
     }
 }

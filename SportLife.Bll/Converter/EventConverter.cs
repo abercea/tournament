@@ -31,7 +31,8 @@ namespace SportLife.Bll.Converter
                    IsVisible = eventDb.IsVisible,
                    MaxNumberOfParticipants = eventDb.MaxNumberOfParticipants,
                    EventId = eventDb.EventId,
-                   Type = EventConverter.FromDbTypeRoEnum(eventDb.Type)
+                   Type = EventConverter.FromDbTypeRoEnum(eventDb.Type),
+                   RegisterdPlayers = eventDb.RegisteredPlayers.Count
                };
             }
 

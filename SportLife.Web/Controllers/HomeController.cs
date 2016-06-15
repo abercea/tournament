@@ -14,11 +14,12 @@ namespace SportLife.Controllers
 {
     public class HomeController : BaseController
     {
-      //  private IUserBus _iUserBus;
+        //  private IUserBus _iUserBus;
 
-        public HomeController(IUserBus iUserBus) :base(iUserBus)
+        public HomeController(IUserBus iUserBus)
+            : base(iUserBus)
         {
-            
+
         }
 
         public ActionResult Index()
@@ -150,6 +151,11 @@ namespace SportLife.Controllers
             _iUserBus.addFirst();
 
             return "OK";
+        }
+
+        public string Forbidden()
+        {
+            return "forbidden";
         }
     }
 }

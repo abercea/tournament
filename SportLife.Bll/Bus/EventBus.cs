@@ -36,7 +36,7 @@ namespace SportLife.Bll.Bus
                 else
                 {
                     dbModel.CreatorId = user.UserId;
-
+                    dbModel.DateCreation = DateTime.Now;
                     if (dbModel != null)
                     {
                         _iEventDao.Add(dbModel);
@@ -52,6 +52,35 @@ namespace SportLife.Bll.Bus
             }
 
             return false;
+        }
+
+        public List<EventViewModel> GetAllEvents()
+        {
+            var lastMonth = DateTime.Now;
+            lastMonth = lastMonth.AddDays(-31);
+            var events = _iEventDao.FindBy(e => e.DateCreation > lastMonth || !e.DateCreation.HasValue).Take(20).ToList();
+
+            return events.Select(EventConverter.FromDbModelToViewModel).ToList();
+        }
+
+
+        public EventViewModel GetById(int id)
+        {
+            return EventConverter.FromDbModelToViewModel(_iEventDao.FindBy(e => e.EventId == id).FirstOrDefault());
+        }
+
+        public string Delete(int id)
+        {
+            var evToDelete = _iEventDao.FindBy(e => e.EventId == id).FirstOrDefault();
+            if (evToDelete != null)
+            {
+                _iEventDao.Delete(evToDelete);
+                _iEventDao.SaveContext();
+
+                return evToDelete.EventName.ToUpper();
+            }
+
+            return string.Empty;
         }
     }
 }

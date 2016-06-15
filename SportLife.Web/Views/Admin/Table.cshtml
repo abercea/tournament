@@ -1,9 +1,29 @@
-﻿@{
+﻿@model List<SportLife.Models.Models.EventViewModel>
+@using SportLife.Models.Models
+@{
     ViewBag.Title = "Dashboard";
+
+    var eventsDates = new List<string>();
+    foreach (var d in Model)
+    {
+        if (d.EventDate.HasValue)
+        {
+            eventsDates.Add(d.EventDate.Value.ToString("yyyy-MM-dd"));
+        }
+    }
+    string jsonSer = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(eventsDates);
 }
 
 <link rel="stylesheet" href="~/Content/css/clndr.css" type="text/css" />
+<style>
+    th, td {
+        text-align: center;
+    }
 
+    .result {
+        color: red;
+    }
+</style>
 <div class="main-page">
     <div class="row">
         <div class="col-md-12 general-grids grids-right widget-shadow">
@@ -23,75 +43,115 @@
                 <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
 
                     <div class="bs-example widget-shadow" data-example-id="contextual-table">
-                        <h4>Colored Rows Table:</h4>
+                        <h4>Latest events:</h4>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Column heading</th>
-                                    <th>Column heading</th>
-                                    <th>Column heading</th>
+                                    <th>Event name</th>
+                                    <th>Event date</th>
+                                    <th>Registered players</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="active">
-                                    <th scope="row">1</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
-                                <tr class="success">
-                                    <th scope="row">3</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">4</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
-                                <tr class="info">
-                                    <th scope="row">5</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">6</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
-                                <tr class="warning">
-                                    <th scope="row">7</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">8</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
-                                <tr class="danger">
-                                    <th scope="row">9</th>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                    <td>Column content</td>
-                                </tr>
+                                @{int i = 1;
+                                var user = Session["user"] as UserViewModel;
+                                }
+                                @foreach (var ev in Model)
+                                {   // red = not opened
+                                    // blue = opened not full
+                                    // green opened full
+                                    //orange other
+                                    bool delete = user != null && ev.CreatorId == user.UserId;
+                                    string classRow = !ev.IsOpened ? "danger" : "warning";
+                                    classRow = ev.IsOpened ? ev.RegisterdPlayers == ev.MaxNumberOfParticipants ? "success" : "info" : classRow;
+
+                                    <tr class="@classRow">
+                                        <th scope="row">@i</th>
+                                        <td>@ev.EventName</td>
+                                        <td class="dateEv">@(ev.EventDate.HasValue ? ev.EventDate.Value.ToString("yyyy-MM-dd") : "Event wasn't planed yet")</td>
+                                        <td>@(ev.RegisterdPlayers > 0 ? ev.RegisterdPlayers.ToString() : "No players attending")</td>
+                                        <td>
+                                            <button type="button" class="btn btn-succes btn-lg raised">view</button>
+                                            @if (delete)
+                                            {
+                                                <button type="button" class="btn btn-primary btn-lg raised">edit</button>
+                                            }
+                                            @if (delete && !ev.IsClosed)
+                                            {
+                                                <button type="button" onclick="deleteEvent(this, @ev.EventId)" class="btn btn-danger btn-lg raised">delete</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                            i++;
+                                }
+
+                                @*<tr>
+                                        <th scope="row">2</th>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                    </tr>
+                                    <tr class="success">
+                                        <th scope="row">3</th>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">4</th>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                    </tr>
+                                    <tr class="info">
+                                        <th scope="row">5</th>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">6</th>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                    </tr>
+                                    <tr class="warning">
+                                        <th scope="row">7</th>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">8</th>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                    </tr>
+                                    <tr class="danger">
+                                        <th scope="row">9</th>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                        <td>Column content</td>
+                                    </tr>*@
                             </tbody>
                         </table>
                     </div>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+                    <p>
+                        This are the most recent events.
+                    </p>
+                    <p>
+                        You can edit your events or even delete them if aren't closed already
+                    </p>
+                    <p>
+                        red = not opened |
+                        blue = opened not full |
+                        green = opened full
+                    </p>
+                    <div class="result">
+
+                    </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
 
@@ -118,3 +178,45 @@
     </div>
 </div>
 
+<script>
+    function deleteEvent(elem, id) {
+        debugger
+        $.get("deleteevent?evId=" + id, function (data) {
+            var dateRemoved = elem.parentElement.parentElement.children[2].innerHTML
+            var index = eventsDates.indexOf(dateRemoved);
+            if (~index) {
+                eventsDates.splice(index, 1);
+                var toRemove = $(".ev");
+                if (toRemove.length > 0) {
+                    toRemove.html("");
+                    toRemove.remove();
+                }
+            }
+            elem.parentElement.parentElement.remove();
+
+            $(".result").append("<p>" + data + "</p>");
+        });
+    }
+
+    var eventsDates = '@Html.Raw(jsonSer)';
+    eventsDates = JSON.parse(eventsDates);
+
+    function showEvents() {
+        $(".day").removeClass("event");
+
+        eventsDates.forEach(function (d) {
+            var day = $('.calendar-day-' + d);
+            var stringAppend = "<p class='ev'><i class='glyphicon glyphicon-calendar'></i>You have an event</p>"
+            if (day.find('.ev').length == 0) day.append(stringAppend);
+            $('.calendar-day-' + d).addClass("event");
+        });
+    }
+
+    $(document).ready(function () {
+
+
+        $('#profile-tab, .clndr-previous-button , .clndr-next-button ').on('click', showEvents)
+
+    });
+
+</script>

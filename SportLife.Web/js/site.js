@@ -38,9 +38,15 @@ $(document).ready(function () {
                 },
                 nextMonth: function () {
                     console.log('next month.');
+                    if (showEvents) {
+                        showEvents();
+                    }
                 },
                 previousMonth: function () {
                     console.log('previous month.');
+                    if (showEvents) {
+                        showEvents();
+                    }
                 },
                 onMonthChange: function () {
                     console.log('month changed.');

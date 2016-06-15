@@ -17,6 +17,7 @@ namespace SportLife.Models.Models
         public bool IsVisible { get; set; }
         [Required(ErrorMessage = "* mandatory")]
         public bool IsOpened { get; set; }
+        public bool IsClosed { get; set; }
         public DateTime? DateCreation { get; set; }
 
         [BiggerThan("ClosingRegistrationDate", ErrorMessage = "Event date must be after closing registration date")]
@@ -34,6 +35,8 @@ namespace SportLife.Models.Models
 
         public int EventId { get; set; }
         public EventTypeEnum Type { get; set; }
+
+        public int RegisterdPlayers { get; set; }
     }
 
     public class BiggerThanAttribute : ValidationAttribute

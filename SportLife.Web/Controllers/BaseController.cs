@@ -84,7 +84,7 @@ namespace SportLife.Web.Controllers
             return modal;
         }
 
-        public void InitSessin()
+        public void InitSession()
         {
             _user = Session["user"] as UserViewModel;
             if (_user == null)
