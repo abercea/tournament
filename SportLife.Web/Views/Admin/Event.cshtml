@@ -370,7 +370,7 @@
             <div class="form-group">
                 <label for="" class="col-sm-2 control-label">Closing registration</label>
                 <div class="col-sm-8 input-append date" data-date-format="yyyy-mm-dd" id="CreatedStartDiv">
-                    @Html.TextBoxFor(model => model.ClosingRegistrationDate, new { @class = "form-control1-small", placeholder = "yyyy-mm-dd" })
+                    @Html.TextBoxFor(model => model.ClosingRegistrationDate, "{0:yyyy-MM-dd}", new { @class = "form-control1-small", placeholder = "yyyy-mm-dd" })
                     <i class="icon-calendar"></i>
                 </div>
 
@@ -382,7 +382,7 @@
             <div class="form-group">
                 <label for="" class="col-sm-2 control-label">Event date</label>
                 <div class="col-sm-8 input-append date" data-date-format="yyyy-mm-dd" id="CreatedStartDiv">
-                    @Html.TextBoxFor(model => model.EventDate, new { @class = "form-control1-small", placeholder = "yyyy-mm-dd" })
+                    @Html.TextBoxFor(model => model.EventDate, "{0:yyyy-MM-dd}", new { @class = "form-control1-small", placeholder = "yyyy-mm-dd" })
                     <i class="icon-calendar"></i>
                 </div>
 

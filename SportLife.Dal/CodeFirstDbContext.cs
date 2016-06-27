@@ -27,6 +27,7 @@ namespace SportLife.Dal
         public DbSet<Event> Events { get; set; }
         public DbSet<Sport> Sports { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ChatMessage> Messages { get; set; }
 
         public DbSet<T> Get<T>() where T : class
         {
