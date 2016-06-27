@@ -1,0 +1,375 @@
+﻿@model SportLife.Models.Models.UserViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutResponsive.cshtml";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: #2E3740;
+        color: #435160;
+        font-family: "Open Sans", sans-serif;
+    }
+
+    h2 {
+        color: #6D7781;
+        font-family: "Sofia", cursive;
+        font-size: 15px;
+        font-weight: bold;
+        font-size: 3.6em;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    a {
+        color: #435160;
+        text-decoration: none;
+    }
+
+    .login {
+        width: 400px;
+        position: relative;
+        top: 10%;
+        left: 50%;
+        margin-left: -44%;
+    }
+
+        .login input[type="text"], .login input[type="password"] {
+            width: 400px;
+            padding: 20px 0px;
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid #435160;
+            outline: none;
+            color: #6D7781;
+            font-size: 16px;
+        }
+
+    input[type=checkbox] {
+        display: none;
+    }
+
+    label {
+        display: block;
+        position: absolute;
+        margin-right: 10px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: transparent;
+        content: "";
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        border: 3px solid #435160;
+    }
+
+    #agree:checked ~ label[for=agree] {
+        background: #435160;
+    }
+
+    input[type="submit"] {
+        background: #1FCE6D;
+        border: 0;
+        width: 400px;
+        height: 40px;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+    }
+
+    input#registerButton.disabled, input#loginButton.disabled {
+        background: #ADE5A9;
+    }
+
+    input[type="submit"]:hover {
+        background: #16aa56;
+        animation-name: shake;
+    }
+
+    .forgot {
+        margin-top: 30px;
+        display: block;
+        font-size: 11px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+        .forgot:hover {
+            margin-top: 30px;
+            display: block;
+            font-size: 11px;
+            text-align: center;
+            font-weight: bold;
+            color: #6D7781;
+        }
+
+    .agree {
+        padding: 30px 0px;
+        font-size: 12px;
+        text-indent: 25px;
+        line-height: 15px;
+    }
+
+    ::-webkit-input-placeholder {
+        color: #435160;
+        font-size: 12px;
+    }
+
+    .animated {
+        animation-fill-mode: both;
+        animation-duration: 1s;
+    }
+
+    @@keyframes shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+
+        10%, 30%, 50%, 70%, 90% {
+            transform: translateX(-10px);
+        }
+
+        20%, 40%, 60%, 80% {
+            transform: translateX(10px);
+        }
+    }
+
+    .login .alert {
+        width: 108%;
+    }
+
+    @@media all and (min-width:321px) and (max-width: 480px) {
+        /* put your css styles in here */
+        .login, .login input[type="text"], .login input[type="password"], .login input[type="submit"] {
+            width: 85%;
+        }
+
+        .login {
+            /*left: 57%;*/
+        }
+
+            .login .alert {
+                width: 85%;
+            }
+    }
+
+    @@media all and (min-width:0px) and (max-width: 320px) {
+        /* put your css styles in here */
+        .login, .login input[type="text"], .login input[type="password"], .login input[type="submit"] {
+            width: 90%;
+        }
+
+        .login {
+            /*left: 115%;*/
+        }
+
+            .login .alert {
+                width: 90%;
+            }
+    }
+
+    @@media all and (min-width:801px) {
+        /* put your css styles in here */
+        .login {
+            margin-left: -16%;
+        }
+    }
+
+
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+    }
+</style>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Sofia' rel='stylesheet' type='text/css'>
+@{  string red = Url.Action("Index", Model.RedirectController).ToString();
+}
+
+<div class='container login' id="register">
+    <h2>Register</h2>
+    @using (Ajax.BeginForm("Post", "Home", null, new AjaxOptions { OnBegin = "validateRegisterform", OnSuccess = "addUser_ParseResult", OnFailure = "errorAlert", OnComplete = "enableSaveButton" }, new { id = "addUser" }))
+    {
+
+        @Html.Hidden("redirect", red)
+        <input name='username' placeholder='Username' type='text'>
+        <input id='pw' name='password' placeholder='Password' autocomplete='new-password' type='password'>
+        <input id='pw' name='passwordConfirm' placeholder='Confirm password' autocomplete='new-password' type='password'>
+
+        <input name='email' placeholder='E-Mail Address' type='text'>
+        <div class='agree'>
+            <input id='agree' name='acceptTerms' type='checkbox'>
+            <label for='agree'></label>Accept rules and conditions
+        </div>
+        <div class="alert-container" id="validationAllert">
+
+        </div>
+        <input class='animated' type='submit' id="registerButton" value='Register'>
+        <a class='forgot' href='#' onclick="showLogin()">Already have an account?</a>
+
+    }
+</div>
+<div class='container login' id="login" style="display:none">
+    <h2>Register</h2>
+    @using (Ajax.BeginForm("Login", "Home", null, new AjaxOptions { OnBegin = "validateLoginform", OnSuccess = "loginUser_ParseResult", OnFailure = "errorAlert", OnComplete = "enableLoginButton" }, new { id = "loginUser" }))
+    {
+
+        // @Html.Hidden("Id", Model.UserId);
+        <input name='email' placeholder='E-Mail Address' type='text'>
+
+        <input id='pw' name='password' placeholder='Password' autocomplete='new-password' type='password'>
+
+        <div class="alert-container" id="loginAllert">
+
+        </div>
+        <input class='animated' type='submit' id="loginButton" value='Login'>
+        <a class='forgot' href='#' onclick="showRegister()">Don't have an account?</a>
+
+    }
+</div>
+
+<script>
+
+
+
+    $(document).ready(function () {
+        if ('@ViewBag.Mode' == 1) {
+            showLogin();
+        }
+    });
+
+    function showWarning(warning, containerId) {
+
+        var allert = $('<div class="alert alert-warning alert-dismissible" role="alert" id="' + containerId + '-allert">' +
+            '  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            ' <strong>Warning!</strong>&nbsp; &nbsp; &nbsp;' + warning +
+            ' </div>');
+        $('#' + containerId).html(allert);
+    }
+
+    function disableButton(id) {
+        $('#' + id).addClass('disabled');
+        $('#' + id).attr('onclick', 'return false');
+    }
+
+    function enableButton(id) {
+        $('#' + id).removeClass('disabled');
+        $('#' + id).removeAttr('onclick');
+    }
+
+    function enableSaveButton() {
+        enableButton('registerButton');
+    }
+
+    function validateRegisterform() {
+        var error = true;
+        disableButton('registerButton');
+
+        $('#addUser input').each(function () {
+            var val = this.value;
+            var type = this.type;
+            if (type != 'checkbox' && val == '') {
+                showWarning("All fields are mandatory", "validationAllert");
+                error = false;
+            }
+        });
+
+        var passAray = $('#addUser input[type=password]');
+
+        if (error && passAray) {
+            if (passAray[0].value != passAray[1].value) {
+                showWarning("Passwords don't match", "validationAllert");
+                error = false;
+            }
+        }
+
+        if (error && !$('#agree').prop('checked')) {
+            showWarning("Must agree with terms and conditions", "validationAllert");
+            error = false;
+        }
+
+        if (!error) {
+            enableSaveButton();
+        }
+        return error;
+    }
+
+    function errorAlert() {
+        var id = $('.alert-container:visible').attr('id');
+        showWarning("Something went wrong... Please try again", id);
+
+    }
+
+    function addUser_ParseResult(response) {
+
+        $('#myModal').replaceWith(response.html);
+        $('#myModal #close').one('click', function (e) {
+            var _closure = response.response;
+            if (!_closure.WithError && _closure.DebugMessage == "Login") {
+                showLoginPage(true, _closure.Model);
+            }
+        })
+        $('#myModalTrigger').trigger('click');
+    }
+
+    function showLogin() {
+        $('#register').hide();
+        $('#login').show();
+    }
+
+    function showRegister() {
+        $('#login').hide();
+        $('#register').show();
+    }
+
+    function showLoginPage(activate, model) {
+        showLogin();
+        if (activate) {
+            $('#loginUser input[name=email]').val(model.Email);
+            $('#loginUser input[name=password]').val(model.Password);
+        }
+    }
+
+    function validateLoginform() {
+        var error = true;
+        disableButton('loginButton');
+
+        $('#loginUser input').each(function () {
+            var val = this.value;
+            if (val == '') {
+                showWarning("All fields are mandatory", "loginAllert");
+                error = false;
+            }
+        });
+
+        if (!error) enableLoginButton();
+
+        return error;
+    }
+
+    function enableLoginButton() {
+        enableButton("loginButton");
+    }
+
+    function loginUser_ParseResult(response) {
+        if (response.success) {
+            if (window.location.search.split("ReturnUrl=").length == 2) {
+                window.location = decodeURIComponent(window.location.search.split("ReturnUrl=")[1])
+            } else {
+                window.location = response.redirect;
+            }
+        } else {
+            showWarning(response.message, "loginAllert");
+        }
+    }
+</script>

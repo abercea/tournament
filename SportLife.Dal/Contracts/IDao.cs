@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SportLife.Dal.Contracts
 {
@@ -13,5 +15,7 @@ namespace SportLife.Dal.Contracts
         IEnumerable<T> GetAll();
 
         void SaveContext();
+
+        IQueryable<T> FindBy(System.Linq.Expressions.Expression<Func<T, bool>> predicate);
     }
 }

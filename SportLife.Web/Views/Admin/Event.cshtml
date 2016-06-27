@@ -1,0 +1,475 @@
+﻿@model SportLife.Models.Models.EventViewModel
+@using SportLife.Models.Models.Enums
+
+<style>
+    input, select, textarea {
+        max-width: 95%;
+    }
+
+    .form-body {
+        padding: 1em;
+    }
+
+    .form-grids-right label {
+        font-size: 0.9em;
+    }
+
+    .form-grids .col-sm-9 {
+        width: 77%;
+    }
+
+    .form-grids .col-sm-offset-2 {
+        margin-left: 4em;
+    }
+
+    .form-three {
+        padding: 1em;
+    }
+
+    .forms label {
+        font-size: 0.9em;
+    }
+
+    /*--forms--*/
+    .forms h3.title1 {
+        margin-bottom: 0;
+    }
+
+    .forms h4 {
+        font-size: 1.3em;
+        color: #6F6F6F;
+    }
+
+    .form-title {
+        padding: 1em 2em;
+        background-color: #EAEAEA;
+        border-bottom: 1px solid #D6D5D5;
+    }
+
+    .form-body {
+        padding: 1.5em 2em;
+    }
+
+    .inline-form .form-group, .inline-form .checkbox, .form-two .form-group {
+        margin-right: 1em;
+    }
+
+    .forms label {
+        font-weight: 400;
+    }
+
+    .form-control {
+        border-radius: inherit;
+    }
+
+    .help-block {
+        margin-top: 10px;
+    }
+
+    .forms button.btn.btn-default {
+        background-color: rgba(97, 100, 193, 0.85);
+        color: #fff;
+        padding: .5em 1.5em;
+        border: none;
+        outline: none;
+        border-radius: inherit;
+    }
+
+    .inline-form.widget-shadow {
+        margin-top: 2em;
+    }
+
+    .form-two {
+        margin-top: 2em;
+    }
+
+    .form-three {
+        margin-top: 2em;
+        padding: 2em;
+    }
+    /* --  general forms  -- */
+    .form-control1, .form-control_2.input-sm {
+        border: 1px solid #ccc;
+        padding: 5px 8px;
+        color: #616161;
+        background: #fff;
+        box-shadow: none !important;
+        width: 100% !important;
+        font-size: 1.25em;
+        font-weight: 300;
+        height: 40px;
+        border-radius: 0;
+        -webkit-appearance: none;
+        resize: none;
+    }
+
+    .form-control1-small {
+        border: 1px solid #ccc;
+        padding: 5px 8px;
+        color: #616161;
+        background: #fff;
+        box-shadow: none !important;
+        width: 33% !important;
+        font-size: 0.85em;
+        font-weight: 300;
+        height: 40px;
+        border-radius: 0;
+        -webkit-appearance: none;
+        resize: none;
+    }
+
+    .general .tab-content {
+        padding: 1.5em 0.5em 0;
+    }
+
+    .control3 {
+        margin: 0 0 1em 0;
+    }
+
+    .btn-warning {
+        color: #fff;
+        background-color: rgb(6, 217, 149);
+        border-color: rgb(6, 217, 149);
+        padding: 8.5px 12px;
+    }
+
+    .tag_01 {
+        margin-right: 5px;
+    }
+
+    .tag_02 {
+        margin-right: 3px;
+    }
+
+    .btn-warning:hover {
+        background-color: rgb(3, 197, 135);
+        border-color: rgb(3, 197, 135);
+    }
+
+    .btn-success:hover {
+        border-color: #E74225 !important;
+        background: #E74225 !important;
+    }
+
+    .control2 {
+        height: 200px;
+    }
+
+    .bs-example4 {
+        background: #fff;
+        padding: 2em;
+    }
+
+    button.note-color-btn {
+        width: 20px !important;
+        height: 20px !important;
+        border: none !important;
+    }
+
+    .show-grid [class^=col-] {
+        background: #fff;
+        text-align: center;
+        margin-bottom: 10px;
+        line-height: 2em;
+        border: 10px solid #f0f0f0;
+    }
+
+    .show-grid [class*="col-"]:hover {
+        background: #e0e0e0;
+    }
+
+    .xs h3, .widget_head {
+        color: #000;
+        font-size: 1.7em;
+        font-weight: 300;
+        margin-bottom: 1em;
+    }
+
+    .grid_3 p {
+        color: #999;
+        font-size: 0.85em;
+        margin-bottom: 1em;
+        font-weight: 300;
+    }
+
+    .input-icon.right > i, .input-icon.right .icon {
+        right: 12px;
+        float: right;
+    }
+
+    .input-icon > i, .input-icon .icon {
+        position: absolute;
+        display: block;
+        margin: 10px 8px;
+        line-height: 14px;
+        color: #999;
+    }
+
+    .form-group input#disabledinput {
+        cursor: not-allowed;
+    }
+    /*--//forms--*/
+    /*--validation--*/
+    .validation-grids {
+        padding: 0;
+        width: 49%;
+    }
+
+        .validation-grids.validation-grids-right {
+            margin-left: 2%;
+        }
+
+        .validation-grids .radio {
+            display: inline-block;
+            margin: 0.5em 2em 0 0;
+        }
+
+    .help-block {
+        font-size: 0.8em;
+        color: #6F6F6F;
+        margin-left: .5em;
+    }
+
+    .validation-grids .btn-primary {
+        background: #6164C1 !important;
+        color: #FFF;
+        border: none;
+        font-size: 0.9em;
+        font-weight: 400;
+        padding: .5em 1.2em;
+        width: 100%;
+        margin-top: 1.5em;
+        outline: none;
+        display: block;
+        transition: 0.5s all;
+        -webkit-transition: 0.5s all;
+        -moz-transition: 0.5s all;
+        -o-transition: 0.5s all;
+        -ms-transition: 0.5s all;
+        border-radius: inherit;
+    }
+
+        .validation-grids .btn-primary:hover {
+            background: rgba(79, 82, 186, 0.81) !important;
+        }
+
+    .bottom .btn-primary {
+        margin: 0;
+    }
+
+    .bottom .form-group {
+        margin-bottom: 0;
+    }
+    /*--//validation--*/
+
+    textarea {
+        color: #5f5f5f;
+        /* box-sizing: border-box; */
+        width: 240px;
+        height: 80px;
+        box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08) !important;
+        font: normal 13px sans-serif;
+        padding: 12px;
+        border: 1px solid #dbdbdb;
+        resize: vertical !important;
+        min-height: 80px !important;
+    }
+
+    .form-basic .form-radio-buttons input {
+        width: auto;
+    }
+
+    .submit-button {
+        display: block;
+        border-radius: 2px;
+        background-color: #6caee0;
+        color: #ffffff;
+        font-weight: bold;
+        box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+        padding: 14px 22px;
+        border: 0;
+        margin: 40px 183px 0;
+    }
+
+    select {
+        background-color: #ffffff;
+        color: #5f5f5f;
+        box-sizing: border-box;
+        max-width: 240px;
+        box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+        padding: 12px 8px;
+        border: 1px solid #dbdbdb;
+    }
+
+    #CreatedStartDiv .form-control {
+        width: 33% !important;
+    }
+</style>
+
+<link href="~/Content/css/animate.css" rel="stylesheet" />
+<link href="~/Content/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/js/bootstrap-datepicker.min.js"></script>
+
+
+
+
+@{
+    //  ViewBag.Title = "Add event";
+    //    ViewBag.Message
+    ActionType currentAction = ActionType.None;
+    currentAction = ViewBag.State != null ? (ActionType)ViewBag.State : currentAction;
+    string classAlert = "alert alert-dismissible ";
+    if (currentAction == ActionType.AddFail || currentAction == ActionType.EdditFail)
+    {
+        classAlert += "alert-danger";
+    }
+    else
+    {
+        classAlert += "alert-success";
+    }
+}
+@{
+    var eventTypeList = new List<SelectListItem>();
+    var cc = ((EventTypeEnum[])Enum.GetValues(typeof(EventTypeEnum)));
+    cc.ToList().ForEach(x => eventTypeList.Add(new SelectListItem { Value = ((int)x).ToString(), Text = x.GetStringValue() }));
+}
+<div class="row">
+    <div class="form-three widget-shadow">
+        <h3 class="title1">Add event</h3>
+        @if (currentAction != ActionType.None)
+        {
+            <div class="@classAlert" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Warning!</strong>@( ViewBag.Message ?? "An error has occurred, please contact the admin")
+            </div>
+        }
+        <form class="form-horizontal" method="post" action="Event">
+            @Html.HiddenFor(m => m.CreatorId)
+            @Html.HiddenFor(m => m.EventId)
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Event name</label>
+                <div class="col-sm-8">
+                    @*  <input type="text" class="form-control1" id="focusedinput" placeholder="Default Input">*@
+                    @Html.TextBoxFor(m => m.EventName, new { @class = "form-control1", placeholder = "Default Input" })
+                </div>
+                <div class="col-sm-2">
+                    <p class="help-block">@Html.ValidationMessageFor(m => m.EventName)</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="col-sm-2 control-label">Event type</label>
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(model => model.Type, new SelectList(eventTypeList, "Value", "Text", (int)Model.Type), new { @id = "eventTypeList", @class = "form-control1" })
+                </div>
+
+                <div class="col-sm-2">
+                    <p class="help-block">@Html.ValidationMessageFor(m => m.Type)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Closing registration</label>
+                <div class="col-sm-8 input-append date" data-date-format="yyyy-mm-dd" id="CreatedStartDiv">
+                    @Html.TextBoxFor(model => model.ClosingRegistrationDate, new { @class = "form-control1-small", placeholder = "yyyy-mm-dd" })
+                    <i class="icon-calendar"></i>
+                </div>
+
+                <div class="col-sm-2">
+                    <p class="help-block">@Html.ValidationMessageFor(m => m.ClosingRegistrationDate)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Event date</label>
+                <div class="col-sm-8 input-append date" data-date-format="yyyy-mm-dd" id="CreatedStartDiv">
+                    @Html.TextBoxFor(model => model.EventDate, new { @class = "form-control1-small", placeholder = "yyyy-mm-dd" })
+                    <i class="icon-calendar"></i>
+                </div>
+
+                <div class="col-sm-2">
+                    <p class="help-block">@Html.ValidationMessageFor(m => m.EventDate)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Event description</label>
+                <div class="col-sm-8">
+                    @*  <input type="text" class="form-control1" id="focusedinput" placeholder="Default Input">*@
+                    @Html.TextAreaFor(m => m.EventDescription, new { @class = "form-control1", placeholder = "Default Input" })
+                </div>
+                <div class="col-sm-2">
+                    <p class="help-block">@Html.ValidationMessageFor(m => m.EventDescription)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Event place</label>
+                <div class="col-sm-8">
+                    @*  <input type="text" class="form-control1" id="focusedinput" placeholder="Default Input">*@
+                    @Html.TextBoxFor(m => m.EventPlace, new { @class = "form-control1", placeholder = "Default Input" })
+                </div>
+                <div class="col-sm-2">
+                    <p class="help-block">@Html.ValidationMessageFor(m => m.EventPlace)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="focusedinput" class="col-sm-2 control-label">Participants limit</label>
+                <div class="col-sm-8">
+                    @*  <input type="text" class="form-control1" id="focusedinput" placeholder="Default Input">*@
+                    @Html.TextBoxFor(m => m.MaxNumberOfParticipants, new { @class = "form-control1", placeholder = "Default Input" })
+                </div>
+                <div class="col-sm-2">
+                    <p class="help-block">@Html.ValidationMessageFor(m => m.MaxNumberOfParticipants)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="checkbox" class="col-sm-2 control-label">Checkbox</label>
+                <div class="col-sm-8">
+                    <div class="checkbox-inline1"><label>@Html.CheckBoxFor(m => m.IsOpened) Is opened</label></div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="radio" class="col-sm-2 control-label">Event is visible</label>
+                <div class="col-sm-8">
+                    <div class="radio-inline"><label>@Html.RadioButtonFor(m => m.IsVisible, true) Yes</label></div>
+                    <div class="radio-inline"><label>@Html.RadioButtonFor(m => m.IsVisible, false) No</label></div>
+                </div>
+            </div>
+
+            
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-4">
+
+                        <button class="submit-button" type="submit">Submit Form</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#CreatedStartDiv input').datepicker({
+            format: "yyyy-mm-dd",
+            clearBtn: true,
+            orientation: "bottom auto",
+            forceParse: false,
+            daysOfWeekHighlighted: "5,6",
+            todayHighlight: true,
+        });
+    });
+
+    function ResetDate() {
+        $("#StartDate").val(false);
+        $("#StartDate").val("");
+    }
+    //$('#CreatedStartDiv').change(function () {
+    //    $("#createdStartDate").val(true);
+    //});
+</script>
