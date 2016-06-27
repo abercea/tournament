@@ -1,4 +1,5 @@
 ﻿using SportLife.Bll.Contracts;
+using SportLife.Dal.DomainModels;
 using SportLife.Models.Models;
 using SportLife.Models.Models.Enums;
 using SportLife.Web.Atributes;
@@ -15,12 +16,14 @@ namespace SportLife.Web.Controllers
     {
 
         private IEventBus _iEventBus;
+        private IMessageBus _iMesBus;
 
-        public AdminController(IEventBus iEventBus, IUserBus iUserBus)
+
+        public AdminController(IEventBus iEventBus, IUserBus iUserBus, IMessageBus m)
             : base(iUserBus)
         {
             _iEventBus = iEventBus;
-
+            _iMesBus = m;
         }
 
         // GET: Admin
@@ -70,6 +73,7 @@ namespace SportLife.Web.Controllers
 
             if (eventId > 0)
             {
+                model = _iEventBus.GetById(eventId);
                 ViewBag.Title = "Edit event";
             }
 
@@ -88,6 +92,35 @@ namespace SportLife.Web.Controllers
             {
                 return "Event can't be deleted !! Please contact the administrator";
             }
+        }
+
+        public string Details(int eventId)
+        {
+            return "in progress";
+        }
+
+        public JsonResult SaveMess(string mess, int UserId)
+        {
+            try
+            {
+                var messDb = new ChatMessage { UserId = UserId, Content = mess, DateCreated = DateTime.Now };
+                _iMesBus.save(messDb);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return JsonSerialization(new { status = "OK" });
+        }
+
+
+        public ActionResult GetMesseges()
+        {
+            List<ChatMessage> msgs = _iMesBus.GetLast();
+
+            return JsonSerialization(msgs);
         }
     }
 }

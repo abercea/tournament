@@ -27,6 +27,10 @@ namespace SportLife
             container.RegisterType<IUserDao, UserDao>();
             container.RegisterType<IEventBus, EventBus>();
             container.RegisterType<IEventDao, EventDao>();
+            container.RegisterType<IMessageBus, MessageBus>();
+            container.RegisterType<IMessDao, MessDao>();
+            
+            
             
             
             

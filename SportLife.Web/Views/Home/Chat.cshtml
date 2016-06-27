@@ -1,6 +1,14 @@
-﻿@{
+﻿@using SportLife.Models.Models
+
+@{
     ViewBag.Title = "Chat";
     Layout = "~/Views/Shared/_LayoutResponsive.cshtml";
+
+    ViewBag.ModalTitle = "Please login";
+    ViewBag.Content = "If you want to join in, please login in !";
+    UserViewModel user = Session["user"] as UserViewModel;
+    var ema = user != null ? user.Email.Replace(".", "").TakeWhile(ss => ss != '@') : string.Empty;
+    var showPopup = user != null ? user.Username ?? String.Concat(ema) : string.Empty;
 }
 
 <style>
@@ -185,8 +193,18 @@
 
         </div>
         <div class="btn-panel">
-            <a href="" class=" col-lg-3 btn   send-message-btn " role="button"><i class="fa fa-plus"></i> Join chat</a>
-            <a class=" col-lg-4 text-right btn   send-message-btn pull-right" role="button" id="sendmessage" /><i class="fa fa-plus"></i> Send Message</a>
+            @if (user == null)
+            {
+                <a class=" col-lg-3 btn   send-message-btn " role="button" data-target="#myModal" data-toggle="modal" id="myModalTrigger" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus"></i> Join chat</a>
+            }
+            else
+            {
+
+                @*<a href="" class=" col-lg-3 btn   send-message-btn " role="button"><i class="fa fa-plus"></i> Join chat</a>*@
+                <a class=" col-lg-4 text-right btn   send-message-btn pull-right" role="button" id="sendmessage">
+                    <i class="fa fa-plus"></i> Send Message
+                </a>
+            }
         </div>
     </div>
 </div>
@@ -197,6 +215,11 @@
 <!--Add script to update the page and send messages.-->
 <script type="text/javascript">
     $(document).ready(function () {
+
+        if (!"@showPopup") {
+            $('#myModalTrigger').click();
+        }
+
         $(function () {
             // Declare a proxy to reference the hub.
             var chat = $.connection.chatHub;
@@ -212,14 +235,16 @@
                 $("#discussion").animate({ scrollTop: $('#discussion').height() }, 1000);
             };
             // Get the user name and store it to prepend to messages.
-            $('#displayname').val(prompt('Enter your name:', ''));
+            //   $('#displayname').val(prompt('Enter your name:', ''));
             // Set initial focus to message input box.
             $('#message').focus();
             // Start the connection.
             $.connection.hub.start().done(function () {
                 $('#sendmessage').click(function () {
+                    
                     // Call the Send method on the hub.
-                    chat.server.send($('#displayname').val(), $('#message').val());
+                    chat.server.send($('#displayname').val(), $('#message').val(), $('#userId').val());
+                    sendToDbb($('#message').val(), $('#userId').val());
                     // Clear text box and reset focus for next comment.
                     $('#message').val('').focus();
                 });
@@ -227,7 +252,7 @@
         });
     });
     function addNewChatMember(name) {
-        var id = name.replace(/ /g , "_");
+        var id = name.replace(/ /g, "_");
         if (name != $('#displayname').val()) {
             if ($('#id_' + id).length == 0) {
                 var newMember = $('<div class="media conversation">' +
@@ -263,6 +288,18 @@
 
         $('#discussion').append(newMsgBlock);
     }
+
+    function sendToDbb(mess, userID) {
+        $.ajax({
+            url: "@Url.Action("saveMess", "admin", null)",
+            data: { "userId": userID, "mess": mess },
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    }
 </script>
 
-<input type="hidden" id="displayname" />
+<input type="hidden" id="displayname" value="@showPopup" />
+
+@Html.Hidden("userId", user != null ? user.UserId : -1)

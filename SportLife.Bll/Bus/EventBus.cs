@@ -28,7 +28,13 @@ namespace SportLife.Bll.Bus
                 if (ev.EventId > 0)
                 {
                     var evDb = _iEventDao.FindBy(e => e.EventId == ev.EventId).FirstOrDefault();
-                    evDb = dbModel;
+                    evDb.EventDate = dbModel.EventDate;
+                    evDb.EventName = dbModel.EventName;
+                    evDb.EventDescription = dbModel.EventDescription;
+                    evDb.IsOpened = dbModel.IsOpened;
+                    evDb.IsVisible = dbModel.IsVisible;
+                    evDb.EventPlace = dbModel.EventPlace;
+                    evDb.MaxNumberOfParticipants = dbModel.MaxNumberOfParticipants;
                     _iEventDao.SaveContext();
 
                     return true;

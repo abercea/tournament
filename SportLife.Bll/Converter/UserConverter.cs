@@ -25,7 +25,8 @@ namespace SportLife.Bll.Converter
                         Description = model.Description,
                         AccountCreationDate = model.AccountCreationDate,
                         SportId = model.SportId,
-                        UserId = model.UserId
+                        UserId = model.UserId,
+                        Username = model.Username
                     };
                 user.Password = string.IsNullOrEmpty(model.Password) ? string.Empty : EncryptionHelper.Encrypt(model.Password);
             }
