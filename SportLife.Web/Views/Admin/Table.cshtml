@@ -2,7 +2,7 @@
 @using SportLife.Models.Models
 @{
     ViewBag.Title = "Dashboard";
-
+    var user = Session["user"] as UserViewModel;
     var eventsDates = new List<string>();
     foreach (var d in Model)
     {
@@ -56,7 +56,7 @@
                             </thead>
                             <tbody>
                                 @{int i = 1;
-                                var user = Session["user"] as UserViewModel;
+
                                 }
                                 @foreach (var ev in Model)
                                 {   // red = not opened
