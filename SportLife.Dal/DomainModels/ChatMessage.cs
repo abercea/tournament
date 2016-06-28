@@ -9,7 +9,7 @@ namespace SportLife.Dal.DomainModels
 {
     public class ChatMessage
     {
-        public int MessageId { get; set; }
+        public int ChatMessageId { get; set; }
         public DateTime DateCreated { get; set; }
 
         public string Content { get; set; }
