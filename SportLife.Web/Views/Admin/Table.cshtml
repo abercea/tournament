@@ -91,7 +91,7 @@
                         </table>
                     </div>
                     <p>
-                        This are the most recent events.
+                        These are the most recent events.
                     </p>
                     <p>
                         You can edit your events or even delete them if aren't closed already
@@ -132,7 +132,6 @@
 
 <script>
     function deleteEvent(elem, id) {
-        debugger
         $.get("deleteevent?evId=" + id, function (data) {
             var dateRemoved = elem.parentElement.parentElement.children[2].innerHTML
             var index = eventsDates.indexOf(dateRemoved);

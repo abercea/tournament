@@ -15,11 +15,12 @@ namespace SportLife.Controllers
     public class HomeController : BaseController
     {
         //  private IUserBus _iUserBus;
+        private IMessageBus _iMesBus;
 
-        public HomeController(IUserBus iUserBus)
+        public HomeController(IUserBus iUserBus, IMessageBus iMesBus)
             : base(iUserBus)
         {
-
+            _iMesBus = iMesBus;
         }
 
         public ActionResult Index()
@@ -143,7 +144,9 @@ namespace SportLife.Controllers
 
         public ActionResult Chat()
         {
-            return View();
+            List<ChatMessage> msgs = _iMesBus.GetLast();
+
+            return View(msgs);
         }
 
         public String generateDb()
