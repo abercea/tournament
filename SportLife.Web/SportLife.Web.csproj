@@ -450,6 +450,14 @@
     <Content Include="js\jquery-1.11.1.min.js" />
     <Content Include="js\moment-2.2.1.js" />
     <Content Include="js\site.js" />
+    <Content Include="Scripts\dropzone\css\basic.css" />
+    <Content Include="Scripts\dropzone\css\dropzone.css" />
+    <Content Include="Scripts\dropzone\dropzone-amd-module.js" />
+    <Content Include="Scripts\dropzone\dropzone-amd-module.min.js" />
+    <Content Include="Scripts\dropzone\dropzone.js" />
+    <Content Include="Scripts\dropzone\dropzone.min.js" />
+    <Content Include="Scripts\dropzone\images\spritemap%402x.png" />
+    <Content Include="Scripts\dropzone\images\spritemap.png" />
     <Content Include="web\blank-page.html" />
     <Content Include="web\charts.html" />
     <Content Include="web\compose.html" />
@@ -518,6 +526,8 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\images\404.xcf" />
+    <Content Include="Scripts\dropzone\css\stylus\basic.styl" />
+    <Content Include="Scripts\dropzone\css\stylus\dropzone.styl" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="index.html" />
     <Content Include="js\bootstrap.min.js" />

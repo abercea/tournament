@@ -5,6 +5,7 @@ using SportLife.Models.Models.Enums;
 using SportLife.Web.Atributes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -145,7 +146,7 @@ namespace SportLife.Web.Controllers
                 if (file != null && file.ContentLength > 0)
                 {
 
-                    var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\WallImages", Server.MapPath(@"\")));
+                    var originalDirectory = new DirectoryInfo(Server.MapPath("~/App_Data/uploads"));
 
                     string pathString = System.IO.Path.Combine(originalDirectory.ToString(), "imagepath");
 

@@ -170,7 +170,15 @@ ul.timeline li {
     line-height: 1.3;
     color: #aab6aa
 }
+
+li{
+        list-style: none;
+}
 </style>
+
+
+<script src="~/Scripts/dropzone/dropzone.js" ></script>
+<link href="~/Scripts/dropzone/css/dropzone.css" rel="stylesheet">
 
 <div class="row widget-shadow">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -362,13 +370,14 @@ ul.timeline li {
                             <li role="presentation" class="">
                                 <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Attended events</a>
                             </li>
-                            @*<li role="presentation" class="">
-                                <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
-                            </li>*@
+                            <li role="presentation" class="">
+                                <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Upload</a>
+                            </li>
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
 
+                                
                                 <!-- start recent activity -->
                                 <ul class="messages">
                                     <li>
@@ -377,18 +386,29 @@ ul.timeline li {
                                             <h3 class="date text-info">24</h3>
                                             <p class="month">May</p>
                                         </div>
-                                        <div class="message_wrapper">
+                                        @*<div class="message_wrapper">
                                             <h4 class="heading">Desmond Davison</h4>
                                             <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
                                             <br>
                                             <p class="url">
                                                 <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                                @*<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>*@
                                             </p>
+                                        </div>*@
+                                    </li>
+                                    <li>
+                                        <img src="~/Content/images/default_profile.jpg" class="avatar" alt="Avatar">
+                                        <div class="message_date">
+                                            <h3 class="date text-info">24</h3>
+                                            <p class="month">May</p>
                                         </div>
                                     </li>
-                                   
-
+                                    <li>
+                                        <img src="~/Content/images/default_profile.jpg" class="avatar" alt="Avatar">
+                                        <div class="message_date">
+                                            <h3 class="date text-info">24</h3>
+                                            <p class="month">May</p>
+                                        </div>
+                                    </li>
                                 </ul>
                                 <!-- end recent activity -->
 
@@ -456,12 +476,19 @@ ul.timeline li {
                                 <!-- end user projects -->
 
                             </div>
-                            @*<div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                                <p>
-                                    xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                                    photo booth letterpress, commodo enim craft beer mlkshk
-                                </p>
-                            </div>*@
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                <div class="jumbotron">
+                                    <form action="~/admin/SaveUploadedFile" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                            <input type="submit" value="Upload" />
+                                        </div>
+                                    </form>
+                                    <button style="display: none;" class="btn btn-action btn-large btn-orange" id="submit-all">Save</button>
+                                    <button style="display: none;" class="btn btn-default btn-large" id="cancel-all">Cancel</button>
+                                </div>
+                               
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -472,14 +499,7 @@ ul.timeline li {
 
 
 
-<div class="jumbotron">
-    <form action="~/admin/SaveUploadedFile" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
-        <div class="fallback">
-            <input name="file" type="file" multiple />
-            <input type="submit" value="Upload" />
-        </div>
-    </form>
-</div>
+
 <style type="text/css">
     .dz-max-files-reached {
         background-color: red;
@@ -490,14 +510,42 @@ ul.timeline li {
 
         //File Upload response from the server
         Dropzone.options.dropzoneForm = {
-            maxFiles: 2,
+            maxFiles: 4,
+            parallelUploads: 4,
+            maxFilesize: 5,
+            autoProcessQueue: false,
             init: function () {
                 this.on("maxfilesexceeded", function (data) {
                     var res = eval('(' + data.xhr.responseText + ')');
 
                 });
-                this.on("addedfile", function (file) {
+                var submitButton = document.querySelector("#submit-all");
+                var cancelButton = document.querySelector("#cancel-all");
+                myDropzone = this; // closure
 
+                submitButton.addEventListener("click", function () {
+                    myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+                });
+
+                cancelButton.addEventListener("click", function () {
+                    myDropzone.removeAllFiles(); // remove all files.
+                });
+
+                this.on("removedfile", function (file) {
+                    if (!myDropzone.getAcceptedFiles().length) {
+                        submitButton.style.display = "none";
+                        cancelButton.style.display = "none";
+                    }
+
+                });
+
+                this.on("addedfile", function (file) {
+                    debugger
+                    if (document.querySelector("#submit-all[style*='display: none']")) {
+                        $(submitButton).show();
+                        $(cancelButton).show();
+
+                    }
                     // Create the remove button
                     var removeButton = Dropzone.createElement("<button>Remove file</button>");
 
@@ -519,13 +567,15 @@ ul.timeline li {
                     // Add the button to the file preview element.
                     file.previewElement.appendChild(removeButton);
                 });
+                this.on("accepted", function (file) {
+                    debugger
+                    if (document.querySelector("#submit-all[style*='display: none']")) {
+                        $(submitButton).show();
+                        $(cancelButton).show();
+                     
+                    }
+                });
             }
         };
 
-
-
-
-
-
 </script>
-}
