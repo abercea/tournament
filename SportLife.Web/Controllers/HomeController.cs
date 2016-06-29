@@ -156,9 +156,9 @@ namespace SportLife.Controllers
             return "OK";
         }
 
-        public string Forbidden()
+        public ActionResult Forbidden()
         {
-            return "forbidden";
+            return View();
         }
     }
 }

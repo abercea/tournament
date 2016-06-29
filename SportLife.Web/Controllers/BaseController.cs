@@ -22,6 +22,7 @@ namespace SportLife.Web.Controllers
         public BaseController(IUserBus iUserBus)
         {
             _iUserBus = iUserBus;
+            ViewBag.Title = "SportLife";
         }
 
         public BaseController()
