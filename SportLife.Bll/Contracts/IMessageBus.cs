@@ -11,5 +11,6 @@ namespace SportLife.Bll.Contracts
     {
         void save(ChatMessage msg);
         List<ChatMessage> GetLast();
+        void AddNewDocument(Document doc);
     }
 }

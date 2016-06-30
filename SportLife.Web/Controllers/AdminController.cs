@@ -138,6 +138,8 @@ namespace SportLife.Web.Controllers
         {
             bool isSavedSuccessfully = true;
             string fName = "";
+            string fileName1 = string.Empty;
+            string path = string.Empty;
             foreach (string fileName in Request.Files)
             {
                 HttpPostedFileBase file = Request.Files[fileName];
@@ -145,29 +147,44 @@ namespace SportLife.Web.Controllers
                 fName = file.FileName;
                 if (file != null && file.ContentLength > 0)
                 {
+                    try
+                    {
+                        var originalDirectory = new DirectoryInfo(Server.MapPath("~/Content/uploads"));
 
-                    var originalDirectory = new DirectoryInfo(Server.MapPath("~/App_Data/uploads"));
-
-                    string pathString = System.IO.Path.Combine(originalDirectory.ToString(), "imagepath");
-
-                    var fileName1 = Path.GetFileName(file.FileName);
+                        string pathString = System.IO.Path.Combine(originalDirectory.ToString(), "imagepath");
 
 
-                    bool isExists = System.IO.Directory.Exists(pathString);
+                        var extension = Path.GetExtension(file.FileName);
+                         fileName1 = Path.GetFileName("file" + DateTime.Now.Ticks.ToString() + extension);
+                        fName = fileName1;
+                        InitSession();
 
-                    if (!isExists)
-                        System.IO.Directory.CreateDirectory(pathString);
+                        var doc = new Document { UserId = _user.UserId, Name = file.FileName, Path = fileName1 };
 
-                    var path = string.Format("{0}\\{1}", pathString, file.FileName);
-                    file.SaveAs(path);
+                        bool isExists = System.IO.Directory.Exists(pathString);
 
+                        if (!isExists)
+                            System.IO.Directory.CreateDirectory(pathString);
+
+                        path = string.Format("{0}\\{1}", pathString, fileName1);
+
+                        file.SaveAs(path);
+
+                        _iMesBus.AddNewDocument(doc);
+                        fileName1 = file.FileName;
+                    }
+                    catch (Exception e)
+                    {
+                        return Json(new { Message = "Error in saving file" });
+                    }
                 }
 
             }
 
             if (isSavedSuccessfully)
             {
-                return Json(new { Message = fName });
+
+                return Json(new { Message = fileName1, Path = fName });
             }
             else
             {

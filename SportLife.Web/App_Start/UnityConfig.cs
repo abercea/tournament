@@ -29,10 +29,7 @@ namespace SportLife
             container.RegisterType<IEventDao, EventDao>();
             container.RegisterType<IMessageBus, MessageBus>();
             container.RegisterType<IMessDao, MessDao>();
-            
-            
-            
-            
+            container.RegisterType<IDocumentDao, DocumentDao>();
             
             DependencyResolver.SetResolver(new Unity.Mvc5.UnityDependencyResolver(container));
         }

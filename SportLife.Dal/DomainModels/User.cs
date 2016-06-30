@@ -23,6 +23,7 @@ namespace SportLife.Dal.DomainModels
         public bool AccountActive { get; set; }
         public int Role { get; set; }
         public string Username { get; set; }
+        public int ProfilePhto { get; set; } 
 
         public DateTime AccountCreationDate { get; set; }
 
@@ -33,5 +34,6 @@ namespace SportLife.Dal.DomainModels
         public virtual Sport Sport { get; set; }
 
         public virtual ICollection<Event> RegisteredEvents { get; set; }
+        public virtual ICollection<Document> Uploads { get; set; }
     }
 }

@@ -12,10 +12,12 @@ namespace SportLife.Bll.Bus
     public class MessageBus : IMessageBus
     {
         private IMessDao _iMesDao;
+        private IDocumentDao _iDocDao;
 
-        public MessageBus(IMessDao d)
+        public MessageBus(IMessDao d, IDocumentDao iDocDao)
         {
             _iMesDao = d;
+            _iDocDao = iDocDao;
         }
 
         public void save(ChatMessage msg)
@@ -26,8 +28,16 @@ namespace SportLife.Bll.Bus
 
         public List<ChatMessage> GetLast()
         {
-            // return _iMesDao.FindBy(m => m.DateCreated < DateTime.Now).ToList();
-            return _iMesDao.GetAll().ToList();
+            return _iMesDao.FindBy(m => m.DateCreated < DateTime.Now).Take(5).ToList();
+           // return _iMesDao.GetAll().ToList();
+        }
+
+        public void AddNewDocument(Document doc){
+
+            doc.DateUploaded = DateTime.Now;
+
+            _iDocDao.Add(doc);
+            _iDocDao.SaveContext();
         }
     }
 }
