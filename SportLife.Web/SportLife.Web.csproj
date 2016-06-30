@@ -234,16 +234,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\uploads\imagepath\accordion1.png" />
-    <Content Include="App_Data\uploads\imagepath\client2.png" />
-    <Content Include="App_Data\uploads\imagepath\default_profile.jpg" />
-    <Content Include="App_Data\uploads\imagepath\file636029152528400709.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029152747595857.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029153968493748.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029155724241114.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029159708509134.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029161106276633.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029161868359306.PNG" />
+   
     <Content Include="Content\css\animate.css" />
     <Content Include="Content\css\animate.min.css" />
     <Content Include="Content\css\bootstrap-datepicker.min.css" />
