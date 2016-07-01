@@ -253,7 +253,7 @@
                             @if (Model.Subject.MainFile > 0)
                             {
                                 var img = Model.Documents.FirstOrDefault(d => d.DocumentId == Model.Subject.MainFile);
-                                string path = img != null ? string.Format("../Content/uploads/imagepath/{0}", img.Path) : "~/Content/images/default_profile.jpg";
+                                string path = img != null ? string.Format("../Content/uploads/imagepath/{0}", img.Path) : "../Content/images/default_profile.jpg";
                                 <img class="img-responsive avatar-view" src="@path" alt="Avatar" title="Change the avatar">
 
                             }
