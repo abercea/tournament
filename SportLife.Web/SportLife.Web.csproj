@@ -234,16 +234,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\uploads\imagepath\accordion1.png" />
-    <Content Include="App_Data\uploads\imagepath\client2.png" />
-    <Content Include="App_Data\uploads\imagepath\default_profile.jpg" />
-    <Content Include="App_Data\uploads\imagepath\file636029152528400709.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029152747595857.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029153968493748.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029155724241114.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029159708509134.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029161106276633.PNG" />
-    <Content Include="App_Data\uploads\imagepath\file636029161868359306.PNG" />
     <Content Include="Content\css\animate.css" />
     <Content Include="Content\css\animate.min.css" />
     <Content Include="Content\css\bootstrap-datepicker.min.css" />
@@ -468,6 +458,7 @@
     <Content Include="Scripts\dropzone\dropzone.min.js" />
     <Content Include="Scripts\dropzone\images\spritemap%402x.png" />
     <Content Include="Scripts\dropzone\images\spritemap.png" />
+    <Content Include="Scripts\ekko-lightbox.min.js" />
     <Content Include="web\blank-page.html" />
     <Content Include="web\charts.html" />
     <Content Include="web\compose.html" />
@@ -627,6 +618,7 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\uploads\imagepath\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

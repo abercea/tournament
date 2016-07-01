@@ -174,10 +174,45 @@
     li {
         list-style: none;
     }
+
+        li img {
+            width: 50%;
+            height: 50%;
+        }
+
+        li.hidden {
+            display: none;
+        }
+
+
+
+    #moreButtton {
+        border-top-width: 10px;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        width: 159px;
+        float: right;
+    }
+
+    .buttonSetA {
+        margin-top: -65%;
+        margin-left: 50%;
+    }
+
+    img.dashed {
+        border-style: dashed;
+        color: red;
+        border: 5px solid;
+    }
 </style>
+@model SportLife.Models.Models.ProfileViewModel
+@using System.Globalization
 
-
+@{
+    int index = 0;
+}
 <script src="~/Scripts/dropzone/dropzone.js"></script>
+<script type="text/javascript" src="~/Scripts/ekko-lightbox.min.js"></script>
 <link href="~/Scripts/dropzone/css/dropzone.css" rel="stylesheet">
 
 <div class="row widget-shadow">
@@ -215,68 +250,20 @@
                         <!-- end of image cropping -->
                         <div id="crop-avatar">
                             <!-- Current avatar -->
-                            <img class="img-responsive avatar-view" src="~/Content/images/default_profile.jpg" alt="Avatar" title="Change the avatar">
+                            @if (Model.Subject.MainFile > 0)
+                            {
+                                var img = Model.Documents.FirstOrDefault(d => d.DocumentId == Model.Subject.MainFile);
+                                string path = img != null ? string.Format("../Content/uploads/imagepath/{0}", img.Path) : "~/Content/images/default_profile.jpg";
+                                <img class="img-responsive avatar-view" src="@path" alt="Avatar" title="Change the avatar">
 
-                            <!-- Cropping modal -->
-                            <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <form class="avatar-form" action="crop.php" enctype="multipart/form-data" method="post">
-                                            <div class="modal-header">
-                                                <button class="close" data-dismiss="modal" type="button">×</button>
-                                                <h4 class="modal-title" id="avatar-modal-label">Change Avatar</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="avatar-body">
+                            }
+                            else
+                            {
+                                <img class="img-responsive avatar-view" src="~/Content/images/default_profile.jpg" alt="Avatar" title="Change the avatar">
 
-                                                    <!-- Upload image and data -->
-                                                    <div class="avatar-upload">
-                                                        <input class="avatar-src" name="avatar_src" type="hidden">
-                                                        <input class="avatar-data" name="avatar_data" type="hidden">
-                                                        <label for="avatarInput">Local upload</label>
-                                                        <input class="avatar-input" id="avatarInput" name="avatar_file" type="file">
-                                                    </div>
+                            }
 
-                                                    <!-- Crop and preview -->
-                                                    <div class="row">
-                                                        <div class="col-md-9">
-                                                            <div class="avatar-wrapper"></div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="avatar-preview preview-lg"></div>
-                                                            <div class="avatar-preview preview-md"></div>
-                                                            <div class="avatar-preview preview-sm"></div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="row avatar-btns">
-                                                        <div class="col-md-9">
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary" data-method="rotate" data-option="-90" type="button" title="Rotate -90 degrees">Rotate Left</button>
-                                                                <button class="btn btn-primary" data-method="rotate" data-option="-15" type="button">-15deg</button>
-                                                                <button class="btn btn-primary" data-method="rotate" data-option="-30" type="button">-30deg</button>
-                                                                <button class="btn btn-primary" data-method="rotate" data-option="-45" type="button">-45deg</button>
-                                                            </div>
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary" data-method="rotate" data-option="90" type="button" title="Rotate 90 degrees">Rotate Right</button>
-                                                                <button class="btn btn-primary" data-method="rotate" data-option="15" type="button">15deg</button>
-                                                                <button class="btn btn-primary" data-method="rotate" data-option="30" type="button">30deg</button>
-                                                                <button class="btn btn-primary" data-method="rotate" data-option="45" type="button">45deg</button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <button class="btn btn-primary btn-block avatar-save" type="submit">Done</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="modal-footer">
-                                                              <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
-                                                            </div> -->
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                             <!-- /.modal -->
                             <!-- Loading state -->
                             <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
@@ -284,7 +271,7 @@
                         <!-- end of image cropping -->
 
                     </div>
-                    <h3>Samuel Doe</h3>
+                    <h3>@(Model.Subject.Username ?? "Samuel Doe")</h3>
 
                     <ul class="list-unstyled user_data">
                         <li>
@@ -295,42 +282,51 @@
                             <i class="fa fa-briefcase user-profile-icon"></i> Software Engineer
                         </li>
 
-                        <li class="m-top-xs">
-                            <i class="fa fa-external-link user-profile-icon"></i>
-                            <a href="http://www.kimlabs.com/profile/" target="_blank">www.kimlabs.com</a>
-                        </li>
+                        @*<li class="m-top-xs">
+                                <i class="fa fa-external-link user-profile-icon"></i>
+                                <a href="http://www.kimlabs.com/profile/" target="_blank">www.kimlabs.com</a>
+                            </li>*@
                     </ul>
 
-                    <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
+                    <a id="editProf" onclick="prepereSelect()" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
                     <br>
 
                     <!-- start skills -->
                     <h4>Skills</h4>
                     <ul class="list-unstyled user_data">
-                        <li>
-                            <p>Web Applications</p>
-                            <div class="progress progress_sm">
-                                <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50" aria-valuenow="50" style="width: 50%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p>Website Design</p>
-                            <div class="progress progress_sm">
-                                <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="70" aria-valuenow="70" style="width: 70%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p>Automation &amp; Testing</p>
-                            <div class="progress progress_sm">
-                                <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30" aria-valuenow="30" style="width: 30%;"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p>UI / UX</p>
-                            <div class="progress progress_sm">
-                                <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50" aria-valuenow="50" style="width: 50%;"></div>
-                            </div>
-                        </li>
+                        @foreach (var skil in Model.Skils)
+                        {
+                            <li>
+                                <p>@skil.Name</p>
+                                <div class="progress progress_sm">
+                                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="@skil.Value" aria-valuenow="@skil.Value.ToString()" style="width: @skil.Value%;"></div>
+                                </div>
+                            </li>
+                        }
+                        @*<li>
+                                <p>Web Applications</p>
+                                <div class="progress progress_sm">
+                                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50" aria-valuenow="50" style="width: 50%;"></div>
+                                </div>
+                            </li>
+                            <li>
+                                <p>Website Design</p>
+                                <div class="progress progress_sm">
+                                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="70" aria-valuenow="70" style="width: 70%;"></div>
+                                </div>
+                            </li>
+                            <li>
+                                <p>Automation &amp; Testing</p>
+                                <div class="progress progress_sm">
+                                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30" aria-valuenow="30" style="width: 30%;"></div>
+                                </div>
+                            </li>
+                            <li>
+                                <p>UI / UX</p>
+                                <div class="progress progress_sm">
+                                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50" aria-valuenow="50" style="width: 50%;"></div>
+                                </div>
+                            </li>*@
                     </ul>
                     <!-- end of skills -->
 
@@ -379,22 +375,59 @@
 
 
                                 <!-- start recent activity -->
-                                <ul class="messages">
-                                    <li>
-                                        <img src="~/Content/images/default_profile.jpg" class="avatar" alt="Avatar">
-                                        <div class="message_date">
-                                            <h3 class="date text-info">24</h3>
-                                            <p class="month">May</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <img src="~/Content/images/default_profile.jpg" class="avatar" alt="Avatar">
-                                        <div class="message_date">
-                                            <h3 class="date text-info">24</h3>
-                                            <p class="month">May</p>
-                                        </div>
-                                    </li>
+                                <ul class="messages" id="galery">
+
+                                    @foreach (var doc in Model.Documents)
+                                    {
+
+                                        CultureInfo ci = new CultureInfo("en-US");
+                                        var month = DateTime.Now.ToString("MMMM", ci);
+
+                                        var date = doc.DateUploaded.ToLongDateString();
+
+                                        string classLI = index < 3 ? "li-gal" : "hidden li-gal";
+
+                                        <li class="@classLI">
+                                            <a class="@string.Format("{0}", "li-gal".Equals(classLI) ? "wb-lbx":"")"
+                                               href="@string.Format("../Content/uploads/imagepath/{0}", doc.Path)"
+                                               data-toggle="@string.Format("{0}", "li-gal".Equals(classLI) ? "lightbox": "")"
+                                               data-gallery="multiimages" data-title="@doc.Name">
+
+                                                <img src="@string.Format("../Content/uploads/imagepath/{0}", doc.Path)" class="avatar" alt="Avatar">
+                                                <div class="message_date">
+                                                    <h3 class="date text-info">@doc.DateUploaded.ToString("dd", CultureInfo.InvariantCulture)</h3>
+                                                    <p class="month">@month @doc.DateUploaded.ToString("yyyy", CultureInfo.InvariantCulture)</p>
+                                                </div>
+                                            </a>
+                                            <button type="button" onclick="setP(@doc.DocumentId, this)" class="buttonSetA btn btn-round btn-info hidden">Set avatar</button>
+                                        </li>
+
+                                        index++;
+                                    }
+
+                                    @*<li>
+                                            <a class="wb-lbx" href="~/Content/images/default_profile.jpg" data-toggle="lightbox" data-gallery="multiimages" data-title="test">
+
+                                                <img src="~/Content/images/default_profile.jpg" class="avatar" alt="Avatar">
+                                                <div class="message_date">
+                                                    <h3 class="date text-info">24</h3>
+                                                    <p class="month">May</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="wb-lbx" href="~/Content/images/default_profile.jpg" data-toggle="lightbox" data-gallery="multiimages" data-title="test">
+
+                                                <img src="~/Content/images/default_profile.jpg" class="avatar" alt="Avatar">
+                                                <div class="message_date">
+                                                    <h3 class="date text-info">24</h3>
+                                                    <p class="month">May</p>
+                                                </div>
+                                            </a>
+                                        </li>*@
                                 </ul>
+                                <button id="moreButtton" type="button" class="btn btn-round btn-danger" onclick="more(2)">Show more</button>
+
                                 <!-- end recent activity -->
 
                             </div>
@@ -525,11 +558,11 @@
             });
 
             this.on("success", function (file, serverResponse) {
-                debugger
-                var newImg = ConstructImg(serverResponse.Path);
+                var newImg = ConstructImg(serverResponse.Path, serverResponse.Message, serverResponse.Id);
 
                 if (newImg) {
-                    $('ul.messages').append(newImg);
+                    $('ul.messages').prepend(newImg);
+                    selectionDone();
                 }
             });
 
@@ -561,7 +594,6 @@
                 file.previewElement.appendChild(removeButton);
             });
             this.on("accepted", function (file) {
-                debugger
                 if (document.querySelector("#submit-all[style*='display: none']")) {
                     $(submitButton).show();
                     $(cancelButton).show();
@@ -571,14 +603,102 @@
         }
     };
 
-    function ConstructImg(path) {
-        return ' <li>' +
+    function ConstructImg(path, name,id) {
+        name = name || "Untitled";
+        var d = new Date();
+        return ' <li class="li-gal">' +
+                      '  <a class="wb-lbx" href="../Content/uploads/imagepath/' + path + '" data-toggle="lightbox" data-gallery="multiimages" data-title="' + name + '">' +
                '      <img src="../Content/uploads/imagepath/' + path + '" class="avatar" alt="Avatar">' +
                '        <div class="message_date">' +
-                '      <h3 class="date text-info">24</h3>' +
-                '       <p class="month">May</p>' +
+                '      <h3 class="date text-info">' + d.getDay() + '</h3>' +
+                '       <p class="month">' + month[d.getMonth()] + ' ' + d.getFullYear() + '</p>' +
                 '    </div>' +
+                     '<button type="button" onclick="setP('+id+', this)" class="buttonSetA btn btn-round btn-info">Set avatar</button>'+
                 '   </li>'
     }
 
+
+
+    $(document).delegate('*[data-toggle="lightbox"]', 'click', function (event) {
+        event.preventDefault();
+        return $(this).ekkoLightbox({
+            always_show_close: true,
+            gallery_parent_selector: '#galery',
+        });
+    });
+
+    function more(nr) {
+        var liElements = $('li.hidden');
+        if (liElements.length < nr) {
+            $('#moreButtton').addClass('hidden');
+        }
+        for (var i = 0; i < nr; i++) {
+            if (liElements[i]) {
+                var elm = $(liElements[i]);
+                elm.removeClass('hidden');
+                elm.find('a').attr("data-toggle", "lightbox");
+                elm.find('a').addClass("wb-lbx");
+            }
+        }
+    }
+
+
+    function setP(id, elm){
+        var htmlElem = $(elm).parent().find('img');
+        $.ajax({
+            method: "POST",
+            url: "SetProfPicture",
+            data: {id:id},
+            success: function (msg) {
+                console.log(msg)
+                debugger
+                var src = htmlElem.attr("src");
+                $('#crop-avatar img').attr('src', src);
+                selectionDone()
+            }
+        });
+    }
+
+    function prepereSelect() {
+
+        $('.buttonSetA').removeClass('hidden');
+        $(".li-gal").hover(function (e) {
+            var img= $(this).find('img')
+            img.css("opacity", e.type === "mouseenter" ? 0.5 : 1.0)
+            if (e.type === "mouseenter") {
+                img.addClass("dashed");
+            } else {
+                img.removeClass("dashed");
+            }
+        });
+        $('#editProf').text('CANCEL');
+        $('#editProf').attr('onclick', 'selectionDone()');
+        //$("li img").on("mouseleave", function () {
+        //    $(this).css("opacity", 0.5)
+        //});
+    }
+
+    function selectionDone() {
+        $('.dashed').css("opacity",  1.0);
+        $('.dashed').removeClass('dashed');
+        $('#editProf').text('Edit Profile');
+        $('.buttonSetA').addClass('hidden');
+        $('#editProf').attr('onclick', 'prepereSelect()');
+        $(".li-gal").unbind('mouseenter mouseleave')
+
+    }
+
+    var month = new Array();
+    month[0] = "January";
+    month[1] = "February";
+    month[2] = "March";
+    month[3] = "April";
+    month[4] = "May";
+    month[5] = "June";
+    month[6] = "July";
+    month[7] = "August";
+    month[8] = "September";
+    month[9] = "October";
+    month[10] = "November";
+    month[11] = "December";
 </script>

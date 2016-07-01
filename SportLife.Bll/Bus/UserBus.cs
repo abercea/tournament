@@ -148,5 +148,21 @@ namespace SportLife.Bll.Bus
 
             return UserConverter.FromUserDbModelToViewModel(userdB);
         }
+
+        public bool SetProfPicture(int userId, int docId)
+        {
+            var user = _iUserDao.FindBy(u => u.UserId == userId).FirstOrDefault();
+            if (user != null)
+            {
+                try
+                {
+                    user.ProfilePhto = docId;
+                    _iUserDao.SaveContext();
+                    return true;
+                }
+                catch (Exception e) { }
+            }
+            return false;
+        }
     }
 }

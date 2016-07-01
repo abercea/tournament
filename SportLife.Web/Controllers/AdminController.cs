@@ -126,12 +126,16 @@ namespace SportLife.Web.Controllers
 
         public ActionResult Profile()
         {
-            return View();
-        }
+            InitSession();
+            var user = _iUserBus.GetByEmail(_user.Email);
+            var profile = _iMesBus.GetProfiel(user.UserId);
 
-        public ActionResult Upolcad()
-        {
-            return null;
+            if (profile != null)
+            {
+                profile.Subject = user;
+            }
+
+            return View(profile);
         }
 
         public ActionResult SaveUploadedFile()
@@ -140,6 +144,8 @@ namespace SportLife.Web.Controllers
             string fName = "";
             string fileName1 = string.Empty;
             string path = string.Empty;
+            int id = 0;
+            bool setAsAvatar = false;
             foreach (string fileName in Request.Files)
             {
                 HttpPostedFileBase file = Request.Files[fileName];
@@ -155,7 +161,7 @@ namespace SportLife.Web.Controllers
 
 
                         var extension = Path.GetExtension(file.FileName);
-                         fileName1 = Path.GetFileName("file" + DateTime.Now.Ticks.ToString() + extension);
+                        fileName1 = Path.GetFileName("file" + DateTime.Now.Ticks.ToString() + extension);
                         fName = fileName1;
                         InitSession();
 
@@ -170,7 +176,12 @@ namespace SportLife.Web.Controllers
 
                         file.SaveAs(path);
 
-                        _iMesBus.AddNewDocument(doc);
+                        id = _iMesBus.AddNewDocument(doc);
+                        if (_user.Uploads.Count == 0)
+                        {
+                            setAsAvatar = _iUserBus.SetProfPicture(_user.UserId, id);
+                        }
+
                         fileName1 = file.FileName;
                     }
                     catch (Exception e)
@@ -184,12 +195,29 @@ namespace SportLife.Web.Controllers
             if (isSavedSuccessfully)
             {
 
-                return Json(new { Message = fileName1, Path = fName });
+                return Json(new { Message = fileName1, Path = fName, Id = id, Avatar = setAsAvatar });
             }
             else
             {
                 return Json(new { Message = "Error in saving file" });
             }
+        }
+
+        public ActionResult SetProfPicture(int id)
+        {
+            try
+            {
+                InitSession();
+                _iUserBus.SetProfPicture(_user.UserId, id);
+                return Json(new { Status = true });
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return Json(new { Status = false });
         }
     }
 }

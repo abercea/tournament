@@ -1,4 +1,5 @@
 ﻿using SportLife.Dal.DomainModels;
+using SportLife.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace SportLife.Bll.Contracts
     {
         void save(ChatMessage msg);
         List<ChatMessage> GetLast();
-        void AddNewDocument(Document doc);
+        int AddNewDocument(Document doc);
+        ProfileViewModel GetProfiel(int userId);
     }
 }

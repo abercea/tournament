@@ -82,15 +82,17 @@ $(document).ready(function () {
 
     // bind both clndrs to the left and right arrow keys
     $(document).keydown(function (e) {
-        if (e.keyCode == 37) {
-            // left arrow
-            calendars.clndr1.back();
-            calendars.clndr2.back();
-        }
-        if (e.keyCode == 39) {
-            // right arrow
-            calendars.clndr1.forward();
-            calendars.clndr2.forward();
+        if (calendars.clndr1) {
+            if (e.keyCode == 37) {
+                // left arrow
+                calendars.clndr1.back();
+                calendars.clndr2.back();
+            }
+            if (e.keyCode == 39) {
+                // right arrow
+                calendars.clndr1.forward();
+                calendars.clndr2.forward();
+            }
         }
     });
 

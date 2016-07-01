@@ -47,7 +47,7 @@ namespace SportLife.Bll.Bus
                     {
                         _iEventDao.Add(dbModel);
                         _iEventDao.SaveContext();
-
+                       
                         return true;
                     }
                 }
