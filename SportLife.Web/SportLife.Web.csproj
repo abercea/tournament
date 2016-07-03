@@ -292,6 +292,7 @@
     <Content Include="Content\images\ico\apple-touch-icon-72-precomposed.png" />
     <Content Include="Content\images\ico\favicon.ico" />
     <Content Include="Content\images\image_bg.png" />
+    <Content Include="Content\images\img-not-available.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\man1.jpg" />
     <Content Include="Content\images\man2.jpg" />
