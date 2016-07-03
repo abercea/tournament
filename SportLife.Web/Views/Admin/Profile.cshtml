@@ -254,12 +254,12 @@
                             {
                                 var img = Model.Documents.FirstOrDefault(d => d.DocumentId == Model.Subject.MainFile);
                                 string path = img != null ? string.Format("../Content/uploads/imagepath/{0}", img.Path) : "../Content/images/default_profile.jpg";
-                                <img class="img-responsive avatar-view" src="@path" alt="Avatar" title="Change the avatar">
+                                <img onerror="if (this.src != '../Content/images/img-not-available.png') this.src = '../Content/images/img-not-available.png';" class="img-responsive avatar-view" src="@path" alt="Avatar" title="Change the avatar">
 
                             }
                             else
                             {
-                                <img class="img-responsive avatar-view" src="~/Content/images/default_profile.jpg" alt="Avatar" title="Change the avatar">
+                                <img onerror="if (this.src != '../Content/images/img-not-available.png') this.src = '../Content/images/img-not-available.png';" class="img-responsive avatar-view" src="~/Content/images/default_profile.jpg" alt="Avatar" title="Change the avatar">
 
                             }
 
@@ -287,8 +287,11 @@
                                 <a href="http://www.kimlabs.com/profile/" target="_blank">www.kimlabs.com</a>
                             </li>*@
                     </ul>
+                    @if (ViewBag.IsOther == null)
+                    {
+                        <a id="editProf" onclick="prepereSelect()" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
 
-                    <a id="editProf" onclick="prepereSelect()" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
+                    }
                     <br>
 
                     <!-- start skills -->
@@ -366,9 +369,12 @@
                             <li role="presentation" class="">
                                 <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Attended events</a>
                             </li>
-                            <li role="presentation" class="">
-                                <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Upload</a>
-                            </li>
+                            @if (ViewBag.IsOther == null)
+                            {
+                                <li role="presentation" class="">
+                                    <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Upload</a>
+                                </li>
+                            }
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
@@ -393,7 +399,7 @@
                                                data-toggle="@string.Format("{0}", "li-gal".Equals(classLI) ? "lightbox": "")"
                                                data-gallery="multiimages" data-title="@doc.Name">
 
-                                                <img src="@string.Format("../Content/uploads/imagepath/{0}", doc.Path)" class="avatar" alt="Avatar">
+                                                <img onerror="if (this.src != '../Content/images/img-not-available.png') this.src = '../Content/images/img-not-available.png';" src="@string.Format("../Content/uploads/imagepath/{0}", doc.Path)" class="avatar" alt="Avatar">
                                                 <div class="message_date">
                                                     <h3 class="date text-info">@doc.DateUploaded.ToString("dd", CultureInfo.InvariantCulture)</h3>
                                                     <p class="month">@month @doc.DateUploaded.ToString("yyyy", CultureInfo.InvariantCulture)</p>
@@ -426,7 +432,11 @@
                                             </a>
                                         </li>*@
                                 </ul>
-                                <button id="moreButtton" type="button" class="btn btn-round btn-danger" onclick="more(2)">Show more</button>
+                                @if (Model.Documents.Count > 3)
+                                {
+                                    <button id="moreButtton" type="button" class="btn btn-round btn-danger" onclick="more(2)">Show more</button>
+
+                                }
 
                                 <!-- end recent activity -->
 
@@ -494,19 +504,21 @@
                                 <!-- end user projects -->
 
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                                <div class="jumbotron">
-                                    <form action="~/admin/SaveUploadedFile" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple />
-                                            <input type="submit" value="Upload" />
-                                        </div>
-                                    </form>
-                                    <button style="display: none;" class="btn btn-action btn-large btn-orange" id="submit-all">Save</button>
-                                    <button style="display: none;" class="btn btn-default btn-large" id="cancel-all">Cancel</button>
+                            @if (ViewBag.IsOther == null)
+                            {
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                    <div class="jumbotron">
+                                        <form action="~/admin/SaveUploadedFile" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+                                            <div class="fallback">
+                                                <input name="file" type="file" multiple />
+                                                <input type="submit" value="Upload" />
+                                            </div>
+                                        </form>
+                                        <button style="display: none;" class="btn btn-action btn-large btn-orange" id="submit-all">Save</button>
+                                        <button style="display: none;" class="btn btn-default btn-large" id="cancel-all">Cancel</button>
+                                    </div>
                                 </div>
-
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -603,17 +615,17 @@
         }
     };
 
-    function ConstructImg(path, name,id) {
+    function ConstructImg(path, name, id) {
         name = name || "Untitled";
         var d = new Date();
         return ' <li class="li-gal">' +
                       '  <a class="wb-lbx" href="../Content/uploads/imagepath/' + path + '" data-toggle="lightbox" data-gallery="multiimages" data-title="' + name + '">' +
-               '      <img src="../Content/uploads/imagepath/' + path + '" class="avatar" alt="Avatar">' +
+               '      <img onerror="if (this.src != \'../Content/images/img-not-available.png\') this.src = \'../Content/images/img-not-available.png\';" src="../Content/uploads/imagepath/' + path + '" class="avatar" alt="Avatar">' +
                '        <div class="message_date">' +
                 '      <h3 class="date text-info">' + d.getDay() + '</h3>' +
                 '       <p class="month">' + month[d.getMonth()] + ' ' + d.getFullYear() + '</p>' +
                 '    </div>' +
-                     '<button type="button" onclick="setP('+id+', this)" class="buttonSetA btn btn-round btn-info">Set avatar</button>'+
+                     '<button type="button" onclick="setP(' + id + ', this)" class="buttonSetA btn btn-round btn-info">Set avatar</button>' +
                 '   </li>'
     }
 
@@ -643,12 +655,12 @@
     }
 
 
-    function setP(id, elm){
+    function setP(id, elm) {
         var htmlElem = $(elm).parent().find('img');
         $.ajax({
             method: "POST",
             url: "SetProfPicture",
-            data: {id:id},
+            data: { id: id },
             success: function (msg) {
                 console.log(msg)
                 debugger
@@ -663,7 +675,7 @@
 
         $('.buttonSetA').removeClass('hidden');
         $(".li-gal").hover(function (e) {
-            var img= $(this).find('img')
+            var img = $(this).find('img')
             img.css("opacity", e.type === "mouseenter" ? 0.5 : 1.0)
             if (e.type === "mouseenter") {
                 img.addClass("dashed");
@@ -679,7 +691,7 @@
     }
 
     function selectionDone() {
-        $('.dashed').css("opacity",  1.0);
+        $('.dashed').css("opacity", 1.0);
         $('.dashed').removeClass('dashed');
         $('#editProf').text('Edit Profile');
         $('.buttonSetA').addClass('hidden');

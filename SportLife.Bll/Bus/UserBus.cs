@@ -164,5 +164,17 @@ namespace SportLife.Bll.Bus
             }
             return false;
         }
+
+
+        public UserViewModel GetById(int id)
+        {
+            var user = _iUserDao.FindBy(u => u.UserId == id).FirstOrDefault();
+            if (user != null)
+            {
+                return UserConverter.FromUserDbModelToViewModel(user);
+            }
+
+            return new UserViewModel();
+        }
     }
 }

@@ -94,6 +94,7 @@
     <Compile Include="Models\Enums\IntValueAttribute.cs" />
     <Compile Include="Models\Enums\StringEnum.cs" />
     <Compile Include="Models\Enums\StringValueAtribute.cs" />
+    <Compile Include="Models\EventMainDetalsViewModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\SkilViewModel.cs" />

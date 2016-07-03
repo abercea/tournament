@@ -19,5 +19,7 @@ namespace SportLife.Bll.Contracts
         UserViewModel GetByEmail(string userEmail);
         bool ActivataAccount(string accessToken);
         bool SetProfPicture(int id, int fileId);
+
+        UserViewModel GetById(int id);
     }
 }

@@ -10,6 +10,12 @@ namespace SportLife.Models.Models
 {
     public class EventViewModel
     {
+        public EventViewModel()
+        {
+            EventFee = 45;
+            MaxNumberOfParticipants = 32;
+        }
+
         [Required(ErrorMessage = "* mandatory")]
         public string EventName { get; set; }
         public string EventDescription { get; set; }

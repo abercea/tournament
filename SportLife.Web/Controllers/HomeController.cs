@@ -16,25 +16,29 @@ namespace SportLife.Controllers
     {
         //  private IUserBus _iUserBus;
         private IMessageBus _iMesBus;
+        private IEventBus _iEventBus;
 
-        public HomeController(IUserBus iUserBus, IMessageBus iMesBus)
+
+        public HomeController(IUserBus iUserBus, IMessageBus iMesBus, IEventBus iEventBus)
             : base(iUserBus)
         {
             _iMesBus = iMesBus;
+            _iEventBus = iEventBus;
         }
 
         public ActionResult Index()
         {
-            return View("TempleteIntegration2");
+            var events = _iEventBus.GetAllEvents().Take(3).ToList();
+
+            return View("TempleteIntegration2", events);
         }
 
-        public ActionResult TempleteIntegration()
-        {
-            return View();
-        }
+
         public ActionResult TempleteIntegration2()
         {
-            return View();
+            var events = _iEventBus.GetAllEvents().Take(3).ToList();
+
+            return View(events);
         }
 
         public ActionResult Draws()

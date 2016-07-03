@@ -36,6 +36,6 @@ namespace SportLife.Dal.DomainModels
         [ForeignKey("CreatorId")]
         public virtual User Creator { get; set; }
 
-        public ICollection<User> RegisteredPlayers { get; set; }
+        public virtual ICollection<User> RegisteredPlayers { get; set; }
     }
 }

@@ -13,5 +13,9 @@ namespace SportLife.Bll.Contracts
         List<EventViewModel> GetAllEvents();
         EventViewModel GetById(int id);
         string Delete(int id);
+
+        EventMainDetalsViewModel GetEventDetails(int eventId);
+
+        bool JoinEvent(int eventId, int userId);
     }
 }

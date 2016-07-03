@@ -180,6 +180,7 @@ namespace SportLife.Web.Controllers
                         if (_user.Uploads.Count == 0)
                         {
                             setAsAvatar = _iUserBus.SetProfPicture(_user.UserId, id);
+                            Session.RemoveAll();
                         }
 
                         fileName1 = file.FileName;
@@ -209,6 +210,7 @@ namespace SportLife.Web.Controllers
             {
                 InitSession();
                 _iUserBus.SetProfPicture(_user.UserId, id);
+                Session.RemoveAll();
                 return Json(new { Status = true });
 
             }
@@ -218,6 +220,50 @@ namespace SportLife.Web.Controllers
             }
 
             return Json(new { Status = false });
+        }
+
+        public ActionResult EventDetails(int eventId)
+        {
+            try
+            {
+                EventMainDetalsViewModel model = _iEventBus.GetEventDetails(eventId);
+
+                return View(model);
+            }
+            catch (Exception e) { }
+
+
+
+            return View("Error");
+        }
+
+        public ActionResult JoinEvent(int eventId, int userId)
+        {
+            InitSession();
+            var ok = userId == _user.UserId ? _iEventBus.JoinEvent(eventId, userId) : false;
+
+            return Json(ok);
+        }
+
+        public ActionResult UserDetails(int id)
+        {
+            var profile = _iMesBus.GetProfiel(id);
+            InitSession();
+            if (profile != null)
+            {
+                if (_user.UserId != id)
+                {
+                    ViewBag.IsOther = true;
+                    profile.Subject = _iUserBus.GetById(id);
+                }
+                else
+                {
+                    profile.Subject = _user;
+                }
+
+            }
+
+            return View("Profile", profile);
         }
     }
 }

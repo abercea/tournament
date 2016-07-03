@@ -47,8 +47,9 @@ namespace SportLife.Bll.Converter
                     UserId = dbUser.UserId,
                     SportId = dbUser.SportId,
                     Username = dbUser.Username,
-                    Uploads = dbUser.Uploads.ToList(), 
-                    MainFile = dbUser.ProfilePhto
+                    Uploads = dbUser.Uploads.ToList(),
+                    MainFile = dbUser.ProfilePhto ?? 0,
+                    Avatar = dbUser.Avatar != null ? dbUser.Avatar.Path : string.Empty
 
                 };
 

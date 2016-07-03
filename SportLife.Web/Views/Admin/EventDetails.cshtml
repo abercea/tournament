@@ -1,0 +1,68 @@
+﻿
+<style>
+    th, td {
+        text-align: center;
+    }
+
+    .result {
+        color: red;
+    }
+
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 1%;
+        line-height: 1.42857143;
+        vertical-align: middle;
+        border-top: 1px solid #dddddd;
+        /* white-space: pre-line; */
+        word-wrap: normal;
+    }
+</style>
+@model SportLife.Models.Models.EventMainDetalsViewModel
+
+<div class="main-page">
+    <div class="row">
+        <div class="col-md-12 general-grids grids-right widget-shadow">
+            <h4 class="title2">This event is opened for registration</h4>
+            <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Details</a></li>
+                <li role="presentation" class=""><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="true">Registered players</a></li>
+                <li role="presentation" class="dropdown">
+                    <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false">Planning <span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
+                        <li class=""><a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1" aria-expanded="false">Matches</a></li>
+                        <li class=""><a href="#dropdown2" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="false">Gallery</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div id="myTabContent" class="tab-content scrollbar1" tabindex="5001" style="overflow: hidden; outline: none;">
+                <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
+
+                    <div class="bs-example widget-shadow" data-example-id="contextual-table">
+                        @Html.Partial("~/Views/admin/MainDetails.cshtml")
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+
+                    <div class="row calender widget-shadow">
+                        @Html.Partial("~/Views/admin/PlayersList.cshtml")
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledby="dropdown1-tab">
+                    <div class="row calender widget-shadow">
+                        @Html.Partial("~/Views/Home/draws.cshtml")
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="dropdown2" aria-labelledby="dropdown2-tab">
+                    <h3>No content</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+
+    </div>
+</div>

@@ -397,6 +397,7 @@
     <Content Include="Content\images\team-member.jpg" />
     <Content Include="Content\images\testimonials1.png" />
     <Content Include="Content\images\transparent.png" />
+    <Content Include="Content\images\user.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -598,6 +599,9 @@
     <Content Include="Views\Admin\Event.cshtml" />
     <Content Include="Views\Home\Forbidden.cshtml" />
     <Content Include="Views\Admin\Profile.cshtml" />
+    <Content Include="Views\Admin\EventDetails.cshtml" />
+    <Content Include="Views\Admin\PlayersList.cshtml" />
+    <Content Include="Views\Admin\MainDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SportLife.Bll\SportLife.Bll.csproj">
@@ -619,6 +623,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\imagepath\" />
+    <Folder Include="Content\uploads\imagepath\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

@@ -23,6 +23,14 @@
     .result {
         color: red;
     }
+   .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 1%;
+    line-height: 1.42857143;
+     vertical-align: middle;
+    border-top: 1px solid #dddddd;
+    /* white-space: pre-line; */
+    word-wrap: normal;
+}
 </style>
 <div class="main-page">
     <div class="row">
@@ -73,14 +81,14 @@
                                         <td class="dateEv">@(ev.EventDate.HasValue ? ev.EventDate.Value.ToString("yyyy-MM-dd") : "Event wasn't planed yet")</td>
                                         <td>@(ev.RegisterdPlayers > 0 ? ev.RegisterdPlayers.ToString() : "No players attending")</td>
                                         <td>
-                                            <button type="button" class="btn btn-succes btn-lg raised">view</button>
+                                            <button onclick="window.location ='eventdetails?eventid=@ev.EventId'" type="button" class="btn btn-succes btn-sm raised">view</button>
                                             @if (delete)
                                             {
-                                                <button type="button" onclick="edit(@ev.EventId)" class="btn btn-primary btn-lg raised">edit</button>
+                                                <button type="button" onclick="edit(@ev.EventId)" class="btn btn-primary btn-sm raised">edit</button>
                                             }
                                             @if (delete && !ev.IsClosed)
                                             {
-                                                <button type="button" onclick="deleteEvent(this, @ev.EventId)" class="btn btn-danger btn-lg raised">delete</button>
+                                                <button type="button" onclick="deleteEvent(this, @ev.EventId)" class="btn btn-danger btn-sm raised">delete</button>
                                             }
                                         </td>
                                     </tr>
