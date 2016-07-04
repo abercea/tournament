@@ -242,6 +242,7 @@
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\css\form-basic.css" />
+    <Content Include="Content\css\green.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\prettyPhoto.css" />
     <Content Include="Content\css\responsive.css" />
@@ -284,6 +285,7 @@
     <Content Include="Content\images\gallery\gallery4.jpg" />
     <Content Include="Content\images\gallery\gallery5.jpg" />
     <Content Include="Content\images\gallery\gallery6.jpg" />
+    <Content Include="Content\images\green.png" />
     <Content Include="Content\images\home_1.jpg" />
     <Content Include="Content\images\home_2.jpg" />
     <Content Include="Content\images\ico\apple-touch-icon-114-precomposed.png" />
@@ -461,6 +463,7 @@
     <Content Include="Scripts\dropzone\images\spritemap%402x.png" />
     <Content Include="Scripts\dropzone\images\spritemap.png" />
     <Content Include="Scripts\ekko-lightbox.min.js" />
+    <Content Include="Scripts\js\icheck.js" />
     <Content Include="web\blank-page.html" />
     <Content Include="web\charts.html" />
     <Content Include="web\compose.html" />
@@ -603,6 +606,7 @@
     <Content Include="Views\Admin\EventDetails.cshtml" />
     <Content Include="Views\Admin\PlayersList.cshtml" />
     <Content Include="Views\Admin\MainDetails.cshtml" />
+    <Content Include="Views\Admin\UserList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SportLife.Bll\SportLife.Bll.csproj">
