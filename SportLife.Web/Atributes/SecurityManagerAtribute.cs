@@ -53,13 +53,37 @@ namespace SportLife.Web.Atributes
 
     public class PageAccessManager
     {
-        public static bool IsAccessAllowed(string Controller,
-               string Action, IPrincipal User, string IP)
+        public static bool IsAccessAllowed(string Controller, string Action, IPrincipal User, string IP)
         {
+            Action = string.IsNullOrEmpty(Action) ? string.Empty : Action.ToLower();
             if (Controller == "Home")
                 return true;
             if (Controller == "Admin" && User.IsInRole("admin"))
+            {
                 return true;
+            }
+            else
+            {
+                switch (Action)
+                {
+                    case "savemess":
+                        return true;
+                    case "getmesseges":
+                        return true;
+                    case "profile":
+                        return true;
+                    case "saveuploadedfile":
+                        return true;
+                    case "setprofpicture":
+                        return true;
+                    case "eventdetails":
+                        return true;
+                    case "joinevent":
+                        return true;
+                    case "userdetails":
+                        return true;
+                }
+            }
 
 
             return false;
