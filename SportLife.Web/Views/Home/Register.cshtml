@@ -183,17 +183,18 @@
     }
 
 
-input:-webkit-autofill {
-    -webkit-box-shadow:0 0 0 50px #2e3740 inset; /* Change the color to your own background color */
-    -webkit-text-fill-color: #f2f2f2;
-}
-input:-webkit-autofill:focus {
-    -webkit-box-shadow: /*your box-shadow*/,0 0 0 50px #2e3740 inset;
-    -webkit-text-fill-color: #f2f2f2;
-}
+    input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 50px #2e3740 inset; /* Change the color to your own background color */
+        -webkit-text-fill-color: #f2f2f2;
+    }
 
-    input{
-            color: #f2f2f2 !important;
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow: /*your box-shadow*/,0 0 0 50px #2e3740 inset;
+            -webkit-text-fill-color: #f2f2f2;
+        }
+
+    input {
+        color: #f2f2f2 !important;
     }
 </style>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
@@ -251,6 +252,8 @@ input:-webkit-autofill:focus {
         if ('@ViewBag.Mode' == 1) {
             showLogin();
         }
+
+        $('#footer, #line-bottom').remove();
     });
 
     function showWarning(warning, containerId) {
@@ -377,4 +380,6 @@ input:-webkit-autofill:focus {
             showWarning(response.message, "loginAllert");
         }
     }
+
+
 </script>

@@ -1,10 +1,10 @@
-﻿@model List<SportLife.Models.Models.EventViewModel>
+﻿@model  SportLife.Models.Models.DashboardViewModel
 @using SportLife.Models.Models
 @{
     ViewBag.Title = "Dashboard";
     var user = Session["user"] as UserViewModel;
     var eventsDates = new List<string>();
-    foreach (var d in Model)
+    foreach (var d in Model.Events)
     {
         if (d.EventDate.HasValue)
         {
@@ -66,7 +66,7 @@
                                 @{int i = 1;
 
                                 }
-                                @foreach (var ev in Model)
+                                @foreach (var ev in Model.Events)
                                 {   // red = not opened
                                     // blue = opened not full
                                     // green opened full

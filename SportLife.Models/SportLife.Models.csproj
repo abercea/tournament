@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\Enums\AccessRolesEnum.cs" />
     <Compile Include="Models\CustomResponseModel.cs" />
     <Compile Include="Models\Enums\EventTypeEnum.cs" />

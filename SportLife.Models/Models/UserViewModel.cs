@@ -29,5 +29,8 @@ namespace SportLife.Models.Models
         public List<Document> Uploads { get; set; }
 
         public int MainFile { get; set; }
+
+        public bool IsDeleteable { get; set; }
+        public bool IsActive { get; set; }
     }
 }

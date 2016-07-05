@@ -607,6 +607,7 @@
     <Content Include="Views\Admin\PlayersList.cshtml" />
     <Content Include="Views\Admin\MainDetails.cshtml" />
     <Content Include="Views\Admin\UserList.cshtml" />
+    <Content Include="Views\Home\FourOFour.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SportLife.Bll\SportLife.Bll.csproj">

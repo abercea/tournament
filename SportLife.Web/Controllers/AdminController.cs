@@ -60,8 +60,13 @@ namespace SportLife.Web.Controllers
 
         public ActionResult Table()
         {
-            var model = _iEventBus.GetAllEvents();
             InitSession();
+
+            var events = _iEventBus.GetAllEvents();
+            List<UserViewModel> users = _iUserBus.GetExcept(_user.UserId);
+
+            DashboardViewModel model = new DashboardViewModel { Users = users, Events = events };
+
             return View(model);
         }
 
@@ -264,6 +269,31 @@ namespace SportLife.Web.Controllers
             }
 
             return View("Profile", profile);
+        }
+
+        public ActionResult userList()
+        {
+            InitSession();
+            var users = _iUserBus.GetExcept(_user.UserId);
+            return View("UserList", new DashboardViewModel { Users = users.ToList() });
+        }
+
+        public ActionResult Update(int userId, AccessRolesEnum role)
+        {
+            InitSession();
+
+            try
+            {
+               bool tt = _iUserBus.Upgrade(userId, role);
+
+               return Json(tt);
+            }
+            catch (Exception e)
+            {
+                return Json(false);
+            }
+
+            return Json(false);
         }
     }
 }

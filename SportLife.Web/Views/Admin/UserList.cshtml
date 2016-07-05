@@ -1,38 +1,41 @@
 ﻿<link rel="stylesheet" href="~/Content/css/green.css" />
 <style>
-table.jambo_table {
-    border: 1px solid rgba(221,221,221,0.78)
-}
+    table.jambo_table {
+        border: 1px solid rgba(221,221,221,0.78);
+    }
 
-table.jambo_table thead {
-    background: rgba(52,73,94,0.94);
-    color: #ECF0F1
-}
+        table.jambo_table thead {
+            background: rgba(52,73,94,0.94);
+            color: #ECF0F1;
+        }
 
-table.jambo_table tbody tr:hover td {
-    background: rgba(38,185,154,0.07);
-    border-top: 1px solid rgba(38,185,154,0.11);
-    border-bottom: 1px solid rgba(38,185,154,0.11)
-}
+        table.jambo_table tbody tr:hover td {
+            background: rgba(38,185,154,0.07);
+            border-top: 1px solid rgba(38,185,154,0.11);
+            border-bottom: 1px solid rgba(38,185,154,0.11);
+        }
 
-table.jambo_table tbody tr.selected {
-    background: rgba(38,185,154,0.16)
-}
+        table.jambo_table tbody tr.selected {
+            background: rgba(38,185,154,0.16);
+        }
 
-table.jambo_table tbody tr.selected td {
-    border-top: 1px solid rgba(38,185,154,0.4);
-    border-bottom: 1px solid rgba(38,185,154,0.4)
-}
+            table.jambo_table tbody tr.selected td {
+                border-top: 1px solid rgba(38,185,154,0.4);
+                border-bottom: 1px solid rgba(38,185,154,0.4);
+            }
 
-.table-striped tr.even.row_selected td {
-    background-color: #B0BED9 !important
-}
+    .table-striped tr.even.row_selected td {
+        background-color: #B0BED9 !important;
+    }
 
-.table-striped tr.odd.row_selected td {
-    background-color: #9FAFD1 !important
-}
-
+    .table-striped tr.odd.row_selected td {
+        background-color: #9FAFD1 !important;
+    }
 </style>
+
+@model SportLife.Models.Models.DashboardViewModel
+@using SportLife.Models.Models.Enums
+@using SportLife.Models.Models
 
 <div class="clearfix"></div>
 
@@ -41,7 +44,7 @@ table.jambo_table tbody tr.selected td {
 <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
         <div class="x_title">
-            <h2>Users list <small>newcomers</small></h2>
+            <h2>Users list <small onclick="refresh()" style="cursor: pointer;" id="refresh" class="hidden"> changes have been made...refresh content</small></h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li>
                     <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -88,50 +91,106 @@ table.jambo_table tbody tr.selected td {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="even pointer">
-                            <td class="a-center ">
-                                <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000040</td>
-                            <td class=" ">May 23, 2014 11:47:56 PM </td>
-                            <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right "><button type="button" class="btn btn-xs btn-success">Admin</button></td>
-                            <td class=" last">
-                                <button type="button" class="btn btn-xs btn-danger">Delete</button>
-                            </td>
-                        </tr>
-                        <tr class="odd pointer">
-                            <td class="a-center ">
-                                <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000039</td>
-                            <td class=" ">May 23, 2014 11:30:12 PM</td>
-                            <td class=" ">
-                                121000208 <i class="success fa fa-long-arrow-up"></i>
-                            </td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right "><button type="button" class="btn btn-xs btn-success">Admin</button></td>
+                        @foreach (var us in Model.Users)
+                        {
+                            var text = us.Role == AccessRolesEnum.Admin ? string.Empty : us.Role == AccessRolesEnum.AccountNotActivated ? "ACTIVATE" : "ADMIN";
+                            <tr class="even pointer">
+                                <td class="a-center ">
+                                    <input type="checkbox" class="flat" name="table_records">
+                                </td>
+                                <td class=" ">@us.UserId</td>
+                                <td class=" ">@us.AccountCreationDate </td>
+                                <td class=" ">@us.Email <i class="success fa fa-long-arrow-up"></i></td>
+                                <td class=" ">@(us.IsActive ? "Active" : "Not activated")</td>
+                                <td class=" ">@us.Role.GetStringValue()</td>
+                                <td class="a-right a-right ">
+                                    @if (us.Role != AccessRolesEnum.Admin)
+                                    {<button type="button" onclick="update('@us.Role', @us.UserId)" class="btn btn-xs btn-success">@text</button>}
+                                </td>
+                                <td class=" last">
+                                    @if (us.Role != AccessRolesEnum.Admin)
+                                    { <button type="button" onclick="ErrorAlert()" class="btn btn-xs btn-danger">Delete</button>}
+                                </td>
+                            </tr>
+                        }
 
-                            <td class=" last">
-                                <button type="button" class="btn btn-round btn-sm btn-danger">Danger</button>
-                            </td>
-                        </tr>
-                     
                     </tbody>
                 </table>
             </div>
 
         </div>
     </div>
+    <div style="color:red" id="returnT"></div>
 </div>
 
 <script src="~/Scripts/js/icheck.js"></script>
 
 
 <script>
+
+
+    function update(role, userId) {
+        if ($('#refresh').hasClass('hidden')) {
+
+            $.ajax({
+                method: "POST",
+                url: "Update",
+                data: { userId: userId, role: role },
+                success: function (msg) {
+                    console.log(msg)
+                    if (msg) {
+                        $('#refresh').removeClass('hidden');
+                    } else {
+                        ErrorAlert()
+                    }
+
+                },
+                error: function () {
+                    ErrorAlert()
+                }
+            });
+        } else {
+            ErrorAlert("Please refresh content")
+        }
+    }
+
+    function removeLast(elem) {
+        elem.fadeOut('slow');
+    }
+
+    function ErrorAlert(mesg) {
+        mesg = mesg || 'Operation failed. Please contact the administrator';
+        $('#returnT').append("<p>" + mesg + "</p>");
+        var elem = $('#returnT p').last();
+        setTimeout(removeLast, 1500, elem);
+    }
+
+    function refresh() {
+        $('#refresh').addClass('hidden');
+
+        $.ajax({
+            method: "GET",
+            url: "userList",
+            success: function (msg) {
+                console.log(msg)
+                if (msg) {
+                    var table = $(msg).find('.jambo_table');
+                    $('.jambo_table').replaceWith(table);
+                    $('input.flat').iCheck({
+                        checkboxClass: 'icheckbox_flat-green',
+                        radioClass: 'iradio_flat-green'
+                    });
+                }
+
+            },
+            error: function () {
+                $('#returnT').append("<p>Operation failed. Please contact the administrator</p>");
+                var elem = $('#returnT p').last();
+                setTimeout(removeLast, 1500, elem);
+            }
+        });
+    }
+
     // iCheck
     $(document).ready(function () {
         if ($("input.flat")[0]) {

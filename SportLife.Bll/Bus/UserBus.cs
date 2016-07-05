@@ -83,7 +83,7 @@ namespace SportLife.Bll.Bus
             {
                 User userDb = UserConverter.FromUserViewModelToDbModel(user);
                 userDb.AccountCreationDate = DateTime.Now;
-                userDb.Role = (int)AccessRolesEnum.Admin; //admin
+                userDb.Role = (int)AccessRolesEnum.Player; //admin
                 userDb.AccountActive = false;
                 _iUserDao.Add(userDb);
                 _iUserDao.SaveContext();
@@ -175,6 +175,34 @@ namespace SportLife.Bll.Bus
             }
 
             return new UserViewModel();
+        }
+
+
+        public List<UserViewModel> GetExcept(int p)
+        {
+            var users = _iUserDao.FindBy(u => u.UserId != p).ToList();
+
+            if (users != null) return users.Select(UserConverter.FromUserDbModelToViewModel).ToList();
+            else return new List<UserViewModel>();
+        }
+
+
+        public bool Upgrade(int userId, AccessRolesEnum role)
+        {
+            var user = _iUserDao.FindBy(i => i.UserId == userId).First();
+
+            if (role == AccessRolesEnum.AccountNotActivated)
+            {
+                user.AccountActive = true;
+            }
+            else
+            {
+                user.Role = (int)AccessRolesEnum.Admin;
+            }
+
+            _iUserDao.SaveContext();
+
+            return true;
         }
     }
 }

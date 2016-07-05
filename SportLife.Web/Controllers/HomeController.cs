@@ -94,7 +94,7 @@ namespace SportLife.Controllers
         public ActionResult Login(UserViewModel user, string redirect = "index")
         {
             UserViewModel accessUser = _iUserBus.CheckCredentials(user);
-            if (accessUser != null && accessUser.Role != AccessRolesEnum.AccountNotActivated)
+            if (accessUser != null && accessUser.Role != AccessRolesEnum.NoAcces)
             {
                 PutInSessionUser(accessUser, Response);
 
@@ -161,6 +161,11 @@ namespace SportLife.Controllers
         }
 
         public ActionResult Forbidden()
+        {
+            return View();
+        }
+
+        public ActionResult FourOFour()
         {
             return View();
         }

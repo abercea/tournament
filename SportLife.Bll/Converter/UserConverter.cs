@@ -49,6 +49,8 @@ namespace SportLife.Bll.Converter
                     Username = dbUser.Username,
                     Uploads = dbUser.Uploads.ToList(),
                     MainFile = dbUser.ProfilePhto ?? 0,
+                    IsActive = dbUser.AccountActive,
+                    AccountCreationDate = dbUser.AccountCreationDate,
                     Avatar = dbUser.Avatar != null ? dbUser.Avatar.Path : string.Empty
 
                 };

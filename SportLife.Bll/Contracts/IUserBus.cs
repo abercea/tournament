@@ -21,5 +21,9 @@ namespace SportLife.Bll.Contracts
         bool SetProfPicture(int id, int fileId);
 
         UserViewModel GetById(int id);
+
+        List<UserViewModel> GetExcept(int p);
+
+        bool Upgrade(int userId, AccessRolesEnum role);
     }
 }

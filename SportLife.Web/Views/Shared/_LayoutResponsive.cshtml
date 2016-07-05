@@ -132,8 +132,8 @@
 
                 <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="@Url.Action("TempleteIntegration2")">Home</a></li>
-                        <li><a href="@Url.Action("chat")">Chat</a></li>
+                        <li id="home" class="active"><a href="@Url.Action("TempleteIntegration2")">Home</a></li>
+                        <li id="chat"> <a href="@Url.Action("chat")">Chat</a></li>
                         <li><a href="#">Services</a></li>
                         <li><a href="#">Portfolio</a></li>
                         <li class="dropdown">
@@ -196,6 +196,10 @@
     <script>
         $(document).ready(function () {
             toggleFooter();
+            if (window.location.pathname.indexOf("chat") !== -1) {
+                $('.navbar-nav li').removeClass('active');
+                $('#chat').addClass('active')
+            }
         });
         $(window).resize(function () {
             toggleFooter();
