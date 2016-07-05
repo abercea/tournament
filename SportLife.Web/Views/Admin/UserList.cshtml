@@ -1,0 +1,260 @@
+﻿<link rel="stylesheet" href="~/Content/css/green.css" />
+<style>
+    table.jambo_table {
+        border: 1px solid rgba(221,221,221,0.78);
+    }
+
+        table.jambo_table thead {
+            background: rgba(52,73,94,0.94);
+            color: #ECF0F1;
+        }
+
+        table.jambo_table tbody tr:hover td {
+            background: rgba(38,185,154,0.07);
+            border-top: 1px solid rgba(38,185,154,0.11);
+            border-bottom: 1px solid rgba(38,185,154,0.11);
+        }
+
+        table.jambo_table tbody tr.selected {
+            background: rgba(38,185,154,0.16);
+        }
+
+            table.jambo_table tbody tr.selected td {
+                border-top: 1px solid rgba(38,185,154,0.4);
+                border-bottom: 1px solid rgba(38,185,154,0.4);
+            }
+
+    .table-striped tr.even.row_selected td {
+        background-color: #B0BED9 !important;
+    }
+
+    .table-striped tr.odd.row_selected td {
+        background-color: #9FAFD1 !important;
+    }
+</style>
+
+@model SportLife.Models.Models.DashboardViewModel
+@using SportLife.Models.Models.Enums
+@using SportLife.Models.Models
+
+<div class="clearfix"></div>
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Users list <small onclick="refresh()" style="cursor: pointer;" id="refresh" class="hidden"> changes have been made...refresh content</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="#">Settings 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Settings 2</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="x_content">
+
+            <div class="table-responsive">
+                <table class="table table-hover jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th>
+                                <input type="checkbox" id="check-all" class="flat">
+                            </th>
+                            <th class="column-title">Invoice </th>
+                            <th class="column-title">Register Date </th>
+                            <th class="column-title">Email </th>
+                            <th class="column-title">Status</th>
+                            <th class="column-title">Role </th>
+                            <th class="column-title">Make Admin </th>
+                            <th class="column-title no-link last">
+                                <span class="nobr">Delete</span>
+                            </th>
+                            <th class="bulk-actions" style="display: none;" colspan="7">
+                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var us in Model.Users)
+                        {
+                            var text = us.Role == AccessRolesEnum.Admin ? string.Empty : us.Role == AccessRolesEnum.AccountNotActivated ? "ACTIVATE" : "ADMIN";
+                            <tr class="even pointer">
+                                <td class="a-center ">
+                                    <input type="checkbox" class="flat" name="table_records">
+                                </td>
+                                <td class=" ">@us.UserId</td>
+                                <td class=" ">@us.AccountCreationDate </td>
+                                <td class=" ">@us.Email <i class="success fa fa-long-arrow-up"></i></td>
+                                <td class=" ">@(us.IsActive ? "Active" : "Not activated")</td>
+                                <td class=" ">@us.Role.GetStringValue()</td>
+                                <td class="a-right a-right ">
+                                    @if (us.Role != AccessRolesEnum.Admin)
+                                    {<button type="button" onclick="update('@us.Role', @us.UserId)" class="btn btn-xs btn-success">@text</button>}
+                                </td>
+                                <td class=" last">
+                                    @if (us.Role != AccessRolesEnum.Admin)
+                                    { <button type="button" onclick="ErrorAlert()" class="btn btn-xs btn-danger">Delete</button>}
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div style="color:red" id="returnT"></div>
+</div>
+
+<script src="~/Scripts/js/icheck.js"></script>
+
+
+<script>
+
+
+    function update(role, userId) {
+        if ($('#refresh').hasClass('hidden')) {
+
+            $.ajax({
+                method: "POST",
+                url: "Update",
+                data: { userId: userId, role: role },
+                success: function (msg) {
+                    console.log(msg)
+                    if (msg) {
+                        $('#refresh').removeClass('hidden');
+                    } else {
+                        ErrorAlert()
+                    }
+
+                },
+                error: function () {
+                    ErrorAlert()
+                }
+            });
+        } else {
+            ErrorAlert("Please refresh content")
+        }
+    }
+
+    function removeLast(elem) {
+        elem.fadeOut('slow');
+    }
+
+    function ErrorAlert(mesg) {
+        mesg = mesg || 'Operation failed. Please contact the administrator';
+        $('#returnT').append("<p>" + mesg + "</p>");
+        var elem = $('#returnT p').last();
+        setTimeout(removeLast, 1500, elem);
+    }
+
+    function refresh() {
+        $('#refresh').addClass('hidden');
+
+        $.ajax({
+            method: "GET",
+            url: "userList",
+            success: function (msg) {
+                console.log(msg)
+                if (msg) {
+                    var table = $(msg).find('.jambo_table');
+                    $('.jambo_table').replaceWith(table);
+                    $('input.flat').iCheck({
+                        checkboxClass: 'icheckbox_flat-green',
+                        radioClass: 'iradio_flat-green'
+                    });
+                }
+
+            },
+            error: function () {
+                $('#returnT').append("<p>Operation failed. Please contact the administrator</p>");
+                var elem = $('#returnT p').last();
+                setTimeout(removeLast, 1500, elem);
+            }
+        });
+    }
+
+    // iCheck
+    $(document).ready(function () {
+        if ($("input.flat")[0]) {
+            $(document).ready(function () {
+                $('input.flat').iCheck({
+                    checkboxClass: 'icheckbox_flat-green',
+                    radioClass: 'iradio_flat-green'
+                });
+            });
+        }
+    });
+    // /iCheck
+
+    // Table
+    $('table input').on('ifChecked', function () {
+        checkState = '';
+        $(this).parent().parent().parent().addClass('selected');
+        countChecked();
+    });
+    $('table input').on('ifUnchecked', function () {
+        checkState = '';
+        $(this).parent().parent().parent().removeClass('selected');
+        countChecked();
+    });
+
+    var checkState = '';
+
+    $('.bulk_action input').on('ifChecked', function () {
+        checkState = '';
+        $(this).parent().parent().parent().addClass('selected');
+        countChecked();
+    });
+    $('.bulk_action input').on('ifUnchecked', function () {
+        checkState = '';
+        $(this).parent().parent().parent().removeClass('selected');
+        countChecked();
+    });
+    $('.bulk_action input#check-all').on('ifChecked', function () {
+        checkState = 'all';
+        countChecked();
+    });
+    $('.bulk_action input#check-all').on('ifUnchecked', function () {
+        checkState = 'none';
+        countChecked();
+    });
+
+    function countChecked() {
+        if (checkState === 'all') {
+            $(".bulk_action input[name='table_records']").iCheck('check');
+        }
+        if (checkState === 'none') {
+            $(".bulk_action input[name='table_records']").iCheck('uncheck');
+        }
+
+        var checkCount = $(".bulk_action input[name='table_records']:checked").length;
+
+        if (checkCount) {
+            $('.column-title').hide();
+            $('.bulk-actions').show();
+            $('.action-cnt').html(checkCount + ' Records Selected');
+        } else {
+            $('.column-title').show();
+            $('.bulk-actions').hide();
+        }
+    }
+
+</script>

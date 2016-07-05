@@ -242,6 +242,7 @@
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\css\form-basic.css" />
+    <Content Include="Content\css\green.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\prettyPhoto.css" />
     <Content Include="Content\css\responsive.css" />
@@ -277,12 +278,14 @@
     <Content Include="Content\images\client2.png" />
     <Content Include="Content\images\client3.png" />
     <Content Include="Content\images\contact.png" />
+    <Content Include="Content\images\default_profile.jpg" />
     <Content Include="Content\images\gallery\gallery1.jpg" />
     <Content Include="Content\images\gallery\gallery2.jpg" />
     <Content Include="Content\images\gallery\gallery3.jpg" />
     <Content Include="Content\images\gallery\gallery4.jpg" />
     <Content Include="Content\images\gallery\gallery5.jpg" />
     <Content Include="Content\images\gallery\gallery6.jpg" />
+    <Content Include="Content\images\green.png" />
     <Content Include="Content\images\home_1.jpg" />
     <Content Include="Content\images\home_2.jpg" />
     <Content Include="Content\images\ico\apple-touch-icon-114-precomposed.png" />
@@ -291,6 +294,7 @@
     <Content Include="Content\images\ico\apple-touch-icon-72-precomposed.png" />
     <Content Include="Content\images\ico\favicon.ico" />
     <Content Include="Content\images\image_bg.png" />
+    <Content Include="Content\images\img-not-available.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\man1.jpg" />
     <Content Include="Content\images\man2.jpg" />
@@ -396,6 +400,7 @@
     <Content Include="Content\images\team-member.jpg" />
     <Content Include="Content\images\testimonials1.png" />
     <Content Include="Content\images\transparent.png" />
+    <Content Include="Content\images\user.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -449,6 +454,16 @@
     <Content Include="js\jquery-1.11.1.min.js" />
     <Content Include="js\moment-2.2.1.js" />
     <Content Include="js\site.js" />
+    <Content Include="Scripts\dropzone\css\basic.css" />
+    <Content Include="Scripts\dropzone\css\dropzone.css" />
+    <Content Include="Scripts\dropzone\dropzone-amd-module.js" />
+    <Content Include="Scripts\dropzone\dropzone-amd-module.min.js" />
+    <Content Include="Scripts\dropzone\dropzone.js" />
+    <Content Include="Scripts\dropzone\dropzone.min.js" />
+    <Content Include="Scripts\dropzone\images\spritemap%402x.png" />
+    <Content Include="Scripts\dropzone\images\spritemap.png" />
+    <Content Include="Scripts\ekko-lightbox.min.js" />
+    <Content Include="Scripts\js\icheck.js" />
     <Content Include="web\blank-page.html" />
     <Content Include="web\charts.html" />
     <Content Include="web\compose.html" />
@@ -517,6 +532,8 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\images\404.xcf" />
+    <Content Include="Scripts\dropzone\css\stylus\basic.styl" />
+    <Content Include="Scripts\dropzone\css\stylus\dropzone.styl" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="index.html" />
     <Content Include="js\bootstrap.min.js" />
@@ -584,6 +601,13 @@
     <Content Include="web\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="web\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Admin\Event.cshtml" />
+    <Content Include="Views\Home\Forbidden.cshtml" />
+    <Content Include="Views\Admin\Profile.cshtml" />
+    <Content Include="Views\Admin\EventDetails.cshtml" />
+    <Content Include="Views\Admin\PlayersList.cshtml" />
+    <Content Include="Views\Admin\MainDetails.cshtml" />
+    <Content Include="Views\Admin\UserList.cshtml" />
+    <Content Include="Views\Home\FourOFour.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SportLife.Bll\SportLife.Bll.csproj">
@@ -604,7 +628,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\uploads\imagepath\" />
+    <Folder Include="Content\uploads\imagepath\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

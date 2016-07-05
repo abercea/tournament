@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SportLife.Dal.DomainModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,12 @@ namespace SportLife.Models.Models
         public AccessRolesEnum Role { get; set; }
 
         public int? SportId { get; set; }
+        public string Avatar { get; set; }
+        public List<Document> Uploads { get; set; }
+
+        public int MainFile { get; set; }
+
+        public bool IsDeleteable { get; set; }
+        public bool IsActive { get; set; }
     }
 }

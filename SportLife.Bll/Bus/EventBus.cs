@@ -13,10 +13,12 @@ namespace SportLife.Bll.Bus
     public class EventBus : IEventBus
     {
         private readonly IEventDao _iEventDao;
+        private readonly IUserDao _iUserDao;
 
-        public EventBus(IEventDao iEventDao)
+        public EventBus(IEventDao iEventDao, IUserDao iUserDao)
         {
             _iEventDao = iEventDao;
+            _iUserDao = iUserDao;
         }
 
         public bool AdEdit(EventViewModel ev, UserViewModel user)
@@ -35,6 +37,7 @@ namespace SportLife.Bll.Bus
                     evDb.IsVisible = dbModel.IsVisible;
                     evDb.EventPlace = dbModel.EventPlace;
                     evDb.MaxNumberOfParticipants = dbModel.MaxNumberOfParticipants;
+                    evDb.EventFee = ev.EventFee;
                     _iEventDao.SaveContext();
 
                     return true;
@@ -87,6 +90,35 @@ namespace SportLife.Bll.Bus
             }
 
             return string.Empty;
+        }
+
+
+        public EventMainDetalsViewModel GetEventDetails(int eventId)
+        {
+            var ev = _iEventDao.FindBy(e => e.EventId == eventId).FirstOrDefault();
+
+            var players = ev.RegisteredPlayers.ToList().Select(UserConverter.FromUserDbModelToViewModel).ToList();
+            EventMainDetalsViewModel model = new EventMainDetalsViewModel { RegisterdPlayers = players, Event = EventConverter.FromDbModelToViewModel(ev) };
+
+            return model;
+        }
+
+
+        public bool JoinEvent(int eventId, int userId)
+        {
+            try
+            {
+                var eventDb = _iEventDao.FindBy(e => e.EventId == eventId).FirstOrDefault();
+                var user = _iUserDao.FindBy(u => u.UserId == userId).FirstOrDefault();
+
+                eventDb.RegisteredPlayers.Add(user);
+                _iEventDao.SaveContext();
+
+                return true;
+            }catch(Exception e){
+
+                return false;
+            }
         }
     }
 }

@@ -18,5 +18,12 @@ namespace SportLife.Bll.Contracts
         UserViewModel CheckCredentials(UserViewModel user);
         UserViewModel GetByEmail(string userEmail);
         bool ActivataAccount(string accessToken);
+        bool SetProfPicture(int id, int fileId);
+
+        UserViewModel GetById(int id);
+
+        List<UserViewModel> GetExcept(int p);
+
+        bool Upgrade(int userId, AccessRolesEnum role);
     }
 }

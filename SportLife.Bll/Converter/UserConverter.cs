@@ -46,7 +46,13 @@ namespace SportLife.Bll.Converter
                     Role = (AccessRolesEnum)dbUser.Role,
                     UserId = dbUser.UserId,
                     SportId = dbUser.SportId,
-                    Username = dbUser.Username
+                    Username = dbUser.Username,
+                    Uploads = dbUser.Uploads.ToList(),
+                    MainFile = dbUser.ProfilePhto ?? 0,
+                    IsActive = dbUser.AccountActive,
+                    AccountCreationDate = dbUser.AccountCreationDate,
+                    Avatar = dbUser.Avatar != null ? dbUser.Avatar.Path : string.Empty
+
                 };
 
                 model.Role = dbUser.AccountActive ? model.Role : AccessRolesEnum.AccountNotActivated;

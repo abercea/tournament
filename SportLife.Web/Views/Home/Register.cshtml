@@ -183,12 +183,18 @@
     }
 
 
+    input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 50px #2e3740 inset; /* Change the color to your own background color */
+        -webkit-text-fill-color: #f2f2f2;
+    }
 
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-        transition: background-color 5000s ease-in-out 0s;
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow: /*your box-shadow*/,0 0 0 50px #2e3740 inset;
+            -webkit-text-fill-color: #f2f2f2;
+        }
+
+    input {
+        color: #f2f2f2 !important;
     }
 </style>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
@@ -225,7 +231,7 @@
     {
 
         // @Html.Hidden("Id", Model.UserId);
-        <input name='email' placeholder='E-Mail Address' type='text'>
+        <input name='email' style=" color: #f2f2f2 !important;" placeholder='E-Mail Address' autocomplete='' type='text'>
 
         <input id='pw' name='password' placeholder='Password' autocomplete='new-password' type='password'>
 
@@ -246,6 +252,8 @@
         if ('@ViewBag.Mode' == 1) {
             showLogin();
         }
+
+        $('#footer, #line-bottom').remove();
     });
 
     function showWarning(warning, containerId) {
@@ -372,4 +380,6 @@
             showWarning(response.message, "loginAllert");
         }
     }
+
+
 </script>

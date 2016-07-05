@@ -16,25 +16,29 @@ namespace SportLife.Controllers
     {
         //  private IUserBus _iUserBus;
         private IMessageBus _iMesBus;
+        private IEventBus _iEventBus;
 
-        public HomeController(IUserBus iUserBus, IMessageBus iMesBus)
+
+        public HomeController(IUserBus iUserBus, IMessageBus iMesBus, IEventBus iEventBus)
             : base(iUserBus)
         {
             _iMesBus = iMesBus;
+            _iEventBus = iEventBus;
         }
 
         public ActionResult Index()
         {
-            return View("TempleteIntegration2");
+            var events = _iEventBus.GetAllEvents().Take(3).ToList();
+
+            return View("TempleteIntegration2", events);
         }
 
-        public ActionResult TempleteIntegration()
-        {
-            return View();
-        }
+
         public ActionResult TempleteIntegration2()
         {
-            return View();
+            var events = _iEventBus.GetAllEvents().Take(3).ToList();
+
+            return View(events);
         }
 
         public ActionResult Draws()
@@ -90,7 +94,7 @@ namespace SportLife.Controllers
         public ActionResult Login(UserViewModel user, string redirect = "index")
         {
             UserViewModel accessUser = _iUserBus.CheckCredentials(user);
-            if (accessUser != null && accessUser.Role != AccessRolesEnum.AccountNotActivated)
+            if (accessUser != null && accessUser.Role != AccessRolesEnum.NoAcces)
             {
                 PutInSessionUser(accessUser, Response);
 
@@ -156,9 +160,14 @@ namespace SportLife.Controllers
             return "OK";
         }
 
-        public string Forbidden()
+        public ActionResult Forbidden()
         {
-            return "forbidden";
+            return View();
+        }
+
+        public ActionResult FourOFour()
+        {
+            return View();
         }
     }
 }

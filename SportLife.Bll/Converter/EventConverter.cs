@@ -18,7 +18,7 @@ namespace SportLife.Bll.Converter
             {
                 model = new EventViewModel
                {
-                   CreatorId = eventDb.CreatorId,
+                   CreatorId = eventDb.Creator.UserId,
                    EventDate = eventDb.EventDate,
                    EventDescription = eventDb.EventDescription,
                    EventFee = eventDb.EventFee,

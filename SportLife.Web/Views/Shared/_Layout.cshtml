@@ -158,7 +158,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Table", "Admin")</li>
                     <li>@Html.ActionLink("Add event", "Event", "Admin")</li>
-                    @*  <li>@Html.ActionLink("Contact", "Contact", "Admin")</li>*@
+                      <li>@Html.ActionLink("Landing page",  "index")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -167,8 +167,8 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - SportLife</p>
+        <footer class="navbar-fixed-bottom text-center">
+        @*    <p>&copy; @DateTime.Now.Year - SportLife</p>*@
         </footer>
     </div>
 

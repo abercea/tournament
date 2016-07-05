@@ -29,9 +29,10 @@ namespace SportLife.Web.Atributes
             var User = filterContext.HttpContext.User;
             var IP = filterContext.HttpContext.Request.UserHostAddress;
 
-            if (User == null)
+            if (!User.Identity.IsAuthenticated)
             {
                 FormsAuthentication.RedirectToLoginPage();
+                return;
 
             }
 

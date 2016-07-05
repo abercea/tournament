@@ -88,13 +88,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\Enums\AccessRolesEnum.cs" />
     <Compile Include="Models\CustomResponseModel.cs" />
     <Compile Include="Models\Enums\EventTypeEnum.cs" />
     <Compile Include="Models\Enums\IntValueAttribute.cs" />
     <Compile Include="Models\Enums\StringEnum.cs" />
     <Compile Include="Models\Enums\StringValueAtribute.cs" />
+    <Compile Include="Models\EventMainDetalsViewModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
+    <Compile Include="Models\ProfileViewModel.cs" />
+    <Compile Include="Models\SkilViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -104,6 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mappers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SportLife.Dal\SportLife.Dal.csproj">
+      <Project>{b6acce95-1cce-4dc2-956a-477a459fbb5c}</Project>
+      <Name>SportLife.Dal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,9 +10,8 @@
     ViewBag.Content = "If you want to join in, please login in !";
     UserViewModel user = Session["user"] as UserViewModel;
     var ema = user != null ? user.Email.Replace(".", "").TakeWhile(ss => ss != '@') : string.Empty;
-    var showPopup = user.Email; //user != null ? user.Username ?? String.Concat(ema) : string.Empty;
-}
-
+    var showPopup = user != null ? user.Email : string.Empty; 
+    }
 <style>
     .conversation-wrap {
         box-shadow: -2px 0 3px #ddd;
@@ -176,7 +175,7 @@
                     <div class="media-body">
                         <small class="pull-right time"><i class="fa fa-clock-o"></i> @mes.DateCreated.TimeOfDay.ToString()</small>
 
-                        <h5 class="media-heading">@(mes.User.Email.Equals(user.Email) ? "You" : mes.User.Email)</h5>
+                        <h5 class="media-heading">@(mes.User.Email.Equals(showPopup) ? "You" : mes.User.Email)</h5>
                         <small class="col-lg-10">@(mes.Content ?? "\"Sorry, no content available\"")</small>
                     </div>
                 </div>

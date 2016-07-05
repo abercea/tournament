@@ -1,0 +1,524 @@
+﻿
+<style>
+    .profile_details:nth-child(3n) {
+        clear: both;
+    }
+
+    .profile_details .profile_view {
+        display: inline-block;
+        padding: 10px 0 0;
+        background: #fff;
+    }
+
+        .profile_details .profile_view .divider {
+            border-top: 1px solid #e5e5e5;
+            padding-top: 5px;
+            margin-top: 5px;
+        }
+
+        .profile_details .profile_view .ratings {
+            margin-bottom: 0;
+        }
+
+        .profile_details .profile_view .bottom {
+            background: #F2F5F7;
+            padding: 9px 0;
+            border-top: 1px solid #E6E9ED;
+        }
+
+        .profile_details .profile_view .left {
+            margin-top: 20px;
+        }
+
+            .profile_details .profile_view .left p {
+                margin-bottom: 3px;
+            }
+
+        .profile_details .profile_view .right {
+            margin-top: 0px;
+            padding: 10px;
+        }
+
+        .profile_details .profile_view .img-circle {
+            border: 1px solid #E6E9ED;
+            padding: 2px;
+        }
+
+        .profile_details .profile_view h2 {
+            margin: 5px 0;
+        }
+
+        .profile_details .profile_view .ratings {
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .profile_details .profile_view .brief {
+            margin: 0;
+            font-weight: 300;
+        }
+
+    .profile_details .profile_left {
+        background: white;
+    }
+
+    .pagination.pagination-split li {
+        display: inline-block;
+        margin-right: 3px;
+    }
+
+        .pagination.pagination-split li a {
+            border-radius: 4px;
+            color: #768399;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+        }
+</style>
+@model SportLife.Models.Models.EventMainDetalsViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                        <ul class="pagination pagination-split">
+                            <li><a href="#">A</a></li>
+                            <li><a href="#">B</a></li>
+                            <li><a href="#">C</a></li>
+                            <li><a href="#">D</a></li>
+                            <li><a href="#">E</a></li>
+                            <li>...</li>
+                            <li><a href="#">W</a></li>
+                            <li><a href="#">X</a></li>
+                            <li><a href="#">Y</a></li>
+                            <li><a href="#">Z</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    @if (Model != null)
+                    {
+                        foreach (var player in Model.RegisterdPlayers)
+                        {
+                            string path = string.Format("../Content/uploads/imagepath/{0}", player.Avatar);
+                            <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>Information not available</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h3 style="word-break: break-word;">@player.Email @player.Username</h3>
+                                            <p><strong>About: </strong> No description provided </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-building"></i> Address: ---- </li>
+                                                <li><i class="fa fa-phone"></i> Phone #:----- </li>
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            @if (player.MainFile > 0)
+                                            {
+                                                <img onerror="if (this.src != '../Content/images/img-not-available.png') this.src = '../Content/images/img-not-available.png';" class="img-responsive avatar-view" src="@path" alt="Avatar">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Content/images/default_profile.jpg" alt="" class="img-circle img-responsive">
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            @*<p class="ratings">
+                                                <a>4.0</a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                            </p>*@
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            @*<button type="button" class="btn btn-success btn-xs">
+                                                <i class="fa fa-user">
+                                                </i> <i class="fa fa-comments-o"></i>
+                                            </button>*@
+                                            <button type="button" onclick="viewProfile(@player.UserId)" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-user"> </i> View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                    @*<div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                            <div class="well profile_view">
+                                <div class="col-sm-12">
+                                    <h4 class="brief"><i>Digital Strategist</i></h4>
+                                    <div class="left col-xs-7">
+                                        <h2>Nicole Pearson</h2>
+                                        <p><strong>About: </strong> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-building"></i> Address: </li>
+                                            <li><i class="fa fa-phone"></i> Phone #: </li>
+                                        </ul>
+                                    </div>
+                                    <div class="right col-xs-5 text-center">
+                                        <img  src="~/Content/images/default_profile.jpg" alt="" class="img-circle img-responsive">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 bottom text-center">
+                                    <div class="col-xs-12 col-sm-6 emphasis">
+                                        <p class="ratings">
+                                            <a>4.0</a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star-o"></span></a>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 emphasis">
+                                        <button type="button" class="btn btn-success btn-xs">
+                                            <i class="fa fa-user">
+                                            </i> <i class="fa fa-comments-o"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-xs">
+                                            <i class="fa fa-user"> </i> View Profile
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                            <div class="well profile_view">
+                                <div class="col-sm-12">
+                                    <h4 class="brief"><i>Digital Strategist</i></h4>
+                                    <div class="left col-xs-7">
+                                        <h2>Nicole Pearson</h2>
+                                        <p><strong>About: </strong> Web Designer / UI. </p>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-building"></i> Address: </li>
+                                            <li><i class="fa fa-phone"></i> Phone #: </li>
+                                        </ul>
+                                    </div>
+                                    <div class="right col-xs-5 text-center">
+                                        <img onerror="if (this.src != '../Content/images/user.png') this.src = '../Content/images/user.png';" src="images/user.png" alt="" class="img-circle img-responsive">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 bottom text-center">
+                                    <div class="col-xs-12 col-sm-6 emphasis">
+                                        <p class="ratings">
+                                            <a>4.0</a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star-o"></span></a>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 emphasis">
+                                        <button type="button" class="btn btn-success btn-xs">
+                                            <i class="fa fa-user">
+                                            </i> <i class="fa fa-comments-o"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-xs">
+                                            <i class="fa fa-user"> </i> View Profile
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                            <div class="well profile_view">
+                                <div class="col-sm-12">
+                                    <h4 class="brief"><i>Digital Strategist</i></h4>
+                                    <div class="left col-xs-7">
+                                        <h2>Nicole Pearson</h2>
+                                        <p><strong>About: </strong> Web Designer / UI. </p>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-building"></i> Address: </li>
+                                            <li><i class="fa fa-phone"></i> Phone #: </li>
+                                        </ul>
+                                    </div>
+                                    <div class="right col-xs-5 text-center">
+                                        <img onerror="if (this.src != '../Content/images/user.png') this.src = '../Content/images/user.png';" src="images/user.png" alt="" class="img-circle img-responsive">
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 bottom text-center">
+                                    <div class="col-xs-12 col-sm-6 emphasis">
+                                        <p class="ratings">
+                                            <a>4.0</a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star"></span></a>
+                                            <a href="#"><span class="fa fa-star-o"></span></a>
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 emphasis">
+                                        <button type="button" class="btn btn-success btn-xs">
+                                            <i class="fa fa-user">
+                                            </i> <i class="fa fa-comments-o"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-xs">
+                                            <i class="fa fa-user"> </i> View Profile
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+
+                        @*<div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>Digital Strategist</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h2>Nicole Pearson</h2>
+                                            <p><strong>About: </strong> Web Designer / UI. </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-building"></i> Address: </li>
+                                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            <img src="images/user.png" alt="" class="img-circle img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <p class="ratings">
+                                                <a>4.0</a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <i class="fa fa-user">
+                                                </i> <i class="fa fa-comments-o"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-user"> </i> View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>Digital Strategist</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h2>Nicole Pearson</h2>
+                                            <p><strong>About: </strong> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-building"></i> Address: </li>
+                                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            <img src="~/Content/images/default_profile.jpg" alt="" class="img-circle img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <p class="ratings">
+                                                <a>4.0</a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <i class="fa fa-user">
+                                                </i> <i class="fa fa-comments-o"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-user"> </i> View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>Digital Strategist</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h2>Nicole Pearson</h2>
+                                            <p><strong>About: </strong> Web Designer / UI. </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-building"></i> Address: </li>
+                                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            <img src="images/user.png" alt="" class="img-circle img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <p class="ratings">
+                                                <a>4.0</a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <i class="fa fa-user">
+                                                </i> <i class="fa fa-comments-o"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-user"> </i> View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>Digital Strategist</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h2>Nicole Pearson</h2>
+                                            <p><strong>About: </strong> Web Designer / UI. </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-building"></i> Address: </li>
+                                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            <img src="images/user.png" alt="" class="img-circle img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <p class="ratings">
+                                                <a>4.0</a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <i class="fa fa-user">
+                                                </i> <i class="fa fa-comments-o"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-user"> </i> View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>Digital Strategist</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h2>Nicole Pearson</h2>
+                                            <p><strong>About: </strong> Web Designer / UI. </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-building"></i> Address: </li>
+                                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            <img src="images/user.png" alt="" class="img-circle img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <p class="ratings">
+                                                <a>4.0</a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <i class="fa fa-user">
+                                                </i> <i class="fa fa-comments-o"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-user"> </i> View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+                                <div class="well profile_view">
+                                    <div class="col-sm-12">
+                                        <h4 class="brief"><i>Digital Strategist</i></h4>
+                                        <div class="left col-xs-7">
+                                            <h2>Nicole Pearson</h2>
+                                            <p><strong>About: </strong> Web Designer / UI. </p>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fa fa-building"></i> Address: </li>
+                                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                            </ul>
+                                        </div>
+                                        <div class="right col-xs-5 text-center">
+                                            <img src="images/user.png" alt="" class="img-circle img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 bottom text-center">
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <p class="ratings">
+                                                <a>4.0</a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star"></span></a>
+                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 emphasis">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <i class="fa fa-user">
+                                                </i> <i class="fa fa-comments-o"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-xs">
+                                                <i class="fa fa-user"> </i> View Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewProfile(id) {
+            window.location.href = "UserDetails?id=" + id;
+        }
+    </script>
